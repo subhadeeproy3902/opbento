@@ -194,7 +194,7 @@ export async function GET(req: NextRequest) {
     return new NextResponse(screenshot, {
       headers: {
         "Content-Type": "image/png",
-        "Content-Disposition": 'inline; filename="stats.png"',
+        "Content-Disposition": 'inline; filename="bento.png"',
       },
     });
   } catch (error) {

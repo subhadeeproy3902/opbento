@@ -43,7 +43,7 @@ export default function SocialsBlock({
             className="w-full mt-2 placeholder:text-gray-200 bg-transparent border border-red-200/50 text-white ring-offset-red-500"
             placeholder="Enter your first Name"
             value={name}
-            onChange={(e) => setName(e.target.value)}
+            onChange={(e) => setName(e.target.value.trim())}
           />
         </div>
       </Block>
