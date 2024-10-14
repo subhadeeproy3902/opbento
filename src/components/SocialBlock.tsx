@@ -27,7 +27,7 @@ export default function SocialsBlock({
   twitterURL: string;
   setTwitterURL: (url: string) => void;
   linkedinURL?: string;
-  setLinkedinURL  : (url: string) => void;
+  setLinkedinURL: (url: string) => void;
   imageUrl: string;
   setImageUrl: (url: string) => void;
 }) {
@@ -52,13 +52,13 @@ export default function SocialsBlock({
         <div className="grid h-full place-content-center text-3xl text-white py-4">
           <Linkedin size={18} className="w-5 h-5 absolute top-2 left-2" />
           <h1 className="text-2xl font-bold mx-auto mb-2 text-yellow-200">
-            LinkedIn Username
+            Image URL
           </h1>
           <Input
             className="w-full mt-2 focus-visible:ring-orange-700 placeholder:text-gray-200 bg-transparent text-white border-yellow-200/50 ring-offset-orange-500"
             placeholder="Enter your username"
-            value={linkedinURL}
-            onChange={(e) => setLinkedinURL(e.target.value)}
+            value={imageUrl}
+            onChange={(e) => setImageUrl(e.target.value)}
           />
         </div>
       </Block>
