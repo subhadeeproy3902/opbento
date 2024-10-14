@@ -7,7 +7,10 @@ export async function GET(req: NextRequest) {
   const username = searchParams.get("username");
 
   if (!username) {
-    return NextResponse.json({ error: "Username is required" }, { status: 400 });
+    return NextResponse.json(
+      { error: "Username is required" },
+      { status: 400 }
+    );
   }
 
   try {
@@ -19,26 +22,28 @@ export async function GET(req: NextRequest) {
     return new Response(svg, {
       status: 200,
       headers: {
-        "Content-Type": "image/svg+xml"
-      }
+        "Content-Type": "image/svg+xml",
+      },
     });
   } catch (error) {
-    return NextResponse.json({ error: "Failed to fetch data" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Failed to fetch data" },
+      { status: 500 }
+    );
   }
 }
 
-
 const generateSvg = (stats: UserStats, username: string) => {
   const {
-    'Star Earned': stars,
+    "Star Earned": stars,
     Commits: commits,
-    'Pull Requests': prs,
+    "Pull Requests": prs,
     Issues: issues,
-    'Contributed To': contributedTo,
+    "Contributed To": contributedTo,
     Sponsors: sponsors,
     Followers: followers,
     Gists: gists,
-    Organizations: organizations
+    Organizations: organizations,
   } = stats;
 
   // This can be your dynamic SVG string
@@ -67,9 +72,9 @@ const generateSvg = (stats: UserStats, username: string) => {
       viewBox="0 0 24 24"
       fill="none"
       stroke="#f9e2af"
-      stroke-width="2"
-      stroke-linecap="round"
-      stroke-linejoin="round"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
       className="lucide lucide-star"
       x="20"
       y="20"
@@ -93,9 +98,9 @@ const generateSvg = (stats: UserStats, username: string) => {
         viewBox="0 0 24 24"
         fill="none"
         stroke="#94e2d5"
-        stroke-width="2"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
         className="lucide lucide-activity"
         x="20"
         y="20"
@@ -120,9 +125,9 @@ const generateSvg = (stats: UserStats, username: string) => {
         viewBox="0 0 24 24"
         fill="none"
         stroke="#f38ba8"
-        stroke-width="2"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
         className="lucide lucide-git-pull-request"
         x="20"
         y="14"
@@ -150,9 +155,9 @@ const generateSvg = (stats: UserStats, username: string) => {
         viewBox="0 0 24 24"
         fill="none"
         stroke="#fab387"
-        stroke-width="2"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
         className="lucide lucide-circle-alert"
         x="20"
         y="14"
@@ -179,9 +184,9 @@ const generateSvg = (stats: UserStats, username: string) => {
         viewBox="0 0 24 24"
         fill="none"
         stroke="#a6e3a1"
-        stroke-width="2"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
         className="lucide lucide-git-branch"
         x="20"
         y="14"

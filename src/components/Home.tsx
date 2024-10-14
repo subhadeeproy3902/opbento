@@ -1,15 +1,10 @@
 "use client";
 
-import React, { useState } from "react";
+import { useState } from "react";
 import { motion } from "framer-motion";
 import {
-  ArrowRight,
-  Github,
-  Linkedin,
   Mail,
-  MapPinIcon,
-  Twitter,
-  Youtube,
+  MapPinIcon
 } from "lucide-react";
 import Block from "./ui/Block";
 import Navbar from "./Navbar";
