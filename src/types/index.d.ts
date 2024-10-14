@@ -1,48 +1,33 @@
 // types.ts
 export interface UserStats {
-  following: number;
-  followers: number;
-  gists: number;
-  totalCommitContributions: number;
-  repositoriesContributedTo: number;
-  pullRequests: number;
-  issues: number;
-  organizations: number;
-  sponsoring: number;
-  sponsors: number;
-  publicRepositories: {
+  Followers: number;
+  Repositories: number;
+  Organizations: number;
+  Gists: number;
+  'Pull Requests': number;
+  Issues: number;
+  Commits: number;
+  Sponsors: number;
+  'Contributed To': number;
+  'Star Earned': number;
+}
+
+export interface User {
+  followers: { totalCount: number };
+  gists: { totalCount: number };
+  contributionsCollection: { totalCommitContributions: number };
+  repositoriesContributedTo: { totalCount: number };
+  pullRequests: { totalCount: number };
+  issues: { totalCount: number };
+  organizations: { totalCount: number };
+  sponsors: { totalCount: number };
+  repositoriesWithStargazerCount: {
     totalCount: number;
-    repositories: {
-      name: string;
-      description: string;
-      stargazerCount: number;
-    }[];
+    nodes: { stargazerCount: number }[];
   };
-  createdAt: string;
-  updatedAt: string;
 }
 
 export interface GitHubResponse {
-  user: {
-    following: { totalCount: number };
-    followers: { totalCount: number };
-    gists: { totalCount: number };
-    contributionsCollection: { totalCommitContributions: number };
-    repositoriesContributedTo: { totalCount: number };
-    pullRequests: { totalCount: number };
-    issues: { totalCount: number };
-    organizations: { totalCount: number };
-    sponsoring: { totalCount: number };
-    sponsors: { totalCount: number };
-    createdAt: string;
-    updatedAt: string;
-    publicRepositories: {
-      totalCount: number;
-      nodes: {
-        name: string;
-        description: string;
-        stargazerCount: number;
-      }[];
-    };
-  };
+  user: User;
+  rateLimit: any;
 }

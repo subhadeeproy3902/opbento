@@ -1,5 +1,4 @@
 import React from "react";
-import Image from "next/image";
 import {
   Activity,
   GitBranch,
@@ -7,69 +6,111 @@ import {
   Star,
   AlertCircle,
 } from "lucide-react";
+import { UserStats } from "@/types";
 
-interface GitHubStats {
-  username: string;
-  stars: number;
-  commits: string;
-  prs: number;
-  issues: number;
-  contributedTo: number;
-  grade: string;
-}
-
-export default function GitHubStatsCard({ stats }: { stats: GitHubStats }) {
-  const { username, stars, commits, prs, issues, contributedTo, grade } = stats;
-
+export default function GitHubStatsCard({
+  userName,
+  stats,
+}: {
+  userName: String;
+  stats: UserStats | undefined;
+}) {
   return (
-    <div className="w-[500px] bg-secondary rounded-[15px] p-5 text-[#cdd6f4] relative">
-      <h2 className="text-xl mb-4">{username}&apos;s GitHub Stats</h2>
+    <svg
+      width="500"
+      height="300"
+      viewBox="0 0 500 300"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <rect width="500" height="300" rx="15" fill="#1e1e2e" />
 
-      <div className="grid grid-cols-2 gap-4">
-        <div className="bg-popover rounded-lg p-4 flex flex-col">
-          <div className="flex items-center mb-2">
-            <Star className="w-6 h-6 text-[#f9e2af] mr-2" />
-            <span>Total Stars Earned</span>
-          </div>
-          <span className="text-2xl font-bold text-[#f9e2af]">{stars}</span>
-        </div>
+      {/* Title */}
+      <text x="20" y="40" fontSize="20" fill="#cdd6f4">
+        {userName || "Subhadeep"}&apos;s GitHub Stats
+      </text>
 
-        <div className="bg-popover rounded-lg p-4 flex flex-col">
-          <div className="flex items-center mb-2">
-            <Activity className="w-6 h-6 text-[#94e2d5] mr-2" />
-            <span>Total Commits</span>
-          </div>
-          <span className="text-2xl font-bold text-[#94e2d5]">{commits}</span>
-        </div>
+      {/* Bento grid layout */}
+      <g transform="translate(20, 60)">
+        {/* Stars */}
+        <rect width="220" height="100" rx="10" fill="#313244" />
+        <Star x="20" y="20" size="24" color="#f9e2af" />
+        <text x="60" y="35" fontSize="16" fill="#cdd6f4">
+          Total Stars Earned
+        </text>
+        <text x="60" y="70" fontSize="24" fontWeight="bold" fill="#f9e2af">
+          {/* Stars */}
+          {stats?.["Star Earned"] || 0}
+        </text>
 
-        <div className="bg-popover rounded-lg p-4 flex flex-col">
-          <div className="flex items-center mb-2">
-            <GitPullRequest className="w-6 h-6 text-[#f38ba8] mr-2" />
-            <span>Total PRs</span>
-          </div>
-          <span className="text-2xl font-bold text-[#f38ba8]">{prs}</span>
-        </div>
+        {/* Commits */}
+        <g transform="translate(240, 0)">
+          <rect width="220" height="100" rx="10" fill="#313244" />
+          <Activity x="20" y="20" size="24" color="#94e2d5" />
+          <text x="60" y="35" fontSize="16" fill="#cdd6f4">
+            Total Commits
+          </text>
+          <text x="60" y="70" fontSize="24" fontWeight="bold" fill="#94e2d5">
+            {stats?.Commits || 0}
+          </text>
+        </g>
 
-        <div className="bg-popover rounded-lg p-4 flex flex-col">
-          <div className="flex items-center mb-2">
-            <AlertCircle className="w-6 h-6 text-[#fab387] mr-2" />
-            <span>Total Issues</span>
-          </div>
-          <span className="text-2xl font-bold text-[#fab387]">{issues}</span>
-        </div>
-      </div>
+        {/* PRs */}
+        <g transform="translate(0, 120)">
+          <rect width="140" height="100" rx="10" fill="#313244" />
+          <GitPullRequest x="20" y="20" size="24" color="#f38ba8" />
+          <text x="20" y="60" fontSize="16" fill="#cdd6f4">
+            Total PRs
+          </text>
+          <text x="20" y="85" fontSize="24" fontWeight="bold" fill="#f38ba8">
+            {stats?.["Pull Requests"] || 0}
+          </text>
+        </g>
 
-      <div className="bg-popover rounded-lg p-4 mt-4 flex items-center">
-        <GitBranch className="w-6 h-6 text-[#a6e3a1] mr-2" />
-        <span className="mr-2">Contributed To:</span>
-        <span className="text-2xl font-bold text-[#a6e3a1]">
-          {contributedTo}
-        </span>
-      </div>
+        {/* Issues */}
+        <g transform="translate(160, 120)">
+          <rect width="140" height="100" rx="10" fill="#313244" />
+          <AlertCircle x="20" y="20" size="24" color="#fab387" />
+          <text x="20" y="60" fontSize="16" fill="#cdd6f4">
+            Total Issues
+          </text>
+          <text x="20" y="85" fontSize="24" fontWeight="bold" fill="#fab387">
+            {stats?.Issues || 0}
+          </text>
+        </g>
 
-      <div className="absolute top-4 right-4 w-16 h-16 rounded-full border-4 border-[#89b4fa] flex items-center justify-center">
-        <span className="text-2xl font-bold text-[#89b4fa]">{grade}</span>
-      </div>
-    </div>
+        {/* Contributed To */}
+        <g transform="translate(320, 120)">
+          <rect width="140" height="100" rx="10" fill="#313244" />
+          <GitBranch x="20" y="20" size="24" color="#a6e3a1" />
+          <text x="20" y="60" fontSize="16" fill="#cdd6f4">
+            Contributed To
+          </text>
+          <text x="20" y="85" fontSize="24" fontWeight="bold" fill="#a6e3a1">
+            {stats?.["Contributed To"] || 0}
+          </text>
+        </g>
+      </g>
+
+      {/* Grade Circle */}
+      <circle
+        cx="450"
+        cy="50"
+        r="30"
+        fill="none"
+        stroke="#89b4fa"
+        strokeWidth="4"
+      />
+      <text
+        x="450"
+        y="58"
+        fontSize="24"
+        fontWeight="bold"
+        fill="#89b4fa"
+        textAnchor="middle"
+      >
+        A+
+      </text>
+    </svg>
   );
 }
