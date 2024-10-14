@@ -1,7 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import fetchUserData from "@/actions/fetchUserData";
+import puppeteer from "puppeteer";
 import { UserStats } from "@/types";
+import { Buffer } from 'buffer';
 
+// The API handler
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
   const username = searchParams.get("username");
@@ -13,122 +16,79 @@ export async function GET(req: NextRequest) {
   try {
     const { userStats } = await fetchUserData(username);
 
-    // Now pass the stats to the SVG generation function
-    const svg = generateSvg(userStats, username);
+    // Now generate the HTML with stats
+    const htmlContent = generateHtml(userStats, username);
 
-    return new Response(svg, {
+    // Use Puppeteer to take a screenshot of the HTML
+    const imageBuffer = await htmlToImage(htmlContent);
+
+    return new Response(imageBuffer, {
       status: 200,
       headers: {
-        "Content-Type": "image/svg+xml"
-      }
+        "Content-Type": "image/png",
+      },
     });
   } catch (error) {
     return NextResponse.json({ error: "Failed to fetch data" }, { status: 500 });
   }
 }
 
-
-const generateSvg = (stats: UserStats, username: string) => {
+// Generate HTML instead of SVG
+const generateHtml = (stats: UserStats, username: string) => {
   const {
     'Star Earned': stars,
     Commits: commits,
     'Pull Requests': prs,
     Issues: issues,
     'Contributed To': contributedTo,
-    Sponsors: sponsors,
-    Followers: followers,
-    Gists: gists,
-    Organizations: organizations
   } = stats;
 
-  // This can be your dynamic SVG string
   return `
-    <svg
-      width="500"
-      height="300"
-      viewBox="0 0 500 300"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <rect width="500" height="300" rx="15" fill="#1e1e2e" />
-
-      <text x="20" y="40" fontSize="20" fill="#cdd6f4">
-        ${username}'s GitHub Stats
-      </text>
-
-      <g transform="translate(20, 60)">
-        <rect width="220" height="100" rx="10" fill="#313244" />
-        <Star x="20" y="20" size="24" color="#f9e2af" />
-        <text x="60" y="35" fontSize="16" fill="#cdd6f4">
-          Total Stars Earned
-        </text>
-        <text x="60" y="70" fontSize="24" fontWeight="bold" fill="#f9e2af">
-          ${stars}
-        </text>
-
-        <g transform="translate(240, 0)">
-          <rect width="220" height="100" rx="10" fill="#313244" />
-          <Activity x="20" y="20" size="24" color="#94e2d5" />
-          <text x="60" y="35" fontSize="16" fill="#cdd6f4">
-            Total Commits
-          </text>
-          <text x="60" y="70" fontSize="24" fontWeight="bold" fill="#94e2d5">
-            ${commits}
-          </text>
-        </g>
-
-        <g transform="translate(0, 120)">
-          <rect width="140" height="100" rx="10" fill="#313244" />
-          <GitPullRequest x="20" y="20" size="24" color="#f38ba8" />
-          <text x="20" y="60" fontSize="16" fill="#cdd6f4">
-            Total PRs
-          </text>
-          <text x="20" y="85" fontSize="24" fontWeight="bold" fill="#f38ba8">
-            ${prs}
-          </text>
-        </g>
-
-        <g transform="translate(160, 120)">
-          <rect width="140" height="100" rx="10" fill="#313244" />
-          <AlertCircle x="20" y="20" size="24" color="#fab387" />
-          <text x="20" y="60" fontSize="16" fill="#cdd6f4">
-            Total Issues
-          </text>
-          <text x="20" y="85" fontSize="24" fontWeight="bold" fill="#fab387">
-            ${issues}
-          </text>
-        </g>
-
-        <g transform="translate(320, 120)">
-          <rect width="140" height="100" rx="10" fill="#313244" />
-          <GitBranch x="20" y="20" size="24" color="#a6e3a1" />
-          <text x="20" y="60" fontSize="16" fill="#cdd6f4">
-            Contributed To
-          </text>
-          <text x="20" y="85" fontSize="24" fontWeight="bold" fill="#a6e3a1">
-            ${contributedTo}
-          </text>
-        </g>
-      </g>
-
-      <circle
-        cx="450"
-        cy="50"
-        r="30"
-        fill="none"
-        stroke="#89b4fa"
-        strokeWidth="4"
-      />
-      <text
-        x="450"
-        y="58"
-        fontSize="24"
-        fontWeight="bold"
-        fill="#89b4fa"
-        textAnchor="middle"
-      >
-        A+
-      </text>
-    </svg>
+    <html>
+      <body style="background-color: #1e1e2e; color: #cdd6f4; font-family: Arial, sans-serif;">
+        <div style="padding: 20px;">
+          <h2>${username}'s GitHub Stats</h2>
+          <div style="display: flex; flex-wrap: wrap;">
+            <div style="width: 200px; padding: 10px; background-color: #313244; margin: 10px; border-radius: 10px;">
+              <h3>Stars</h3>
+              <p style="font-size: 24px; color: #f9e2af;">${stars}</p>
+            </div>
+            <div style="width: 200px; padding: 10px; background-color: #313244; margin: 10px; border-radius: 10px;">
+              <h3>Commits</h3>
+              <p style="font-size: 24px; color: #94e2d5;">${commits}</p>
+            </div>
+            <div style="width: 200px; padding: 10px; background-color: #313244; margin: 10px; border-radius: 10px;">
+              <h3>PRs</h3>
+              <p style="font-size: 24px; color: #f38ba8;">${prs}</p>
+            </div>
+            <div style="width: 200px; padding: 10px; background-color: #313244; margin: 10px; border-radius: 10px;">
+              <h3>Issues</h3>
+              <p style="font-size: 24px; color: #fab387;">${issues}</p>
+            </div>
+            <div style="width: 200px; padding: 10px; background-color: #313244; margin: 10px; border-radius: 10px;">
+              <h3>Contributed To</h3>
+              <p style="font-size: 24px; color: #a6e3a1;">${contributedTo}</p>
+            </div>
+          </div>
+        </div>
+      </body>
+    </html>
   `;
+};
+
+// Convert HTML to image using Puppeteer
+const htmlToImage = async (html: string): Promise<Buffer> => {
+  const browser = await puppeteer.launch();
+  const page = await browser.newPage();
+
+  // Set the content of the page to be the HTML
+  await page.setContent(html);
+
+  // Screenshot the page and convert Uint8Array to Buffer
+  const screenshotBuffer = await page.screenshot({ fullPage: true });
+  const buffer = Buffer.from(screenshotBuffer);
+
+  await browser.close();
+
+  return buffer;
 };
