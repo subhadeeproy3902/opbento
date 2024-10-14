@@ -76,7 +76,7 @@ const generateSvg = (stats: UserStats, username: string) => {
         >
           <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
         </svg>
-        <text x="60" y="35" fontSize="16" font-family="Verdana, sans-serif" font-weight="500" >
+        <text x="60" y="35" fontSize="16" font-family="Verdana, sans-serif" font-weight="700" >
           Total Stars Earned
         </text>
         <text x="60" y="70" fontSize="28" font-family="Verdana, sans-serif" font-weight="600" fill="#f9e2af">
@@ -102,7 +102,7 @@ const generateSvg = (stats: UserStats, username: string) => {
           >
             <path d="M22 12h-2.48a2 2 0 0 0-1.93 1.46l-2.35 8.36a.25.25 0 0 1-.48 0L9.24 2.18a.25.25 0 0 0-.48 0l-2.35 8.36A2 2 0 0 1 4.49 12H2"></path>
           </svg>
-          <text x="60" y="35" fontSize="16" font-family="Verdana, sans-serif" font-weight="500" >
+          <text x="60" y="35" fontSize="16" font-family="Verdana, sans-serif" font-weight="700" >
             Total Commits
           </text>
           <text x="60" y="70" fontSize="28" font-family="Verdana, sans-serif" font-weight="600" fill="#94e2d5">
@@ -132,7 +132,7 @@ const generateSvg = (stats: UserStats, username: string) => {
             <path d="M13 6h3a2 2 0 0 1 2 2v7"></path>
             <line x1="6" x2="6" y1="9" y2="21"></line>
           </svg>
-          <text x="20" y="60" fontSize="16" font-family="Verdana, sans-serif" font-weight="500" >
+          <text x="20" y="60" fontSize="16" font-family="Verdana, sans-serif" font-weight="700" >
             Total PRs
           </text>
           <text x="20" y="87" fontSize="28" font-family="Verdana, sans-serif" font-weight="600" fill="#f38ba8">
@@ -161,7 +161,7 @@ const generateSvg = (stats: UserStats, username: string) => {
             <line x1="12" x2="12" y1="8" y2="12"></line>
             <line x1="12" x2="12.01" y1="16" y2="16"></line>
           </svg>
-          <text x="20" y="60" fontSize="16" font-family="Verdana, sans-serif" font-weight="500" >
+          <text x="20" y="60" fontSize="16" font-family="Verdana, sans-serif" font-weight="700" >
             Total Issues
           </text>
           <text x="20" y="87" fontSize="28" font-family="Verdana, sans-serif" font-weight="600" fill="#fab387">
@@ -191,7 +191,7 @@ const generateSvg = (stats: UserStats, username: string) => {
             <circle cx="6" cy="18" r="3"></circle>
             <path d="M18 9a9 9 0 0 1-9 9"></path>
           </svg>
-          <text x="20" y="60" fontSize="16" font-family="Verdana, sans-serif" font-weight="500" >
+          <text x="20" y="60" fontSize="16" font-family="Verdana, sans-serif" font-weight="700" >
             Contributed To
           </text>
           <text x="20" y="87" fontSize="28" font-family="Verdana, sans-serif" font-weight="600" fill="#a6e3a1">
