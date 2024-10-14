@@ -41,7 +41,7 @@ export default function SocialsBlock({
           </h1>
           <Input
             className="w-full mt-2 placeholder:text-gray-200 bg-transparent border border-red-200/50 text-white ring-offset-red-500"
-            placeholder="Enter your username"
+            placeholder="Enter your first Name"
             value={name}
             onChange={(e) => setName(e.target.value)}
           />
@@ -56,7 +56,8 @@ export default function SocialsBlock({
           </h1>
           <Input
             className="w-full mt-2 focus-visible:ring-orange-700 placeholder:text-gray-200 bg-transparent text-white border-yellow-200/50 ring-offset-orange-500"
-            placeholder="Enter your username"
+            placeholder="Enter your image url"
+            type="url"
             value={imageUrl}
             onChange={(e) => setImageUrl(e.target.value)}
           />

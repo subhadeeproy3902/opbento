@@ -8,6 +8,7 @@ import Block from "./ui/Block";
 import Navbar from "./Navbar";
 import SocialsBlock from "./SocialBlock";
 import { Highlight } from "./ui/highlight";
+import BentoGrid from "./Bento1";
 
 export interface SkillType {
   name: string;
@@ -35,14 +36,14 @@ export default function HomePage() {
   const [showGraph, setShowGraph] = useState(false);
 
   return (
-    <div className="bg-background w-full">
-      <div className="min-h-screen p-4 max-w-7xl mx-auto w-full">
+    <div className="w-full">
+      <div className="min-h-svh p-4 max-w-7xl mx-auto w-full">
         <Navbar />
         <motion.div
           initial="initial"
           animate="animate"
           transition={{
-            staggerChildren: 0.05,
+            staggerChildren: 0.08,
           }}
           className="grid max-w-7x mx-auto grid-flow-dense grid-cols-12 gap-4 w-full"
         >
@@ -62,6 +63,13 @@ export default function HomePage() {
             setImageUrl={setImageUrl}
           />
         </motion.div>
+        <BentoGrid
+          name={name}
+          githubURL={githubURL}
+          twitterURL={twitterURL}
+          linkedinURL={linkedinURL}
+          imageUrl={imageUrl}
+        />
       </div>
     </div>
   );
@@ -70,9 +78,7 @@ export default function HomePage() {
 const HeaderBlock = () => (
   <Block className="col-span-12 row-span-2 md:col-span-6 relative">
     {/* A badge */}
-    <h1
-      className="mb-4 text-3xl sm:text-4xl font-bold sm:leading-normal"
-    >
+    <h1 className="mb-4 text-3xl sm:text-4xl font-bold sm:leading-normal">
       Make your Github Profile <Highlight>modern and trendy !</Highlight>
     </h1>
     <p className="flex items-center mt-10 gap-1 text-muted-foreground">
