@@ -39,8 +39,6 @@ export default function HomePage() {
   const [showStats, setShowStats] = useState(false);
   const [showGraph, setShowGraph] = useState(false);
 
-  console.log(showStats, showGraph);
-
   return (
     <div className="bg-background w-full">
       <div className="min-h-screen px-4 py-4 max-w-7xl mx-auto text-zinc-50 w-full">
