@@ -53,7 +53,7 @@ const generateSvg = (stats: UserStats, username: string) => {
       <rect width="500" height="300" rx="15" fill="#1e1e2e" />
 
       {/* Title */}
-      <text x="20" y="40" fontSize="24" font-family="Verdana, sans-serif" font-weight="500" font-family="Verdana, sans-serif" font-weight="700">
+      <text x="20" y="40" fontSize="24" font-family="Verdana, sans-serif" font-weight="700">
         ${username}'s GitHub Stats
       </text>
 
