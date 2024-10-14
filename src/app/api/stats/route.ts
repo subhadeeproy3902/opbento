@@ -199,26 +199,6 @@ const generateSvg = (stats: UserStats, username: string) => {
           </text>
         </g>
       </g>
-
-      {/* Grade Circle */}
-      <circle
-        cx="450"
-        cy="50"
-        r="30"
-        fill="none"
-        stroke="#89b4fa"
-        strokeWidth="4"
-      />
-      <text
-        x="425"
-        y="28"
-        fontSize="24"
-        font-family="Verdana, sans-serif" font-weight="600"
-        fill="#89b4fa"
-        textAnchor="middle"
-      >
-        A+
-      </text>
     </svg>
   `;
 };
