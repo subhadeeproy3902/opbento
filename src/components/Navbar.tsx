@@ -1,14 +1,20 @@
 "use client";
 
+import Image from "next/image";
 import GitHubButton from "./GithubButton";
-import { ThemeToggle } from "./ThemeToggle";
 import Block from "./ui/Block";
 
 export default function Navbar() {
   return (
-    <Block className="col-span-12 text-3xl mb-8 leading-snug py-2 flex justify-between">
+    <Block className="col-span-12 text-3xl mb-8 bg-secondary/30 backdrop-blur-md leading-snug py-2 flex justify-between sticky top-2 z-50">
       <div className="flex items-center gap-4">
-        <img className="h-8 w-8 lg:h-12 lg:w-12" src="/logo.png" alt="" />
+        <Image
+          className="size-8 lg:size-12"
+          src="/logo.png"
+          alt=""
+          width={30}
+          height={30}
+        />
         <p className="text-lg font-black md:text-xl lg:text-2xl">OP Bento</p>
       </div>
       <div className="flex items-center gap-8">

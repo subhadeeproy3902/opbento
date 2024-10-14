@@ -25,14 +25,14 @@ export default function Home() {
   return (
     <>
       <HomePage />
-      <Input
+      {/* <Input
         placeholder="Search for a user"
         value={searchValue}
         onChange={(e) => setSearchValue(e.target.value)}
       />
       <Button onClick={handleSearch}>Search</Button>
 
-      <GitHubStatsCard userName={searchValue} stats={stats} />
+      <GitHubStatsCard userName={searchValue} stats={stats} /> */}
     </>
   );
 }

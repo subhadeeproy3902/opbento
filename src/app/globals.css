@@ -2,7 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -24,7 +23,7 @@
     --border: 240 5.9% 90%;
     --input: 240 5.9% 90%;
     --ring: 346.8 77.2% 49.8%;
-    --radius: 0.5rem;
+    --radius: 0.75rem;
     --chart-1: 12 76% 61%;
     --chart-2: 173 58% 39%;
     --chart-3: 197 37% 24%;
@@ -60,8 +59,6 @@
   }
 }
 
-
-
 @layer base {
   * {
     @apply border-border;
@@ -71,8 +68,6 @@
     @apply bg-background text-foreground;
   }
 }
-
-
 
 /* Normal CSS */
 
@@ -93,7 +88,7 @@
 /*  Social Media */
 .social-media {
   padding: 2rem;
-  border-radius: .5rem;
+  border-radius: 0.5rem;
   background-color: var(--purple-500);
   text-align: center;
 }
@@ -112,7 +107,7 @@
 }
 
 .social-media__image {
-  margin: .5rem auto;
+  margin: 0.5rem auto;
   aspect-ratio: 6/1;
   width: 150px;
 }
@@ -120,10 +115,9 @@
 /* manage-platforms */
 .manage-platforms {
   padding: 2rem;
-  border-radius: .5rem;
+  border-radius: 0.5rem;
   background-color: var(--white);
   text-align: left;
-
 }
 
 .manage-platforms__image {
@@ -138,7 +132,7 @@
 
 /* consistent-schedule */
 .consistent-schedule {
-  border-radius: .5rem;
+  border-radius: 0.5rem;
   background-color: var(--yellow-500);
   text-align: left;
   height: 100%;
@@ -161,7 +155,7 @@
 /* schedule-social */
 .schedule-social {
   padding: 2rem;
-  border-radius: .5rem;
+  border-radius: 0.5rem;
   background-color: var(--purple-100);
   text-align: center;
 }
@@ -180,7 +174,7 @@
 /*  grow-followers */
 .grow-followers {
   padding: 2rem;
-  border-radius: .5rem;
+  border-radius: 0.5rem;
   background-color: var(--purple-500);
   text-align: center;
 }
@@ -200,7 +194,7 @@
 /* faster-growth */
 .faster-growth {
   padding: 2rem;
-  border-radius: .5rem;
+  border-radius: 0.5rem;
   background-color: var(--white);
   text-align: left;
 }
@@ -223,7 +217,7 @@
 /* create-content */
 .create-content {
   padding: 2rem;
-  border-radius: .5rem;
+  border-radius: 0.5rem;
   background-color: var(--yellow-100);
   text-align: left;
 }
@@ -246,7 +240,7 @@
 
 /* ai-powered */
 .ai-powered {
-  border-radius: .5rem;
+  border-radius: 0.5rem;
   background-color: var(--yellow-500);
   text-align: left;
 }
@@ -269,7 +263,6 @@
 }
 
 @media only screen and (min-width: 1440px) {
-
   h1 {
     font-size: 3.5rem;
   }
@@ -330,7 +323,6 @@
   .consistent-schedule__title {
     margin-bottom: 1.75rem;
   }
-
 
   .schedule-social {
     grid-column: 4/5;
@@ -398,5 +390,4 @@
     margin: auto;
     width: 100%;
   }
-
 }
