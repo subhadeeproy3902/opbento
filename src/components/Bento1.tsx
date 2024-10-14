@@ -3,7 +3,7 @@ import React from "react";
 
 import { Space_Grotesk } from "next/font/google";
 import { cn } from "@/lib/utils";
-import Image from "next/image";
+import { TwitterIcon } from "lucide-react";
 
 const space = Space_Grotesk({
   subsets: ["latin"],
@@ -50,9 +50,20 @@ const BentoGrid = ({
         />
       </div>
 
-      <div className="bg-muted p-4 rounded-lg col-span-1 row-span-2">
-        <div className="h-full bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg"></div>
-      </div>
+      <a
+        href={"https://x.com/" + twitterURL}
+        className="bg-gradient-to-br from-black to-blue-500 p-4 relative rounded-lg overflow-hidden col-span-1 row-span-2"
+      >
+        <TwitterIcon
+          className="absolute glow -top-3 -left-4"
+          size={100}
+          color="#29BEF0"
+          strokeWidth={1}
+        />
+        <p className="z-20 absolute bottom-6 text-center w-full">
+          @{twitterURL}
+        </p>
+      </a>
 
       <div className="bg-muted relative overflow-hidden rounded-lg col-span-1 row-span-2">
         <img
@@ -83,12 +94,8 @@ const BentoGrid = ({
         </div>
       </div>
 
-      <div className="bg-muted p-4 rounded-lg col-span-1 row-span-1 flex flex-col items-center justify-center">
-        <h2 className="text-yellow-500 text-3xl font-bold">25k+</h2>
-        <p className="text-white text-sm">Box</p>
-        <button className="mt-2 bg-cyan-500 text-white px-4 py-1 rounded-full text-xs">
-          Join Bento Now
-        </button>
+      <div className="bg-muted p-4 bg-gradient-to-br from-orange-600 via-yellow-600 to-rose-500 rounded-lg col-span-1 row-span-1 flex flex-col items-center justify-center min-h-32">
+        <h2 className="text-3xl text- font-bold">Made using OP Bento</h2>
       </div>
     </div>
   );
