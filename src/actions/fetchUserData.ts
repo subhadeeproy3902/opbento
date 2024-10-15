@@ -2,7 +2,7 @@
 
 import { GitHubResponse, UserStats } from "@/types";
 import getUserStats from "./getUserStats";
-import githubGraphql from "./githubGraphql";
+import { githubGraphql } from "./githubGraphql";
 
 const userStatsQuery = `
   following {
