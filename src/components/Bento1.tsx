@@ -24,6 +24,7 @@ const BentoGrid = ({
   stats,
   showStats,
   streak,
+  showGraph,
 }: {
   name: string;
   githubURL: string;
@@ -33,6 +34,7 @@ const BentoGrid = ({
   stats: UserStats | undefined;
   showStats: boolean;
   streak: StreakStats | undefined;
+  showGraph: boolean;
 }) => {
   const [bentoLink, setBentoLink] = useState<string>("");
 
@@ -150,6 +152,16 @@ const BentoGrid = ({
             <div className="w-full">
               <GitHubStreakCard streak={streak} />
             </div>
+          </div>
+        )}
+
+        {showGraph && (
+          <div className="col-span-4">
+            {/* Render the svg in streak.contributionGraph */}
+            <div
+            className="w-full flex justify-center"
+              dangerouslySetInnerHTML={{ __html: streak?.contributionGraph! }}
+            />
           </div>
         )}
       </div>

@@ -42,4 +42,5 @@ export type StreakStats = {
   currentStreak: number;
   currentStreakStartDate: string | null;
   currentStreakEndDate: string | null;
+  contributionGraph: string | null;
 };

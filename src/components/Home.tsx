@@ -84,6 +84,7 @@ export default function HomePage() {
           stats={stats}
           showStats={showStats}
           streak={streak}
+          showGraph={showGraph}
         />
       </div>
     </div>

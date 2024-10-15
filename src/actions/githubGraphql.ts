@@ -233,7 +233,7 @@ function generateContributionGraph(contributionDays: { date: string, contributio
 
   // Function to determine fill color based on contribution count
   function getFillColor(count: number): string {
-    if (count === 0) return "#ebedf0"; // No contributions
+    if (count === 0) return "#2a2a2b"; // No contributions
     if (count <= 5) return "#9be9a8";
     if (count <= 10) return "#40c463";
     if (count <= 20) return "#30a14e";
