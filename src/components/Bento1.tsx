@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 
 import { Space_Grotesk } from "next/font/google";
 import { cn } from "@/lib/utils";
-import { Clipboard, TwitterIcon } from "lucide-react";
+import { Clipboard, Linkedin, TwitterIcon } from "lucide-react";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 
@@ -76,7 +76,7 @@ const BentoGrid = ({
 
         <a
           href={"https://x.com/" + twitterURL}
-          className="bg-gradient-to-br from-black to-blue-500 p-4 relative rounded-lg overflow-hidden col-span-1 row-span-2"
+          className="bg-gradient-to-br from-black to-blue-500 p-4 relative rounded-lg overflow-hidden col-span-1 row-span-1 min-h-[150px]"
         >
           <TwitterIcon
             className="absolute glow -top-3 -left-4"
@@ -105,6 +105,19 @@ const BentoGrid = ({
             </a>
           </p>
         </div>
+
+        <a
+          href={"https://x.com/" + twitterURL}
+          className="bg-gradient-to-tl from-black to-blue-600 p-4 relative rounded-lg overflow-hidden col-span-1 columns-3 row-span-1 min-h-[150px]"
+        >
+          <Linkedin
+            className="absolute glow -bottom-1 -right-2"
+            size={80}
+            color="#56d2ff"
+            strokeWidth={1}
+          />
+          <p className="text-center w-full">@{twitterURL}</p>
+        </a>
 
         <div className="bg-muted p-4 rounded-lg col-span-2 row-span-1">
           <p className="text-cyan-500 text-xs mb-2">Los Angeles</p>

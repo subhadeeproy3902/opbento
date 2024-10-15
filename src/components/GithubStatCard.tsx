@@ -1,11 +1,4 @@
 import React from "react";
-import {
-  Activity,
-  GitBranch,
-  GitPullRequest,
-  Star,
-  AlertCircle,
-} from "lucide-react";
 import { UserStats } from "@/types";
 
 export default function GitHubStatsCard({

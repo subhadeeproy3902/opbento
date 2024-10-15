@@ -2,6 +2,7 @@
 
 import fetchUserData from "@/actions/fetchUserData";
 import GitHubStatsCard from "@/components/GithubStatCard";
+import GitHubStreakCard from "@/components/GithubStreakCard";
 import HomePage from "@/components/Home";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -11,6 +12,14 @@ import { useState } from "react";
 export default function Home() {
   const [searchValue, setSearchValue] = useState("");
   const [stats, setStats] = useState<UserStats>();
+
+  const streakData = {
+    totalContributions: 4046,
+    currentStreak: 350,
+    longestStreak: 350,
+    startDate: '2023-11-01',
+    endDate: '2023-10-15'
+  }
 
   const handleSearch = async (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
@@ -33,6 +42,8 @@ export default function Home() {
       <Button onClick={handleSearch}>Search</Button>
 
       <GitHubStatsCard userName={searchValue} stats={stats} /> */}
+
+      <GitHubStreakCard streak={streakData} />
     </>
   );
 }
