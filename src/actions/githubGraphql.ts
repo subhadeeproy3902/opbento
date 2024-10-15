@@ -65,7 +65,7 @@ async function fetchContributionYears(username: string): Promise<number[]> {
       }
     }
   `;
-  
+
   const data = await fetchGitHubData(query, { user: username });
   return data.data.user.contributionsCollection.contributionYears;
 }
@@ -102,7 +102,7 @@ async function fetchYearContributions(username: string, year: number): Promise<{
       contributionDays.push({ date: day.date, contributionCount: day.contributionCount });
     });
   });
-  
+
   return contributionDays;
 }
 
@@ -206,16 +206,68 @@ function formatDate(dateString: string | null): string | null {
   return date.toLocaleDateString('en-US', options);
 }
 
+function generateContributionGraph(contributionDays: { date: string, contributionCount: number }[]): string {
+  const dayWidth = 12;
+  const dayHeight = 12;
+  const dayPadding = 2;
+  const weekPadding = 5;
+  const svgPadding = 10;
+
+  const weeks = [];
+  let currentWeek: { date: string, contributionCount: number }[] = [];
+
+  // Group the contribution days into weeks (each week has 7 days)
+  for (let i = 0; i < contributionDays.length; i++) {
+    currentWeek.push(contributionDays[i]);
+
+    // If the week is complete (7 days), push it to weeks array and reset
+    if (currentWeek.length === 7 || i === contributionDays.length - 1) {
+      weeks.push(currentWeek);
+      currentWeek = [];
+    }
+  }
+
+  const numWeeks = weeks.length;
+  const svgHeight = 7 * (dayHeight + dayPadding) + 2 * svgPadding; // 7 days in a week
+  const svgWidth = numWeeks * (dayWidth + weekPadding) + 2 * svgPadding;
+
+  // Function to determine fill color based on contribution count
+  function getFillColor(count: number): string {
+    if (count === 0) return "#ebedf0"; // No contributions
+    if (count <= 5) return "#9be9a8";
+    if (count <= 10) return "#40c463";
+    if (count <= 20) return "#30a14e";
+    return "#216e39";
+  }
+
+  // Generate SVG string
+  let svg = `<svg width="${svgWidth}" height="${svgHeight}" xmlns="http://www.w3.org/2000/svg">`;
+
+  // Loop over each week and each day to create squares
+  weeks.forEach((week, weekIndex) => {
+    week.forEach((day, dayIndex) => {
+      const x = svgPadding + weekIndex * (dayWidth + weekPadding);
+      const y = svgPadding + dayIndex * (dayHeight + dayPadding);
+      const fillColor = getFillColor(day.contributionCount);
+      svg += `<rect x="${x}" y="${y}" width="${dayWidth}" height="${dayHeight}" fill="${fillColor}" />`;
+    });
+  });
+
+  svg += "</svg>";
+  return svg;
+}
+
 // Main function to fetch contributions and calculate streaks
-export async function fetchContributions(username: string): Promise<{ 
-  totalContributions: number, 
+export async function fetchContributions(username: string): Promise<{
+  totalContributions: number,
   firstDateofContribution: string | null,
-  longestStreak: number, 
+  longestStreak: number,
   longestStreakStartDate: string | null,
   longestStreakEndDate: string | null,
-  currentStreak: number, 
+  currentStreak: number,
   currentStreakStartDate: string | null,
-  currentStreakEndDate: string | null 
+  currentStreakEndDate: string | null,
+  contributionGraph: string
 }> {
   const contributionYears = await fetchContributionYears(username);
   let allContributionDays: { date: string, contributionCount: number }[] = [];
@@ -245,14 +297,21 @@ export async function fetchContributions(username: string): Promise<{
   const currentStreakStartDate = formatDate(currentStreakStart);
   const currentStreakEndDate = formatDate(currentStreakEnd);
 
-  return { 
-    totalContributions: total, 
-    firstDateofContribution, 
-    longestStreak, 
-    longestStreakStartDate, 
-    longestStreakEndDate, 
-    currentStreak, 
-    currentStreakStartDate, 
-    currentStreakEndDate 
+  const currentYear = new Date().getFullYear();
+  const currentYearContributionDays = await fetchYearContributions(username, currentYear);
+
+  const contributionGraphData = generateContributionGraph(currentYearContributionDays);
+  const contributionGraph = contributionGraphData.replace(/\\"/g, '"');
+
+  return {
+    totalContributions: total,
+    firstDateofContribution,
+    longestStreak,
+    longestStreakStartDate,
+    longestStreakEndDate,
+    currentStreak,
+    currentStreakStartDate,
+    currentStreakEndDate,
+    contributionGraph
   };
 }

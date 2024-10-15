@@ -35,11 +35,11 @@ export interface GitHubResponse {
 
 export type StreakStats = {
   totalContributions: number;
-  firstContributionDate: string | null;
+  firstDateofContribution: string | null;
   longestStreak: number;
-  longestStreakStart: string | null;
-  longestStreakEnd: string | null;
+  longestStreakStartDate: string | null;
+  longestStreakEndDate: string | null;
   currentStreak: number;
-  currentStreakStart: string | null;
-  currentStreakEnd: string | null;
+  currentStreakStartDate: string | null;
+  currentStreakEndDate: string | null;
 };

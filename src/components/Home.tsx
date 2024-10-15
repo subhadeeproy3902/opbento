@@ -52,18 +52,16 @@ export default function HomePage() {
         >
           <HeaderBlock />
           <SocialsBlock
-            name={name}
             setName={setName}
-            githubURL={githubURL}
             setGithubURL={setGithubURL}
             setShowStats={setShowStats}
             setShowGraph={setShowGraph}
-            twitterURL={twitterURL}
             setTwitterURL={setTwitterURL}
-            imageUrl={imageUrl}
             setImageUrl={setImageUrl}
             setStats={setStats}
             setStreak={setStreak}
+            showStats={showStats}
+            showGraph={showGraph}
           />
 
           <BioBlock

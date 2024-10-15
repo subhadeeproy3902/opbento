@@ -13,13 +13,13 @@ export default function GitHubStreakCard({
 
   const {
     currentStreak,
-    currentStreakStart,
-    currentStreakEnd,
+    currentStreakStartDate,
+    currentStreakEndDate,
     longestStreak,
-    longestStreakStart,
-    longestStreakEnd,
+    longestStreakStartDate,
+    longestStreakEndDate,
     totalContributions,
-    firstContributionDate,
+    firstDateofContribution,
   } = streak;
 
   return (
@@ -32,11 +32,11 @@ export default function GitHubStreakCard({
               Total Contributions
             </h3>
             <p className="text-3xl font-bold text-blue-400">
-              {totalContributions.toLocaleString()}
+              {totalContributions}
             </p>
             <p className="text-xs text-gray-500 mt-2">
-              {firstContributionDate
-                ? firstContributionDate + "- Present"
+              {firstDateofContribution
+                ? firstDateofContribution + "- Present"
                 : "No contributions yet"}
             </p>
           </div>
@@ -49,8 +49,8 @@ export default function GitHubStreakCard({
               {longestStreak}
             </p>
             <p className="text-xs text-gray-500 mt-2">
-              {longestStreakStart && longestStreakEnd
-                ? longestStreakStart + " - " + longestStreakEnd
+              {longestStreakStartDate && longestStreakEndDate
+                ? longestStreakStartDate + " - " + longestStreakEndDate
                 : "No streak yet"}
             </p>
           </div>
@@ -63,8 +63,8 @@ export default function GitHubStreakCard({
             {currentStreak}
           </p>
           <p className="text-sm text-gray-500">
-            {currentStreakStart && currentStreakEnd
-              ? currentStreakStart + " - " + currentStreakEnd
+            {currentStreakStartDate && currentStreakEndDate
+              ? currentStreakStartDate + " - " + currentStreakEndDate
               : new Date().toLocaleDateString()}
           </p>
         </div>

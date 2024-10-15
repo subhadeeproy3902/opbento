@@ -15,6 +15,7 @@ export default function GitHubStatsCard({
       viewBox="0 0 500 300"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
+      className="w-full h-full"
     >
       <rect width="500" height="300" rx="15" fill="#1e1e2e" />
 

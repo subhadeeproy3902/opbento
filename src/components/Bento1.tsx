@@ -145,9 +145,9 @@ const BentoGrid = ({
         </div>
 
         {stats && showStats && (
-          <div>
+          <div className="flex gap-4 col-span-4">
             <GitHubStatsCard stats={stats} userName={githubURL} />
-            <div className="col-span-4">
+            <div className="w-full">
               <GitHubStreakCard streak={streak} />
             </div>
           </div>

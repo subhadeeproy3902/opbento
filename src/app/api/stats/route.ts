@@ -19,14 +19,7 @@ export async function GET(req: NextRequest) {
     // Now pass the stats to the SVG generation function
     const svg = generateSvg(userStats, username);
 
-    // return new Response(svg, {
-    //   status: 200,
-    //   headers: {
-    //     "Content-Type": "image/svg+xml",
-    //   },
-    // });
-
-    // Return the SVG and the data as well
+    console.log("Stats", svg);
 
     return NextResponse.json(
       {
