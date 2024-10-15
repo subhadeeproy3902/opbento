@@ -9,11 +9,9 @@ import Navbar from "./Navbar";
 import SocialsBlock from "./SocialBlock";
 import { Highlight } from "./ui/highlight";
 import BentoGrid from "./Bento1";
-
-export interface SkillType {
-  name: string;
-  color: string;
-}
+import BioBlock from "./BioBlock";
+import { StreakStats, UserStats } from "@/types";
+import GitHubStatsCard from "./GithubStatCard";
 
 export interface ProjectType {
   title: string;
@@ -24,6 +22,7 @@ export interface ProjectType {
 export default function HomePage() {
   const [name, setName] = useState("");
   const [bio, setBio] = useState("");
+  const [experience, setExperience] = useState("");
   const [jobRole, setJobRole] = useState("");
   const [githubURL, setGithubURL] = useState("");
   const [linkedinURL, setLinkedinURL] = useState("");
@@ -34,6 +33,10 @@ export default function HomePage() {
   const [portfolioURL, setPortfolioURL] = useState("");
   const [showStats, setShowStats] = useState(false);
   const [showGraph, setShowGraph] = useState(false);
+  const [skills, setSkills] = useState<string[]>([]);
+
+  const [stats, setStats] = useState<UserStats | undefined>(undefined);
+  const [streak, setStreak] = useState<StreakStats | undefined>(undefined);
 
   return (
     <div className="w-full">
@@ -57,10 +60,21 @@ export default function HomePage() {
             setShowGraph={setShowGraph}
             twitterURL={twitterURL}
             setTwitterURL={setTwitterURL}
-            linkedinURL={linkedinURL}
-            setLinkedinURL={setLinkedinURL}
             imageUrl={imageUrl}
             setImageUrl={setImageUrl}
+            setStats={setStats}
+            setStreak={setStreak}
+          />
+
+          <BioBlock
+            linkedinURL={linkedinURL}
+            setLinkedinURL={setLinkedinURL}
+            portfolioURL={portfolioURL}
+            setPortfolioURL={setPortfolioURL}
+            setBio={setBio}
+            setJobRole={setJobRole}
+            setExperience={setExperience}
+            setSkills={setSkills}
           />
         </motion.div>
         <BentoGrid
@@ -69,6 +83,9 @@ export default function HomePage() {
           twitterURL={twitterURL}
           linkedinURL={linkedinURL}
           imageUrl={imageUrl}
+          stats={stats}
+          showStats={showStats}
+          streak={streak}
         />
       </div>
     </div>
@@ -174,48 +191,6 @@ const HeaderBlock = () => (
         </a>
       </div>
     </div> */}
-  </Block>
-);
-
-const AboutBlock = () => (
-  <Block className="col-span-12 text-3xl leading-snug">
-    <p>
-      My passion is building cool stuff.{" "}
-      <span className="text-zinc-400">
-        I build primarily with React, Tailwind CSS, and Framer Motion. I love
-        this stack so much that I even built a website about it. I&apos;ve made
-        over a hundred videos on the subject across YouTube and TikTok.
-      </span>
-    </p>
-  </Block>
-);
-
-const LocationBlock = () => (
-  <Block className="col-span-12 flex flex-col items-center gap-4 md:col-span-3">
-    <MapPinIcon size={18} className="text-3xl" />
-    <p className="text-center text-lg text-zinc-400">Cyberspace</p>
-  </Block>
-);
-
-const EmailListBlock = () => (
-  <Block className="col-span-12 md:col-span-9">
-    <p className="mb-3 text-lg">Join my mailing list</p>
-    <form
-      onSubmit={(e) => e.preventDefault()}
-      className="flex items-center gap-2"
-    >
-      <input
-        type="email"
-        placeholder="Enter your email"
-        className="w-full rounded border border-zinc-700 bg-zinc-800 px-3 py-1.5 transition-colors focus:border-red-300 focus:outline-0"
-      />
-      <button
-        type="submit"
-        className="flex items-center gap-2 whitespace-nowrap rounded bg-zinc-50 px-3 py-2 text-sm font-medium text-zinc-900 transition-colors hover:bg-zinc-300"
-      >
-        <Mail size={18} /> Join the list
-      </button>
-    </form>
   </Block>
 );
 

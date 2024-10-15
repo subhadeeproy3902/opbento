@@ -2,14 +2,15 @@ import { NextRequest, NextResponse } from "next/server";
 import puppeteer from "puppeteer";
 
 export async function GET(req: NextRequest) {
-  const { searchParams } = new URL(req.url);
-  const n = searchParams.get("n");
-  const g = searchParams.get("g");
-  const i = searchParams.get("i");
-  const x = searchParams.get("x");
+    const { searchParams } = new URL(req.url);
+    const n = searchParams.get("n");
+    const g = searchParams.get("g");
+    const i = searchParams.get("i");
+    const x = searchParams.get("x");
+    const l = searchParams.get("l");
 
-  // Create HTML content
-  const html = `
+    // Create HTML content
+    const html = `
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -184,21 +185,21 @@ export async function GET(req: NextRequest) {
 </html>
   `;
 
-  try {
-    const browser = await puppeteer.launch();
-    const page = await browser.newPage();
-    await page.setContent(html, { waitUntil: "networkidle0" });
-    const screenshot = await page.screenshot({ type: "png" });
-    await browser.close();
+    try {
+        const browser = await puppeteer.launch();
+        const page = await browser.newPage();
+        await page.setContent(html, { waitUntil: "networkidle0" });
+        const screenshot = await page.screenshot({ type: "png" });
+        await browser.close();
 
-    return new NextResponse(screenshot, {
-      headers: {
-        "Content-Type": "image/png",
-        "Content-Disposition": 'inline; filename="bento.png"',
-      },
-    });
-  } catch (error) {
-    console.error("Error generating image:", error);
-    return new NextResponse("Error generating image", { status: 500 });
-  }
+        return new NextResponse(screenshot, {
+            headers: {
+                "Content-Type": "image/png",
+                "Content-Disposition": 'inline; filename="bento.png"',
+            },
+        });
+    } catch (error) {
+        console.error("Error generating image:", error);
+        return new NextResponse("Error generating image", { status: 500 });
+    }
 }

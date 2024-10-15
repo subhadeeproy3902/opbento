@@ -3,6 +3,7 @@ import Block from "./ui/Block";
 import { Input } from "./ui/input";
 import { Switch } from "./ui/switch";
 import { Label } from "./ui/label";
+import { StreakStats, UserStats } from "@/types";
 
 export default function SocialsBlock({
   name,
@@ -13,10 +14,10 @@ export default function SocialsBlock({
   setShowGraph,
   twitterURL,
   setTwitterURL,
-  linkedinURL,
-  setLinkedinURL,
   imageUrl,
   setImageUrl,
+  setStats,
+  setStreak
 }: {
   name: string;
   setName: (name: string) => void;
@@ -26,11 +27,20 @@ export default function SocialsBlock({
   setShowGraph: (show: boolean) => void;
   twitterURL: string;
   setTwitterURL: (url: string) => void;
-  linkedinURL?: string;
-  setLinkedinURL: (url: string) => void;
   imageUrl: string;
   setImageUrl: (url: string) => void;
+  setStats: (stats: UserStats) => void;
+  setStreak: (streak: StreakStats) => void;
 }) {
+  const handleStats = async (checked: boolean) => {
+    const res1 = await fetch("/api/stats?&username=" + githubURL);
+    const res2 = await fetch("/api/streak?&username=" + githubURL);
+    const data = await res1.json();
+    const streak = await res2.json();
+    setStats(data.stats);
+    setStreak(streak.stats);
+  };
+
   return (
     <>
       <Block className="col-span-12 sm:col-span-6 bg-red-500 md:col-span-3">
@@ -82,7 +92,10 @@ export default function SocialsBlock({
               <Switch
                 className="data-[state=checked]:bg-emerald-200"
                 id="stats"
-                onCheckedChange={(checked) => setShowStats(checked)}
+                onCheckedChange={async (checked) => {
+                  setShowStats(checked);
+                  await handleStats(checked);
+                }}
               />
             </div>
             <div className="flex items-center space-x-2">
@@ -107,7 +120,7 @@ export default function SocialsBlock({
             Twitter Username
           </h1>
           <Input
-            className="w-full mt-2 focus-visible:ring-secondary placeholder:text-gray-700 bg-transparent border border-gray-600/50 text-secondary ring-offset-blue-800"
+            className="w-full mt-2 focus-visible:ring-blue-700 placeholder:text-gray-200 bg-transparent border border-blue-200/50 text-secondary ring-offset-blue-500"
             placeholder="Enter your username"
             value={twitterURL}
             onChange={(e) => setTwitterURL(e.target.value)}

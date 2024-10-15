@@ -34,6 +34,7 @@ export async function githubGraphql({ query, variables }: {
   }
 };
 
+
 // Function to fetch GitHub GraphQL API
 async function fetchGitHubData(query: string, variables: any): Promise<any> {
   const response = await fetch('https://api.github.com/graphql', {
@@ -105,44 +106,70 @@ async function fetchYearContributions(username: string, year: number): Promise<{
   return contributionDays;
 }
 
-// Function to calculate total contributions
-function calculateTotalContributions(contributionDays: { date: string, contributionCount: number }[]): number {
-  return contributionDays.reduce((total, day) => total + day.contributionCount, 0);
+// Function to calculate total contributions and get the first contribution date
+function calculateTotalContributions(contributionDays: { date: string, contributionCount: number }[]): { total: number, firstContributionDate: string | null } {
+  const total = contributionDays.reduce((total, day) => total + day.contributionCount, 0);
+  const firstContributionDate = contributionDays.find(day => day.contributionCount > 0)?.date || null;
+  return { total, firstContributionDate };
 }
 
-// Function to calculate the longest streak
-function calculateLongestStreak(contributionDays: { date: string, contributionCount: number }[]): number {
+// Function to calculate the longest streak and its dates
+function calculateLongestStreak(contributionDays: { date: string, contributionCount: number }[]): { longestStreak: number, startDate: string | null, endDate: string | null } {
   let longestStreak = 0, tempStreak = 0;
   let lastDate: Date | null = null;
+  let streakStartDate: string | null = null, streakEndDate: string | null = null;
+  let longestStartDate: string | null = null, longestEndDate: string | null = null;
 
   for (const day of contributionDays) {
     const currentDate = new Date(day.date);
 
     if (day.contributionCount > 0) {
+      if (!tempStreak) streakStartDate = day.date; // Start tracking streak
       if (lastDate) {
         const dayDifference = (currentDate.getTime() - lastDate.getTime()) / (1000 * 60 * 60 * 24);
         if (dayDifference === 1) {
           tempStreak++;
+          streakEndDate = day.date; // Update streak end date
         } else {
-          longestStreak = Math.max(longestStreak, tempStreak);
+          if (tempStreak > longestStreak) {
+            longestStreak = tempStreak;
+            longestStartDate = streakStartDate;
+            longestEndDate = streakEndDate;
+          }
           tempStreak = 1; // Reset streak
+          streakStartDate = day.date;
+          streakEndDate = day.date;
         }
       } else {
         tempStreak = 1; // Start streak if it's the first contribution
+        streakStartDate = day.date;
+        streakEndDate = day.date;
       }
       lastDate = currentDate;
     } else {
-      longestStreak = Math.max(longestStreak, tempStreak);
+      if (tempStreak > longestStreak) {
+        longestStreak = tempStreak;
+        longestStartDate = streakStartDate;
+        longestEndDate = streakEndDate;
+      }
       tempStreak = 0;
     }
   }
 
-  return Math.max(longestStreak, tempStreak); // Handle edge case
+  if (tempStreak > longestStreak) {
+    longestStreak = tempStreak;
+    longestStartDate = streakStartDate;
+    longestEndDate = streakEndDate;
+  }
+
+  return { longestStreak, startDate: longestStartDate, endDate: longestEndDate };
 }
 
-// Function to calculate the current streak
-function calculateCurrentStreak(contributionDays: { date: string, contributionCount: number }[]): number {
+// Function to calculate the current streak and its dates
+function calculateCurrentStreak(contributionDays: { date: string, contributionCount: number }[]): { currentStreak: number, startDate: string | null, endDate: string | null } {
   let currentStreak = 0;
+  let streakStartDate: string | null = null;
+  let streakEndDate: string | null = null;
   let lastDate = new Date(); // Start from today
 
   // Loop from the most recent day backwards
@@ -151,18 +178,45 @@ function calculateCurrentStreak(contributionDays: { date: string, contributionCo
     const dayDifference = (lastDate.getTime() - currentDate.getTime()) / (1000 * 60 * 60 * 24);
 
     if (contributionDays[i].contributionCount > 0 && dayDifference <= 1) {
+      if (!currentStreak) streakStartDate = contributionDays[i].date; // Start tracking the current streak
       currentStreak++;
+      streakEndDate = contributionDays[i].date; // Update the current streak end date
       lastDate = currentDate; // Update lastDate to the current one
     } else if (dayDifference > 1) {
       break; // Streak is broken due to a gap in consecutive days
     }
   }
 
-  return currentStreak;
+  return { currentStreak, startDate: streakStartDate, endDate: streakEndDate };
+}
+
+function formatDate(dateString: string | null): string | null {
+  if (!dateString) return null;
+  const date = new Date(dateString);
+  const options: Intl.DateTimeFormatOptions = {
+    month: 'short',
+    day: 'numeric',
+  };
+
+  // If the year is not the current year, include the year in the format
+  if (date.getFullYear() !== new Date().getFullYear()) {
+    options.year = 'numeric';
+  }
+
+  return date.toLocaleDateString('en-US', options);
 }
 
 // Main function to fetch contributions and calculate streaks
-export async function fetchContributions(username: string): Promise<{ totalContributions: number, longestStreak: number, currentStreak: number }> {
+export async function fetchContributions(username: string): Promise<{ 
+  totalContributions: number, 
+  firstDateofContribution: string | null,
+  longestStreak: number, 
+  longestStreakStartDate: string | null,
+  longestStreakEndDate: string | null,
+  currentStreak: number, 
+  currentStreakStartDate: string | null,
+  currentStreakEndDate: string | null 
+}> {
   const contributionYears = await fetchContributionYears(username);
   let allContributionDays: { date: string, contributionCount: number }[] = [];
 
@@ -174,10 +228,31 @@ export async function fetchContributions(username: string): Promise<{ totalContr
   // Sort all days by date
   allContributionDays.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
 
-  // Calculate total contributions, longest streak, and current streak
-  const totalContributions = calculateTotalContributions(allContributionDays);
-  const longestStreak = calculateLongestStreak(allContributionDays);
-  const currentStreak = calculateCurrentStreak(allContributionDays);
+  // Calculate total contributions and first contribution date
+  const { total, firstContributionDate } = calculateTotalContributions(allContributionDays);
 
-  return { totalContributions, longestStreak, currentStreak };
+  const firstDateofContribution = formatDate(firstContributionDate);
+
+  // Calculate longest streak, its start and end dates
+  const { longestStreak, startDate: longestStreakStart, endDate: longestStreakEnd } = calculateLongestStreak(allContributionDays);
+
+  const longestStreakStartDate = formatDate(longestStreakStart);
+  const longestStreakEndDate = formatDate(longestStreakEnd);
+
+  // Calculate current streak, its start and end dates
+  const { currentStreak, startDate: currentStreakStart, endDate: currentStreakEnd } = calculateCurrentStreak(allContributionDays);
+
+  const currentStreakStartDate = formatDate(currentStreakStart);
+  const currentStreakEndDate = formatDate(currentStreakEnd);
+
+  return { 
+    totalContributions: total, 
+    firstDateofContribution, 
+    longestStreak, 
+    longestStreakStartDate, 
+    longestStreakEndDate, 
+    currentStreak, 
+    currentStreakStartDate, 
+    currentStreakEndDate 
+  };
 }

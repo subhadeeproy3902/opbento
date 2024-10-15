@@ -6,6 +6,9 @@ import { cn } from "@/lib/utils";
 import { Clipboard, Linkedin, TwitterIcon } from "lucide-react";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
+import GitHubStatsCard from "./GithubStatCard";
+import { StreakStats, UserStats } from "@/types";
+import GitHubStreakCard from "./GithubStreakCard";
 
 const space = Space_Grotesk({
   subsets: ["latin"],
@@ -18,12 +21,18 @@ const BentoGrid = ({
   twitterURL,
   linkedinURL,
   imageUrl,
+  stats,
+  showStats,
+  streak,
 }: {
   name: string;
   githubURL: string;
   twitterURL: string;
-  linkedinURL?: string;
+  linkedinURL: string;
   imageUrl: string;
+  stats: UserStats | undefined;
+  showStats: boolean;
+  streak: StreakStats | undefined;
 }) => {
   const [bentoLink, setBentoLink] = useState<string>("");
 
@@ -107,7 +116,7 @@ const BentoGrid = ({
         </div>
 
         <a
-          href={"https://x.com/" + twitterURL}
+          href={"https://www.linkedin.com/in/" + twitterURL}
           className="bg-gradient-to-tl from-black to-blue-600 p-4 relative rounded-lg overflow-hidden col-span-1 columns-3 row-span-1 min-h-[150px]"
         >
           <Linkedin
@@ -116,7 +125,7 @@ const BentoGrid = ({
             color="#56d2ff"
             strokeWidth={1}
           />
-          <p className="text-center w-full">@{twitterURL}</p>
+          <p className="text-center w-full">@{linkedinURL}</p>
         </a>
 
         <div className="bg-muted p-4 rounded-lg col-span-2 row-span-1">
@@ -134,6 +143,15 @@ const BentoGrid = ({
         <div className="bg-muted p-4 bg-gradient-to-br from-orange-600 via-yellow-600 to-rose-500 rounded-lg col-span-1 row-span-1 flex flex-col items-center justify-center min-h-32">
           <h2 className="text-3xl text- font-bold">Made using OP Bento</h2>
         </div>
+
+        {stats && showStats && (
+          <div>
+            <GitHubStatsCard stats={stats} userName={githubURL} />
+            <div className="col-span-4">
+              <GitHubStreakCard streak={streak} />
+            </div>
+          </div>
+        )}
       </div>
       <div className="relative mt-4">
         <Input value={bentoLink} readOnly />

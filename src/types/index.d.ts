@@ -31,3 +31,15 @@ export interface GitHubResponse {
   user: User;
   rateLimit: any;
 }
+
+
+export type StreakStats = {
+  totalContributions: number;
+  firstContributionDate: string | null;
+  longestStreak: number;
+  longestStreakStart: string | null;
+  longestStreakEnd: string | null;
+  currentStreak: number;
+  currentStreakStart: string | null;
+  currentStreakEnd: string | null;
+};
