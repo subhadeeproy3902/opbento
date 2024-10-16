@@ -39,15 +39,12 @@ const BentoGrid = ({
   const [bentoLink, setBentoLink] = useState<string>("");
 
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      const baseUrl = window.location.origin;
-      const mdLink = `[![Bento Grid](${baseUrl}/api/bento?n=${encodeURIComponent(
+      const mdLink = `[![Bento Grid](https://opbento.vercel.app/api/bento?n=${encodeURIComponent(
         name
       )}&i=${encodeURIComponent(imageUrl)}&g=${encodeURIComponent(
         githubURL
-      )}&x=${encodeURIComponent(twitterURL)})](${baseUrl})`;
+      )}&x=${encodeURIComponent(twitterURL)})](https://opbento.vercel.app)`;
       setBentoLink(mdLink);
-    }
   }, [name, githubURL, twitterURL, imageUrl]);
 
   const copyToClipboard = () => {
