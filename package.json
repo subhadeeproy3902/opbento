@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "postinstall": "bun x puppeteer browsers install"
   },
   "dependencies": {
     "@radix-ui/react-dropdown-menu": "^2.1.2",
