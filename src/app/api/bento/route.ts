@@ -186,7 +186,7 @@ export async function GET(req: NextRequest) {
   `;
 
     try {
-        const browser = await puppeteer.launch({headless: false});;
+        const browser = await puppeteer.launch({headless: false});
         const page = await browser.newPage();
         await page.setContent(html, { waitUntil: "networkidle0" });
         const screenshot = await page.screenshot({ type: "png" });
