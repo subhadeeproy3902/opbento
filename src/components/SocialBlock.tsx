@@ -12,7 +12,7 @@ import Block from "./ui/Block";
 import { Input } from "./ui/input";
 import { Switch } from "./ui/switch";
 import { Label } from "./ui/label";
-import { StreakStats, UserStats } from "@/types";
+import { Graph, StreakStats, UserStats } from "@/types";
 import { useState } from "react";
 import { Button } from "./ui/button";
 import { toast } from "sonner";
@@ -28,6 +28,7 @@ export default function SocialsBlock({
   setImageUrl,
   setStats,
   setStreak,
+  setGraph,
 }: {
   setName: (name: string) => void;
   setGithubURL: (url: string) => void;
@@ -37,6 +38,7 @@ export default function SocialsBlock({
   setImageUrl: (url: string) => void;
   setStats: (stats: UserStats | undefined) => void;
   setStreak: (streak: StreakStats | undefined) => void;
+  setGraph: (graph: Graph[] | undefined) => void;
   showStats: boolean;
   showGraph: boolean;
 }) {
@@ -46,28 +48,64 @@ export default function SocialsBlock({
   const [nameText, setNameText] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const handleStats = async (checked: boolean) => {
+  const handleStats = async () => {
     setLoading(true);
+    setGraph(undefined);
     setStats(undefined);
     setStreak(undefined);
-    if (!checked || !showStats) {
+    console.log(showStats, showGraph);
+    if (!showStats && !showGraph) {
       setGithubURL(gUrl);
       toast.success("Github Username saved");
       setLoading(false);
       return;
     }
-    const res1 = await fetch("/api/stats?&username=" + gUrl);
-    const data = await res1.json();
-    if (data.error) {
-      toast.error("Username not found");
+    if (!gUrl) {
+      toast.error("Github Username is required");
       setLoading(false);
       return;
     }
+
+    if (showStats && showGraph) {
+      const res1 = await fetch("/api/stats?&username=" + gUrl);
+      const data = await res1.json();
+      if (data.error) {
+        toast.error("Username not found");
+        setLoading(false);
+        return;
+      }
+      setStats(data.stats);
+      const res2 = await fetch("/api/streak?&username=" + gUrl);
+      const streak = await res2.json();
+      setStreak(streak.stats);
+
+      const res3 = await fetch("/api/graph?username=" + gUrl);
+      const graph = await res3.json();
+      setGraph(graph);
+    }
+
+    if (showStats && !showGraph) {
+      const res1 = await fetch("/api/stats?&username=" + gUrl);
+      const data = await res1.json();
+      if (data.error) {
+        toast.error("Username not found");
+        setLoading(false);
+        return;
+      }
+      setStats(data.stats);
+      const res2 = await fetch("/api/streak?&username=" + gUrl);
+      const streak = await res2.json();
+      setStreak(streak.stats);
+    }
+
+    if (showGraph && !showStats) {
+      const res = await fetch("/api/graph?username=" + gUrl);
+      const graph = await res.json();
+      console.log(graph);
+      setGraph(graph);
+    }
+
     setGithubURL(gUrl);
-    const res2 = await fetch("/api/streak?&username=" + gUrl);
-    const streak = await res2.json();
-    setStats(data.stats);
-    setStreak(streak.stats);
     if (showStats && showGraph) {
       toast.success(gUrl + " stat cards and contribution graph added");
     }
@@ -151,7 +189,7 @@ export default function SocialsBlock({
             <Button
               className="absolute top-0 right-0 p-2 px-2.5 bg-emerald-500 hover:bg-green-500"
               onClick={async () => {
-                await handleStats(true);
+                await handleStats();
               }}
             >
               {loading ? (

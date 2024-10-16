@@ -18,10 +18,9 @@ import {
 } from "lucide-react";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
-import GitHubStatsCard from "./GithubStatCard";
-import { StreakStats, UserStats } from "@/types";
-import GitHubStreakCard from "./GithubStreakCard";
+import { Graph, StreakStats, UserStats } from "@/types";
 import Image from "next/image";
+import { generateContributionGraph } from "@/utils/generate-graph";
 
 const space = Space_Grotesk({
   subsets: ["latin"],
@@ -38,6 +37,8 @@ const BentoGrid = ({
   showStats,
   streak,
   showGraph,
+  graph,
+  portfolioUrl,
 }: {
   name: string;
   githubURL: string;
@@ -48,8 +49,27 @@ const BentoGrid = ({
   showStats: boolean;
   streak: StreakStats | undefined;
   showGraph: boolean;
+  graph: Graph[] | undefined;
+  portfolioUrl: string;
 }) => {
   const [bentoLink, setBentoLink] = useState<string>("");
+
+  const getColor = (value: number) => {
+    switch (value) {
+      case 0:
+        return "#27272A";
+      case 1:
+        return "#6EE7B7";
+      case 2:
+        return "#22C55E";
+      case 3:
+        return "#15803D";
+      case 4:
+        return "#14532D";
+      default:
+        return "#27272A";
+    }
+  };
 
   useEffect(() => {
     const mdLink = `[![Bento Grid](https://opbento.vercel.app/api/bento?n=${encodeURIComponent(
@@ -148,8 +168,15 @@ const BentoGrid = ({
           />
         </div>
 
-        <div className="p-4 bg-gradient-to-br from-orange-600 via-yellow-600 to-rose-500 rounded-lg col-span-1 row-span-1 flex flex-col items-center justify-center min-h-32">
-          <h2 className="text-3xl text- font-bold">Made using OP Bento</h2>
+        <div className="p-4 bg-gradient-to-br from-gray-100 via-gray-300 to-gray-600 rounded-lg col-span-1 row-span-1 flex relative flex-col items-center justify-center min-h-32 overflow-hidden">
+          <h1 className="text-xl font-semibold bg-gradient-to-b from-[#797979] to-[#06152e] bg-clip-text absolute top-6 break-all left-4 text-transparent leading-[100%] tracking-tighter">
+            {portfolioUrl}
+          </h1>
+          <img 
+            src="/earth.png"
+            alt=""
+            className="absolute -bottom-28 -right-28"
+            />
         </div>
 
         {stats && showStats && (
@@ -291,6 +318,36 @@ const BentoGrid = ({
                 </div>
               </div>
             </div>
+          </div>
+        )}
+
+        {graph && showGraph && (
+          <div className="bg-zinc-900 p-4 col-span-4 row-span-2 rounded-lg w-full h-full">
+            <div className="flex items-center justify-between">
+              <h1 className="text-2xl font-bold">
+                {githubURL}'s Contribution Graph
+              </h1>
+              <div className="flex items-center justify-end text-sm">
+                <span>Less</span>
+                <div className="flex gap-2 mx-3">
+                  {[0, 1, 2, 3, 4].map((value) => (
+                    <div
+                      key={value}
+                      className="w-4 h-4 rounded-sm"
+                      title={`Contribution level ${value}`}
+                      style={{ backgroundColor: getColor(value) }}
+                    />
+                  ))}
+                </div>
+                <span>More</span>
+              </div>
+            </div>
+            <div
+              className="flex justify-center pb-4 items-center w-full h-full"
+              dangerouslySetInnerHTML={{
+                __html: generateContributionGraph(graph),
+              }}
+            />
           </div>
         )}
       </div>

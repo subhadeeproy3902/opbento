@@ -17,13 +17,14 @@ export async function GET(req: NextRequest) {
     const currentYear = new Date().getFullYear();
     const contributionDays = await fetchYearContributions(username, currentYear);
 
-    const svg = generateContributionGraph(contributionDays);
-
-    return new NextResponse(svg, {
-      headers: {
-        "Content-Type": "image/svg+xml",
-      },
-    });
+    return new NextResponse(
+      JSON.stringify(contributionDays),
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
   } catch (error) {
     console.error("Error fetching contributions:", error);
     return new NextResponse("Error fetching contributions", { status: 500 });

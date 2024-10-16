@@ -10,7 +10,7 @@ import SocialsBlock from "./SocialBlock";
 import { Highlight } from "./ui/highlight";
 import BentoGrid from "./Bento1";
 import BioBlock from "./BioBlock";
-import { StreakStats, UserStats } from "@/types";
+import { Graph, StreakStats, UserStats } from "@/types";
 import GitHubStatsCard from "./GithubStatCard";
 
 export interface ProjectType {
@@ -37,6 +37,7 @@ export default function HomePage() {
 
   const [stats, setStats] = useState<UserStats | undefined>(undefined);
   const [streak, setStreak] = useState<StreakStats | undefined>(undefined);
+  const [graph, setGraph] = useState<Graph[] | undefined>(undefined);
 
   return (
     <div className="w-full">
@@ -62,6 +63,7 @@ export default function HomePage() {
             setStreak={setStreak}
             showStats={showStats}
             showGraph={showGraph}
+            setGraph={setGraph}
           />
 
           <BioBlock
@@ -85,6 +87,8 @@ export default function HomePage() {
           showStats={showStats}
           streak={streak}
           showGraph={showGraph}
+          graph={graph}
+          portfolioUrl={portfolioURL}
         />
       </div>
     </div>
