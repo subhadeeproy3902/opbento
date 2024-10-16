@@ -39,12 +39,12 @@ const BentoGrid = ({
   const [bentoLink, setBentoLink] = useState<string>("");
 
   useEffect(() => {
-      const mdLink = `[![Bento Grid](https://opbento.vercel.app/api/bento?n=${encodeURIComponent(
-        name
-      )}&i=${encodeURIComponent(imageUrl)}&g=${encodeURIComponent(
-        githubURL
-      )}&x=${encodeURIComponent(twitterURL)})](https://opbento.vercel.app)`;
-      setBentoLink(mdLink);
+    const mdLink = `[![Bento Grid](https://opbento.vercel.app/api/bento?n=${encodeURIComponent(
+      name
+    )}&i=${encodeURIComponent(imageUrl)}&g=${encodeURIComponent(
+      githubURL
+    )}&x=${encodeURIComponent(twitterURL)})](https://opbento.vercel.app)`;
+    setBentoLink(mdLink);
   }, [name, githubURL, twitterURL, imageUrl]);
 
   const copyToClipboard = () => {
@@ -144,23 +144,24 @@ const BentoGrid = ({
         </div>
 
         {stats && showStats && (
-          <div className="flex gap-4 col-span-4">
-            <GitHubStatsCard stats={stats} userName={githubURL} />
-            <div className="w-full">
+          <div className="grid gap-4 grid-cols-4 col-span-4 row-span-2">
+            <div className="col-span-2 row-span-2">
+              <GitHubStatsCard stats={stats} userName={githubURL} />
+            </div>
+            <div className="size-full col-span-2 row-span-2">
               <GitHubStreakCard streak={streak} />
             </div>
           </div>
         )}
 
-        {showGraph && (
+        {/* {showGraph && (
           <div className="col-span-4">
-            {/* Render the svg in streak.contributionGraph */}
             <div
             className="w-full flex justify-center"
               dangerouslySetInnerHTML={{ __html: streak?.contributionGraph! }}
             />
           </div>
-        )}
+        )} */}
       </div>
       <div className="relative mt-4">
         <Input value={bentoLink} readOnly />

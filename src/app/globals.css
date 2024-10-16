@@ -396,6 +396,6 @@
   filter: drop-shadow(0 0 6px #29bef0);
 }
 
-.glow-pink {
-  filter: drop-shadow(0 0 10px #f029c5);
+.glow-orange {
+  filter: drop-shadow(0 0 20px #f04429);
 }

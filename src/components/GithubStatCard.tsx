@@ -1,193 +1,90 @@
 import React from "react";
+import { Star, Activity, GitPullRequest, Users, GitBranch } from "lucide-react";
 import { UserStats } from "@/types";
+import Image from "next/image";
 
-export default function GitHubStatsCard({
+const GitHubStatsCard = ({
   userName,
   stats,
 }: {
-  userName: String;
-  stats: UserStats | undefined;
-}) {
+  userName: string;
+  stats: UserStats;
+}) => {
   return (
-    <svg
-      width="500"
-      height="300"
-      viewBox="0 0 500 300"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      className="w-full h-full"
-    >
-      <rect width="500" height="300" rx="15" fill="#1e1e2e" />
+    <div className="grid grid-cols-4 grid-rows-3 gap-4 auto-rows-fr rounded-xl overflow-hidden size-full">
+      <div className="bg-gradient-to-br from-amber-500/40 via-amber-500/10 to-transparent rounded-xl p-4 flex flex-col justify-between col-span-2 relative row-span-2">
+        <div className="flex absolute top-2 px-3 left-0 items-center justify-between w-full opacity-70">
+          <Star size={40} fill="gold" color="gold" />
+          <Star size={40} fill="gold" color="gold" />
+          <Star size={40} fill="gold" color="gold" />
+          <Star size={40} fill="gold" color="gold" />
+          <Star size={40} fill="gold" color="gold" />
+        </div>
+        <h3 className="text-2xl mt-16 text-end text-muted-foreground font-medium">
+          Total Stars
+        </h3>
+        <div className="text-end text-yellow-400 text-7xl font-bold">
+          {stats["Star Earned"]}
+        </div>
+      </div>
 
-      {/* Title */}
-      <text x="20" y="40" fontSize="20" fill="#cdd6f4">
-        {userName || "Subhadeep"}&apos;s GitHub Stats
-      </text>
+      <div className="bg-gradient-to-b from-pink-900/20 to-neutral-900/50 rounded-xl relative p-4 flex flex-col justify-between col-span-1 row-span-1">
+        <GitPullRequest className="text-pink-400 absolute top-2" size={20} />
+        <span className="text-gray-300 text-sm pt-4 font-medium">PRs</span>
 
-      {/* Bento grid layout */}
-      <g transform="translate(20, 60)">
-        {/* Stars */}
-        <rect width="220" height="100" rx="10" fill="#313244" />
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="#f9e2af"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          className="lucide lucide-star"
-          x="20"
-          y="20"
-        >
-          <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
-        </svg>
-        <text x="60" y="35" fontSize="16" fill="#cdd6f4">
-          Total Stars Earned
-        </text>
-        <text x="60" y="70" fontSize="24" fontWeight="bold" fill="#f9e2af">
-          {/* Stars */}
-          {stats?.["Star Earned"] || 0}
-        </text>
+        <div className="text-pink-400 text-3xl font-bold mt-2">
+          {stats["Pull Requests"]}
+        </div>
+      </div>
+      <div className="bg-gradient-to-tl from-rose-950/20 to-stone-900/50 relative rounded-xl p-4 flex flex-col justify-between col-span-1 row-span-1">
+        <Users className="text-red-500 absolute top-2" size={20} />
+        <span className="text-gray-300 text-sm pt-4 font-medium">
+          Followers
+        </span>
 
-        {/* Commits */}
-        <g transform="translate(240, 0)">
-          <rect width="220" height="100" rx="10" fill="#313244" />
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="#94e2d5"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            className="lucide lucide-activity"
-            x="20"
-            y="20"
-          >
-            <path d="M22 12h-2.48a2 2 0 0 0-1.93 1.46l-2.35 8.36a.25.25 0 0 1-.48 0L9.24 2.18a.25.25 0 0 0-.48 0l-2.35 8.36A2 2 0 0 1 4.49 12H2"></path>
-          </svg>
-          <text x="60" y="35" fontSize="16" fill="#cdd6f4">
-            Total Commits
-          </text>
-          <text x="60" y="70" fontSize="24" fontWeight="bold" fill="#94e2d5">
-            {stats?.Commits || 0}
-          </text>
-        </g>
-
-        {/* PRs */}
-        <g transform="translate(0, 120)">
-          <rect width="140" height="100" rx="10" fill="#313244" />
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="#f38ba8"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            className="lucide lucide-git-pull-request"
-            x="20"
-            y="14"
-          >
-            <circle cx="18" cy="18" r="3"></circle>
-            <circle cx="6" cy="6" r="3"></circle>
-            <path d="M13 6h3a2 2 0 0 1 2 2v7"></path>
-            <line x1="6" x2="6" y1="9" y2="21"></line>
-          </svg>
-          <text x="20" y="60" fontSize="16" fill="#cdd6f4">
-            Total PRs
-          </text>
-          <text x="20" y="87" fontSize="24" fontWeight="bold" fill="#f38ba8">
-            {stats?.["Pull Requests"] || 0}
-          </text>
-        </g>
-
-        {/* Issues */}
-        <g transform="translate(160, 120)">
-          <rect width="140" height="100" rx="10" fill="#313244" />
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="#fab387"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            className="lucide lucide-circle-alert"
-            x="20"
-            y="14"
-          >
-            <circle cx="12" cy="12" r="10"></circle>
-            <line x1="12" x2="12" y1="8" y2="12"></line>
-            <line x1="12" x2="12.01" y1="16" y2="16"></line>
-          </svg>
-          <text x="20" y="60" fontSize="16" fill="#cdd6f4">
-            Total Issues
-          </text>
-          <text x="20" y="87" fontSize="24" fontWeight="bold" fill="#fab387">
-            {stats?.Issues || 0}
-          </text>
-        </g>
-
-        {/* Contributed To */}
-        <g transform="translate(320, 120)">
-          <rect width="140" height="100" rx="10" fill="#313244" />
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="#a6e3a1"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            className="lucide lucide-git-branch"
-            x="20"
-            y="14"
-          >
-            <line x1="6" x2="6" y1="3" y2="15"></line>
-            <circle cx="18" cy="6" r="3"></circle>
-            <circle cx="6" cy="18" r="3"></circle>
-            <path d="M18 9a9 9 0 0 1-9 9"></path>
-          </svg>
-          <text x="20" y="60" fontSize="16" fill="#cdd6f4">
-            Contributed To
-          </text>
-          <text x="20" y="87" fontSize="24" fontWeight="bold" fill="#a6e3a1">
-            {stats?.["Contributed To"] || 0}
-          </text>
-        </g>
-      </g>
-
-      {/* Grade Circle */}
-      <circle
-        cx="450"
-        cy="50"
-        r="30"
-        fill="none"
-        stroke="#89b4fa"
-        strokeWidth="4"
-      />
-      <text
-        x="450"
-        y="58"
-        fontSize="24"
-        fontWeight="bold"
-        fill="#89b4fa"
-        textAnchor="middle"
-      >
-        A+
-      </text>
-    </svg>
+        <div className="text-red-500 text-4xl font-bold mt-2">
+          {stats.Followers}
+        </div>
+      </div>
+      <div className="bg-gradient-to-t from-black to-slate-800/50 overflow-hidden relative rounded-xl p-4 flex flex-col justify-between col-span-2 row-span-2">
+        <Image
+          src={"/surf.svg"}
+          alt=""
+          width={450}
+          height={400}
+          className="absolute inset-0 object-cover rotate-180"
+        />
+        <div className="flex items-center w-full">
+          <Activity className="text-green-400" size={45} />
+          <span className="text-muted-foreground w-full text-end text-2xl font-medium">
+            Commits
+          </span>
+        </div>
+        <div className="text-green-400 text-6xl text-end font-bold ">
+          {stats.Commits}
+        </div>
+      </div>
+      <div className="bg-muted/30 relative overflow-hidden rounded-xl p-4 flex flex-col justify-between col-span-2 row-span-1">
+        <Image
+          src={"/blocks.svg"}
+          alt=""
+          width={400}
+          height={400}
+          className="absolute -z-10 inset-0 object-cover brightness-150"
+        />
+        <GitBranch
+          className="text-blue-400 glow absolute left-12 bottom-4"
+          size={40}
+        />
+        <span className="text-muted-foreground text-center w-full text-sm font-medium">
+          Contributed To
+        </span>
+        <div className="text-blue-400 text-4xl text-center font-bold mt-2">
+          {stats["Contributed To"]}
+        </div>
+      </div>
+    </div>
   );
-}
+};
+
+export default GitHubStatsCard;

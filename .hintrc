@@ -3,6 +3,8 @@
     "development"
   ],
   "hints": {
-    "disown-opener": "off"
+    "disown-opener": "off",
+    "button-type": "off",
+    "axe/name-role-value": "off"
   }
 }
