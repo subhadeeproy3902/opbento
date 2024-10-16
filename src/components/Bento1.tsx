@@ -140,19 +140,15 @@ const BentoGrid = ({
           <p className="text-center w-full">@{linkedinURL}</p>
         </a>
 
-        <div className="bg-muted p-4 rounded-lg col-span-2 row-span-1">
-          <p className="text-cyan-500 text-xs mb-2">Los Angeles</p>
-          <p className="text-white text-xs">The Midnight</p>
-          <div className="flex justify-between mt-2">
-            <div className="w-6 h-6 bg-gray-700 rounded-full"></div>
-            <div className="w-6 h-6 bg-gray-700 rounded-full"></div>
-            <div className="w-6 h-6 bg-gray-700 rounded-full"></div>
-            <div className="w-6 h-6 bg-gray-700 rounded-full"></div>
-            <div className="w-6 h-6 bg-gray-700 rounded-full"></div>
-          </div>
+        <div className="bg-muted overflow-hidden border border-red-600/40 rounded-lg col-span-2 row-span-1">
+          <img
+            src={`https://github-readme-activity-graph.vercel.app/graph?username=${githubURL}&bg_color=030312&color=ff8080&line=e00a60&point=ff7171&area=true&hide_border=true`}
+            alt="graph"
+            className="size-full object-cover"
+          />
         </div>
 
-        <div className="bg-muted p-4 bg-gradient-to-br from-orange-600 via-yellow-600 to-rose-500 rounded-lg col-span-1 row-span-1 flex flex-col items-center justify-center min-h-32">
+        <div className="p-4 bg-gradient-to-br from-orange-600 via-yellow-600 to-rose-500 rounded-lg col-span-1 row-span-1 flex flex-col items-center justify-center min-h-32">
           <h2 className="text-3xl text- font-bold">Made using OP Bento</h2>
         </div>
 
@@ -295,15 +291,6 @@ const BentoGrid = ({
                 </div>
               </div>
             </div>
-          </div>
-        )}
-
-        {showGraph && (
-          <div className="col-span-4">
-            <div
-              className="w-full flex justify-center"
-              dangerouslySetInnerHTML={{ __html: streak?.contributionGraph! }}
-            />
           </div>
         )}
       </div>
