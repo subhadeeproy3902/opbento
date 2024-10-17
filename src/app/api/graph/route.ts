@@ -1,5 +1,4 @@
 import { fetchYearContributions } from '@/actions/fetchYearContribution';
-import { generateContributionGraph } from '@/utils/generate-graph';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(req: NextRequest) {

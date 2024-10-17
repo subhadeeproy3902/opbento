@@ -57,17 +57,17 @@ const BentoGrid = ({
   const getColor = (value: number) => {
     switch (value) {
       case 0:
-        return "#27272A";
+        return "#191919"; // Darkest green for value 0
       case 1:
-        return "#6EE7B7";
+        return "#14532D"; // Dark green for value 1
       case 2:
-        return "#22C55E";
+        return "#1E7A1E"; // Medium dark green for value 2
       case 3:
-        return "#15803D";
+        return "#28A745"; // Medium green for value 3
       case 4:
-        return "#14532D";
+        return "#00ef57"; // Light green for value 4
       default:
-        return "#27272A";
+        return "#27272A"; // Default color
     }
   };
 
@@ -95,9 +95,9 @@ const BentoGrid = ({
           space.className
         )}
       >
-        <div className="bg-muted py-6 px-8 rounded-lg bg-gradient-to-br from-cyan-400 via-blue-500 to-violet-600 to col-span-1 row-span-1 min-h-32">
-          <p className="text-white text-xl">Hey Im</p>
-          <h2 className="text-4xl text-white font-bold mb-2 capitalize">
+        <div className="text-white py-6 px-8 rounded-lg bg-gradient-to-br from-cyan-400 via-blue-500 to-violet-600 to col-span-1 row-span-1 min-h-32">
+          <p className="text-xl">Hey Im</p>
+          <h2 className="text-4xl font-bold mb-2 capitalize">
             {name || "Nigga"}
           </h2>
         </div>
@@ -168,15 +168,19 @@ const BentoGrid = ({
           />
         </div>
 
-        <div className="p-4 bg-gradient-to-br from-gray-100 via-gray-300 to-gray-600 rounded-lg col-span-1 row-span-1 flex relative flex-col items-center justify-center min-h-32 overflow-hidden">
-          <h1 className="text-xl font-semibold bg-gradient-to-b from-[#797979] to-[#06152e] bg-clip-text absolute top-6 break-all left-4 text-transparent leading-[100%] tracking-tighter">
-            {portfolioUrl}
+        <div className="p-4 bg-gradient-to-br from-gray-100 via-gray-300 to-gray-600/80 rounded-lg col-span-1 row-span-1 flex relative flex-col items-center justify-center min-h-32 overflow-hidden">
+          <h1 className="font-semibold text-lg bg-gradient-to-b from-[#797979] to-[#040e1f] bg-clip-text absolute top-6 break-all left-4 text-transparent leading-[100%] tracking-tighter">
+            {portfolioUrl.startsWith("https://")
+              ? portfolioUrl.replace("https://", "")
+              : portfolioUrl}
           </h1>
-          <img 
+          <Image
             src="/earth.png"
+            width={200}
+            height={200}
             alt=""
             className="absolute -bottom-28 -right-28"
-            />
+          />
         </div>
 
         {stats && showStats && (
@@ -322,7 +326,7 @@ const BentoGrid = ({
         )}
 
         {graph && showGraph && (
-          <div className="bg-zinc-900 p-4 col-span-4 row-span-2 rounded-lg w-full h-full">
+          <div className="bg-gradient-to-br from-green-950/80 p-4 col-span-4 row-span-2 rounded-lg w-full h-full">
             <div className="flex items-center justify-between">
               <h1 className="text-2xl font-bold">
                 {githubURL}'s Contribution Graph

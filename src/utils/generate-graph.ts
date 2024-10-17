@@ -1,4 +1,6 @@
-export const generateContributionGraph = (contributionDays: { date: string, contributionCount: number }[]) => {
+export const generateContributionGraph = (
+  contributionDays: { date: string; contributionCount: number }[]
+) => {
   const dayWidth = 13;
   const dayHeight = 13;
   const dayPadding = 2;
@@ -6,7 +8,7 @@ export const generateContributionGraph = (contributionDays: { date: string, cont
   const svgPadding = 0;
 
   const weeks = [];
-  let currentWeek: { date: string, contributionCount: number }[] = [];
+  let currentWeek: { date: string; contributionCount: number }[] = [];
 
   // Group the contribution days into weeks (each week has 7 days)
   for (let i = 0; i < contributionDays.length; i++) {
@@ -20,26 +22,31 @@ export const generateContributionGraph = (contributionDays: { date: string, cont
   }
 
   const numWeeks = weeks.length;
-  const svgHeight = 7 * (dayHeight + dayPadding) + 2 * svgPadding; // 7 days in a week
+  const svgHeight = 7 * (dayHeight + dayPadding) + 2 * svgPadding;
   const svgWidth = numWeeks * (dayWidth + weekPadding) + 2 * svgPadding;
 
-  // Function to determine fill color based on contribution count
   function getFillColor(count: number): string {
-    if (count === 0) return "#27272A"; // Light gray (no contributions)
-    if (count <= 5) return "#6EE7B7"; // Light blue
-    if (count <= 10) return "#22C55E"; // Light green
-    if (count <= 20) return "#15803D"; // Orange
-    return "#14532D"; // Red (most contributions)
+    if (count === 0) return "#191919"; // Darkest green for count 0
+    if (count <= 5) return "#14532D"; // Dark green for count <= 5
+    if (count <= 10) return "#1E7A1E"; // Medium dark green for count <= 10
+    if (count <= 20) return "#28A745"; // Medium green for count <= 20
+    return "#00ef57"; // Light green for count > 20
   }
 
   return `
   <svg width="${svgWidth}" height="${svgHeight}" xmlns="http://www.w3.org/2000/svg">
-    ${weeks.map((week, weekIndex) => week.map((day, dayIndex) => {
-    const x = svgPadding + weekIndex * (dayWidth + weekPadding);
-    const y = svgPadding + dayIndex * (dayHeight + dayPadding);
-    const fillColor = getFillColor(day.contributionCount);
-    return `<rect x="${x}" y="${y}" width="${dayWidth}" height="${dayHeight}" fill="${fillColor}" stroke-width="0.5" rx="2" ry="2" />`;
-  }).join('')).join('')}
+    ${weeks
+      .map((week, weekIndex) =>
+        week
+          .map((day, dayIndex) => {
+            const x = svgPadding + weekIndex * (dayWidth + weekPadding);
+            const y = svgPadding + dayIndex * (dayHeight + dayPadding);
+            const fillColor = getFillColor(day.contributionCount);
+            return `<rect x="${x}" y="${y}" width="${dayWidth}" height="${dayHeight}" fill="${fillColor}" stroke-width="0.5" rx="2" ry="2" />`;
+          })
+          .join("")
+      )
+      .join("")}
   </svg>
-  `
-}
+  `;
+};
