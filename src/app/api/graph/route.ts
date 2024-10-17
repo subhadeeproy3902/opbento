@@ -25,7 +25,6 @@ export async function GET(req: NextRequest) {
       }
     );
   } catch (error) {
-    console.error("Error fetching contributions:", error);
     return new NextResponse("Error fetching contributions", { status: 500 });
   }
 }

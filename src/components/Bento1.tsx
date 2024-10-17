@@ -82,7 +82,6 @@ const BentoGrid = ({
 
   const copyToClipboard = () => {
     navigator.clipboard.writeText(bentoLink).then(() => {
-      console.log("Copied to clipboard");
       alert("Copied");
     });
   };

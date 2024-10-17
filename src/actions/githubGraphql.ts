@@ -19,8 +19,6 @@ export async function githubGraphql({ query, variables }: {
       body: JSON.stringify({ query, variables }),
     });
 
-    console.log(response);
-
     if (!response.ok) {
       throw new Error(`GitHub API request failed with status ${response.status}`);
     }
@@ -28,7 +26,7 @@ export async function githubGraphql({ query, variables }: {
     const result = await response.json();
     return result.data;
   } catch (error) {
-    console.error(error);
+    
     throw error;
   }
 };

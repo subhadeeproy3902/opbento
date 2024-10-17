@@ -14,7 +14,6 @@ export async function GET(req: NextRequest) {
 
   try {
     const stats = await fetchContributions(username);
-    console.log(stats);
     return NextResponse.json({ stats });
   } catch (error) {
     return NextResponse.json(

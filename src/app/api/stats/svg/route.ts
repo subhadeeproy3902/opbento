@@ -33,7 +33,6 @@ export async function GET(req: NextRequest) {
       }
     );
   } catch (error) {
-    console.error("Error fetching user data:", error);
     return NextResponse.json(
       { error: "Failed to fetch data" },
       { status: 500 }

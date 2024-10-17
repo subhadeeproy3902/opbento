@@ -100,7 +100,6 @@ export default function SocialsBlock({
     if (showGraph && !showStats) {
       const res = await fetch("/api/graph?username=" + gUrl);
       const graph = await res.json();
-      console.log(graph);
       setGraph(graph);
     }
 
