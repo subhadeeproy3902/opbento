@@ -230,7 +230,7 @@ export async function GET(req: NextRequest) {
                   >Contributed To</span
                 >
                 <div class="text-blue-400 text-4xl text-center font-bold mt-2">
-                  23
+${userStats["Contributed To"]}
                 </div>
               </div>
             </div>
@@ -252,9 +252,9 @@ export async function GET(req: NextRequest) {
                     <h3 class="text-sm font-medium text-gray-400">
                       Total Contributions
                     </h3>
-                    <p class="text-3xl font-bold text-blue-400">1234</p>
+                    <p class="text-3xl font-bold text-blue-400">${contributionStats.totalContributions}</p>
                     <p class="text-xs text-gray-500 mt-2">
-                      2023-01-01 - Present
+${contributionStats.firstDateofContribution} - Present
                     </p>
                   </div>
                   <!-- Longest Streak Card -->
@@ -268,9 +268,9 @@ export async function GET(req: NextRequest) {
                     <h3 class="text-sm font-medium text-gray-400">
                       Longest Streak
                     </h3>
-                    <p class="text-3xl font-bold text-yellow-400">30</p>
+                    <p class="text-3xl font-bold text-yellow-400">${contributionStats.longestStreak}</p>
                     <p class="text-xs text-gray-500 mt-2">
-                      2023-06-01 - 2023-06-30
+${contributionStats.longestStreakStartDate} - ${contributionStats.longestStreakEndDate}
                     </p>
                   </div>
                 </div>
@@ -285,8 +285,12 @@ export async function GET(req: NextRequest) {
                   <h3 class="text-lg font-medium text-gray-400">
                     Current Streak
                   </h3>
-                  <p class="text-6xl font-bold text-orange-600 my-4">15</p>
-                  <p class="text-sm text-gray-500">2023-10-01 - 2023-10-15</p>
+                  <p class="text-6xl font-bold text-orange-600 my-4">
+                    ${contributionStats.currentStreak}
+                  </p>
+                  <p class="text-sm text-gray-500">
+                    ${contributionStats.currentStreakStartDate} - Present
+                  </p>
                 </div>
               </div>
             </div>
