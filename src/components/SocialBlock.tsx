@@ -53,7 +53,6 @@ export default function SocialsBlock({
     setGraph(undefined);
     setStats(undefined);
     setStreak(undefined);
-    console.log(showStats, showGraph);
     if (!showStats && !showGraph) {
       setGithubURL(gUrl);
       toast.success("Github Username saved");

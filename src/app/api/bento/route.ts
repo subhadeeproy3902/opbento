@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import puppeteer from "puppeteer";
+import fetchUserData from "@/actions/fetchUserData";
+import { fetchContributions } from "@/actions/githubGraphql";
 
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
@@ -8,6 +10,19 @@ export async function GET(req: NextRequest) {
   const i = searchParams.get("i");
   const x = searchParams.get("x");
   const l = searchParams.get("l");
+
+  if (!g) {
+    return NextResponse.json(
+      { error: "GitHub username is required" },
+      { status: 400 }
+    );
+  }
+
+  // Fetch GitHub stats
+  const { userStats } = await fetchUserData(g);
+
+  // Fetch contribution data
+  const contributionStats = await fetchContributions(g);
 
   // Create HTML content
   const html = `<!DOCTYPE html>
@@ -74,7 +89,7 @@ export async function GET(req: NextRequest) {
             <a
               href="https://github.com/${g}"
               class="text-white font-semibold hover:underline p-2 px-4 bg-pink-600 opacity-80 rounded-md backdrop-blur"
-              >@${g}"</a
+              >@${g}</a
             >
           </p>
         </div>
@@ -87,7 +102,7 @@ export async function GET(req: NextRequest) {
             data-lucide="linkedin"
             class="absolute -bottom-1 -right-2 w-20 h-20 text-[#56d2ff]"
           ></i>
-          <p class="text-center w-full text-white">@${l}"</p>
+          <p class="text-center w-full text-white">@${l}</p>
         </a>
 
         <!-- GitHub Activity Graph -->
@@ -148,7 +163,7 @@ export async function GET(req: NextRequest) {
                   Total Stars
                 </h3>
                 <div class="text-end text-yellow-400 text-7xl font-bold">
-                  1234
+                  ${userStats["Star Earned"]}
                 </div>
               </div>
 
@@ -161,7 +176,7 @@ export async function GET(req: NextRequest) {
                   class="text-pink-400 absolute top-2 w-5 h-5"
                 ></i>
                 <span class="text-gray-300 text-sm pt-4 font-medium">PRs</span>
-                <div class="text-pink-400 text-3xl font-bold mt-2">56</div>
+                <div class="text-pink-400 text-3xl font-bold mt-2">${userStats["Pull Requests"]}</div>
               </div>
 
               <!-- Followers Card -->
@@ -175,7 +190,7 @@ export async function GET(req: NextRequest) {
                 <span class="text-gray-300 text-sm pt-4 font-medium"
                   >Followers</span
                 >
-                <div class="text-red-500 text-4xl font-bold mt-2">789</div>
+                <div class="text-red-500 text-4xl font-bold mt-2">${userStats.Followers}</div>
               </div>
 
               <!-- Commits Card -->
@@ -196,7 +211,7 @@ export async function GET(req: NextRequest) {
                   >
                 </div>
                 <div class="text-green-400 text-6xl text-end font-bold">
-                  5678
+                  ${userStats.Commits}
                 </div>
               </div>
 
@@ -286,7 +301,6 @@ export async function GET(req: NextRequest) {
   </body>
 </html>
 `;
-
   try {
     const options = {
       headless: true,
@@ -308,7 +322,7 @@ export async function GET(req: NextRequest) {
       deviceScaleFactor: 2,
     });
     await page.setContent(html, { waitUntil: "networkidle0" });
-    await new Promise((resolve) => setTimeout(resolve, 500));
+    await new Promise((resolve) => setTimeout(resolve, 700));
     const screenshot = await page.screenshot({ type: "png" });
     await browser.close();
 
