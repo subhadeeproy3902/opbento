@@ -10,180 +10,282 @@ export async function GET(req: NextRequest) {
   const l = searchParams.get("l");
 
   // Create HTML content
-  const html = `
-<!DOCTYPE html>
+  const html = `<!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        body {
-            font-family: 'Space Grotesk',Arial, sans-serif;
-            background-color: #1a202c;
-            color: white;
-            margin: 0;
-            padding: 0;
-        }
-        .bento-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 1rem;
-            max-width: 80rem;
-            margin: 4px auto;
-            padding: 1rem;
-        }
-        .bento-item {
-            background-color: #2d3748;
-            border-radius: 0.5rem;
-            overflow: hidden;
-        }
-        .name-card {
-            grid-column: span 1;
-            grid-row: span 1;
-            background: linear-gradient(to bottom right, #22d3ee, #3b82f6, #8b5cf6);
-            padding: 1.5rem 2rem;
-            min-height: 8rem;
-        }
-        .name-card h2 {
-            font-size: 2rem;
-            margin: 0;
-        }
-        .profile-pic {
-            grid-column: span 2;
-            grid-row: span 2;
-            height: 20rem;
-        }
-        .profile-pic img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        .twitter-card {
-            grid-column: span 1;
-            grid-row: span 2;
-            background: linear-gradient(to bottom right, #000000, #3b82f6);
-            position: relative;
-            padding: 1rem;
-        }
-        .twitter-icon {
-            position: absolute;
-            top: -0.75rem;
-            left: -1rem;
-            width: 6.25rem;
-            height: 6.25rem;
-            color: #29BEF0;
-        }
-        .github-card {
-            grid-column: span 1;
-            grid-row: span 2;
-            position: relative;
-        }
-        .github-card img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        .github-card::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(to bottom, transparent, rgba(0,0,0,0.8));
-        }
-        .github-link {
-            position: absolute;
-            bottom: 1.5rem;
-            left: 0;
-            right: 0;
-            text-align: center;
-            z-index: 10;
-        }
-        .github-link a {
-            color: white;
-            text-decoration: none;
-            font-weight: 600;
-            padding: 0.5rem 1rem;
-            background-color: rgba(236, 72, 153, 0.8);
-            border-radius: 0.375rem;
-        }
-        .music-player {
-            grid-column: span 2;
-            grid-row: span 1;
-            padding: 1rem;
-        }
-        .music-controls {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 0.5rem;
-        }
-        .music-control {
-            width: 1.5rem;
-            height: 1.5rem;
-            background-color: #4a5568;
-            border-radius: 50%;
-        }
-        .op-bento {
-            grid-column: span 1;
-            grid-row: span 1;
-            background: linear-gradient(to bottom right, #ea580c, #eab308, #e11d48);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 8rem;
-        }
-        .op-bento h2 {
-            font-size: 1.5rem;
-            text-align: center;
-        }
-        @media (max-width: 768px) {
-            .bento-grid {
-                grid-template-columns: 1fr;
-            }
-            .profile-pic, .twitter-card, .github-card, .music-player {
-                grid-column: span 1;
-            }
-        }
-    </style>
-</head>
-<body>
-    <div class="bento-grid">
-        <div class="bento-item name-card">
-            <p>Hey I'm</p>
-            <h2>${n}</h2>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Bento Grid</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://unpkg.com/lucide@latest"></script>
+  </head>
+
+  <body class="bg-neutral-950 text-white font-['Space_Grotesk']">
+    <div class="max-w-5xl mx-auto">
+      <div
+        class="p-4 grid grid-cols-1 md:grid-cols-4 gap-4 max-w-5xl mt-2 mb-8 w-full mx-auto"
+      >
+        <div
+          class="bg-gradient-to-br from-cyan-400 via-blue-500 to-violet-600 py-6 px-8 rounded-lg col-span-1 row-span-1 min-h-32"
+        >
+          <p class="text-white text-xl">Hey I'm</p>
+          <h2 class="text-4xl text-white font-bold mb-2 capitalize">${n}</h2>
         </div>
-        <div class="bento-item profile-pic">
-            <img src=${i} alt="Profile Picture">
+        <div
+          class="bg-muted h-80 overflow-hidden rounded-lg col-span-2 row-span-2 flex items-center justify-center"
+        >
+          <img
+            src="${i}"
+            alt=""
+            class="w-full h-full object-cover"
+          />
         </div>
-        <div class="bento-item twitter-card">
-            <svg class="twitter-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"></path>
-            </svg>
-            <p style="position: absolute; bottom: 1.5rem; text-align: center; width: 100%;">@${x}</p>
+
+        <!-- Twitter Card -->
+        <a
+          href="https://x.com/${x}"
+          class="bg-gradient-to-br from-black to-blue-500 p-4 relative rounded-lg overflow-hidden col-span-1 row-span-1 min-h-[150px]"
+        >
+          <i
+            data-lucide="twitter"
+            class="absolute -top-3 -left-4 w-24 h-24 text-[#29BEF0]"
+          ></i>
+          <p class="z-20 absolute bottom-6 text-center w-full text-white">
+            @${x}
+          </p>
+        </a>
+
+        <!-- GitHub Card -->
+        <div
+          class="bg-muted relative overflow-hidden rounded-lg col-span-1 row-span-2"
+        >
+          <img
+            src="https://i.pinimg.com/736x/cf/95/4b/cf954b8923fbafc5cfc0c66344b6a6f9.jpg"
+            alt=""
+            class="absolute saturate-150 w-full h-full object-cover inset-0"
+          />
+          <div
+            class="absolute inset-0 bg-gradient-to-b to-black/80 from-transparent"
+          ></div>
+          <p class="z-20 absolute bottom-6 text-center w-full">
+            <a
+              href="https://github.com/${g}"
+              class="text-white font-semibold hover:underline p-2 px-4 bg-pink-600 opacity-80 rounded-md backdrop-blur"
+              >@${g}"</a
+            >
+          </p>
         </div>
-        <div class="bento-item github-card">
-            <img src="https://i.pinimg.com/736x/cf/95/4b/cf954b8923fbafc5cfc0c66344b6a6f9.jpg" alt="GitHub Background">
-            <div class="github-link">
-                <a href="https://github.com/${g}">@${g}</a>
+
+        <a
+          href="https://www.linkedin.com/in/${l}"
+          class="bg-gradient-to-tl from-black to-blue-600 p-4 relative rounded-lg overflow-hidden col-span-1 columns-3 row-span-1 min-h-[150px]"
+        >
+          <i
+            data-lucide="linkedin"
+            class="absolute -bottom-1 -right-2 w-20 h-20 text-[#56d2ff]"
+          ></i>
+          <p class="text-center w-full text-white">@${l}"</p>
+        </a>
+
+        <!-- GitHub Activity Graph -->
+        <div
+          class="bg-muted overflow-hidden border border-red-600/40 rounded-lg col-span-2 row-span-1"
+        >
+          <img
+            src="https://github-readme-activity-graph.vercel.app/graph?username=${g}&bg_color=030312&color=ff8080&line=e00a60&point=ff7171&area=true&hide_border=true"
+            alt="graph"
+            class="w-full h-full object-cover"
+          />
+        </div>
+
+        <!-- OP Bento Card -->
+        <div
+          class="p-4 bg-gradient-to-br from-orange-600 via-yellow-600 to-rose-500 rounded-lg col-span-1 row-span-1 flex flex-col items-center justify-center min-h-32"
+        >
+          <h2 class="text-3xl text-white font-bold">Made using OP Bento</h2>
+        </div>
+
+        <!-- Stats Grid -->
+        <div class="grid gap-4 grid-cols-4 col-span-4 row-span-2">
+          <div class="col-span-2 row-span-2">
+            <div
+              class="grid grid-cols-4 grid-rows-3 gap-4 auto-rows-fr rounded-xl overflow-hidden w-full h-full"
+            >
+              <!-- Total Stars Card -->
+              <div
+                class="bg-gradient-to-br from-amber-500/40 via-amber-500/10 to-transparent rounded-xl p-4 flex flex-col justify-between col-span-2 relative row-span-2"
+              >
+                <div
+                  class="flex absolute top-2 px-3 left-0 items-center justify-between w-full opacity-70"
+                >
+                  <i
+                    data-lucide="star"
+                    class="w-10 h-10 text-yellow-400 fill-current"
+                  ></i>
+                  <i
+                    data-lucide="star"
+                    class="w-10 h-10 text-yellow-400 fill-current"
+                  ></i>
+                  <i
+                    data-lucide="star"
+                    class="w-10 h-10 text-yellow-400 fill-current"
+                  ></i>
+                  <i
+                    data-lucide="star"
+                    class="w-10 h-10 text-yellow-400 fill-current"
+                  ></i>
+                  <i
+                    data-lucide="star"
+                    class="w-10 h-10 text-yellow-400 fill-current"
+                  ></i>
+                </div>
+                <h3
+                  class="text-2xl mt-16 text-end text-muted-foreground font-medium"
+                >
+                  Total Stars
+                </h3>
+                <div class="text-end text-yellow-400 text-7xl font-bold">
+                  1234
+                </div>
+              </div>
+
+              <!-- PRs Card -->
+              <div
+                class="bg-gradient-to-b from-pink-900/20 to-neutral-900/50 rounded-xl relative p-4 flex flex-col justify-between col-span-1 row-span-1"
+              >
+                <i
+                  data-lucide="git-pull-request"
+                  class="text-pink-400 absolute top-2 w-5 h-5"
+                ></i>
+                <span class="text-gray-300 text-sm pt-4 font-medium">PRs</span>
+                <div class="text-pink-400 text-3xl font-bold mt-2">56</div>
+              </div>
+
+              <!-- Followers Card -->
+              <div
+                class="bg-gradient-to-tl from-rose-950/20 to-stone-900/50 relative rounded-xl p-4 flex flex-col justify-between col-span-1 row-span-1"
+              >
+                <i
+                  data-lucide="users"
+                  class="text-red-500 absolute top-2 w-5 h-5"
+                ></i>
+                <span class="text-gray-300 text-sm pt-4 font-medium"
+                  >Followers</span
+                >
+                <div class="text-red-500 text-4xl font-bold mt-2">789</div>
+              </div>
+
+              <!-- Commits Card -->
+              <div
+                class="bg-gradient-to-t from-black to-slate-800/50 overflow-hidden relative rounded-xl p-4 flex flex-col justify-between col-span-2 row-span-2"
+              >
+                
+                 <svg class="absolute inset-0 object-cover rotate-180" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svgjs="http://svgjs.dev/svgjs" viewBox="0 0 800 800"><defs><linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="oooscillate-grad"><stop stop-color="hsl(105, 69%, 40%)" stop-opacity="1" offset="0%"></stop><stop stop-color="hsl(105, 69%, 60%)" stop-opacity="1" offset="100%"></stop></linearGradient></defs><g stroke-width="2" stroke="url(#oooscillate-grad)" fill="none" stroke-linecap="round"><path d="M 0 500 Q 200 35 400 400 Q 600 765 800 500" opacity="1.00"></path><path d="M 0 475 Q 200 35 400 400 Q 600 765 800 475" opacity="0.95"></path><path d="M 0 450 Q 200 35 400 400 Q 600 765 800 450" opacity="0.90"></path><path d="M 0 425 Q 200 35 400 400 Q 600 765 800 425" opacity="0.85"></path><path d="M 0 400 Q 200 35 400 400 Q 600 765 800 400" opacity="0.80"></path><path d="M 0 375 Q 200 35 400 400 Q 600 765 800 375" opacity="0.75"></path><path d="M 0 350 Q 200 35 400 400 Q 600 765 800 350" opacity="0.70"></path><path d="M 0 325 Q 200 35 400 400 Q 600 765 800 325" opacity="0.65"></path><path d="M 0 300 Q 200 35 400 400 Q 600 765 800 300" opacity="0.60"></path><path d="M 0 275 Q 200 35 400 400 Q 600 765 800 275" opacity="0.55"></path><path d="M 0 250 Q 200 35 400 400 Q 600 765 800 250" opacity="0.50"></path><path d="M 0 225 Q 200 35 400 400 Q 600 765 800 225" opacity="0.45"></path><path d="M 0 200 Q 200 35 400 400 Q 600 765 800 200" opacity="0.40"></path><path d="M 0 175 Q 200 35 400 400 Q 600 765 800 175" opacity="0.35"></path><path d="M 0 150 Q 200 35 400 400 Q 600 765 800 150" opacity="0.30"></path><path d="M 0 125 Q 200 35 400 400 Q 600 765 800 125" opacity="0.25"></path><path d="M 0 100 Q 200 35 400 400 Q 600 765 800 100" opacity="0.20"></path><path d="M 0 75 Q 200 35 400 400 Q 600 765 800 75" opacity="0.15"></path><path d="M 0 50 Q 200 35 400 400 Q 600 765 800 50" opacity="0.10"></path></g></svg>
+                  
+                <div class="flex items-center w-full">
+                  <i
+                    data-lucide="activity"
+                    class="text-green-400 w-11 h-11"
+                  ></i>
+                  <span
+                    class="text-muted-foreground w-full text-end text-2xl font-medium"
+                    >Commits</span
+                  >
+                </div>
+                <div class="text-green-400 text-6xl text-end font-bold">
+                  5678
+                </div>
+              </div>
+
+              <!-- Contributed To Card -->
+              <div
+                class="bg-muted/30 relative overflow-hidden rounded-xl p-4 flex flex-col justify-between col-span-2 row-span-1"
+              >
+                <svg  class="absolute -z-10 inset-0 object-cover brightness-150" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svgjs="http://svgjs.dev/svgjs" viewBox="0 0 800 800" id="qqquad"><g shape-rendering="crispEdges" stroke-linejoin="round" fill="none" stroke-width="1" stroke="hsl(220, 64%, 12%)"><polygon points="800,0 600,200 800,200"></polygon><polygon points="600,0 400,0 600,200"></polygon><polygon points="600,300 600,200 500,200"></polygon><polygon points="400,300 500,200 500,300"></polygon><polygon points="400,300 500,300 500,400"></polygon><polygon points="600,400 500,400 500,300"></polygon><polygon points="800,200 800,400 600,200"></polygon><polygon points="400,0 200,0 200,200"></polygon><polygon points="0,0 200,0 200,200"></polygon><polygon points="0,200 200,400 0,400"></polygon><polygon points="300,200 400,200 300,300"></polygon><polygon points="200,300 200,200 300,200"></polygon><polygon points="300,400 200,400 300,300"></polygon><polygon points="300,300 400,400 300,400"></polygon><polygon points="300,500 300,400 400,500"></polygon><polygon points="200,500 300,500 300,400"></polygon><polygon points="300,600 200,600 200,500"></polygon><polygon points="400,500 400,600 300,500"></polygon><polygon points="200,500 200,400 100,500"></polygon><polygon points="100,400 100,500 0,400"></polygon><polygon points="0,500 100,500 0,600"></polygon><polygon points="200,600 200,500 100,600"></polygon><polygon points="0,800 200,800 200,600"></polygon><polygon points="400,800 200,800 200,600"></polygon><polygon points="800,400 600,600 800,600"></polygon><polygon points="600,500 600,400 500,500"></polygon><polygon points="500,500 400,500 400,400"></polygon><polygon points="500,600 400,500 400,600"></polygon><polygon points="500,600 600,600 500,500"></polygon><polygon points="600,700 500,700 600,600"></polygon><polygon points="500,600 500,700 400,600"></polygon><polygon points="500,800 500,700 400,800"></polygon><polygon points="600,700 600,800 500,800"></polygon><polygon points="800,600 800,800 600,800"></polygon></g><g fill="hsl(220, 62%, 45%)" stroke-width="3" stroke="hsl(220, 43%, 13%)"></g></svg>
+
+                <i
+                  data-lucide="git-branch"
+                  class="text-blue-400 absolute left-12 bottom-4 w-10 h-10"
+                ></i>
+                <span
+                  class="text-muted-foreground text-center w-full text-sm font-medium"
+                  >Contributed To</span
+                >
+                <div class="text-blue-400 text-4xl text-center font-bold mt-2">
+                  23
+                </div>
+              </div>
             </div>
-        </div>
-        <div class="bento-item music-player">
-            <p style="color: #22d3ee; font-size: 0.75rem; margin-bottom: 0.5rem;">Los Angeles</p>
-            <p style="font-size: 0.75rem;">The Midnight</p>
-            <div class="music-controls">
-                <div class="music-control"></div>
-                <div class="music-control"></div>
-                <div class="music-control"></div>
-                <div class="music-control"></div>
-                <div class="music-control"></div>
+          </div>
+
+          <!-- Contribution Stats -->
+          <div class="w-full h-full col-span-2 row-span-2">
+            <div class="max-w-xl w-full h-full rounded-xl">
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4 w-full h-full">
+                <div class="flex w-full h-full flex-col space-y-4">
+                  <!-- Total Contributions Card -->
+                  <div
+                    class="bg-gradient-to-tr from-slate-900 to-secondary/20 rounded-lg p-4 h-full flex flex-col items-center justify-center"
+                  >
+                    <i
+                      data-lucide="calendar"
+                      class="w-8 h-8 mb-2 text-blue-400"
+                    ></i>
+                    <h3 class="text-sm font-medium text-gray-400">
+                      Total Contributions
+                    </h3>
+                    <p class="text-3xl font-bold text-blue-400">1234</p>
+                    <p class="text-xs text-gray-500 mt-2">
+                      2023-01-01 - Present
+                    </p>
+                  </div>
+                  <!-- Longest Streak Card -->
+                  <div
+                    class="rounded-lg bg-gradient-to-b from-yellow-500/15 via-transparent to-yellow-500/10 p-4 h-full flex flex-col items-center justify-center"
+                  >
+                    <i
+                      data-lucide="trophy"
+                      class="w-8 h-8 mb-2 text-yellow-400"
+                    ></i>
+                    <h3 class="text-sm font-medium text-gray-400">
+                      Longest Streak
+                    </h3>
+                    <p class="text-3xl font-bold text-yellow-400">30</p>
+                    <p class="text-xs text-gray-500 mt-2">
+                      2023-06-01 - 2023-06-30
+                    </p>
+                  </div>
+                </div>
+                <!-- Current Streak Card -->
+                <div
+                  class="bg-gradient-to-r to-orange-800/10 from-orange-800/10 via-muted/10 rounded-lg p-6 flex flex-col items-center justify-center relative"
+                >
+                  <i
+                    data-lucide="flame"
+                    class="w-28 h-28 mb-4 text-orange-600 rounded-full p-4"
+                  ></i>
+                  <h3 class="text-lg font-medium text-gray-400">
+                    Current Streak
+                  </h3>
+                  <p class="text-6xl font-bold text-orange-600 my-4">15</p>
+                  <p class="text-sm text-gray-500">2023-10-01 - 2023-10-15</p>
+                </div>
+              </div>
             </div>
+          </div>
         </div>
-        <div class="bento-item op-bento">
-            <h2>Made using OP Bento</h2>
-        </div>
+      </div>
     </div>
-</body>
+
+    <script>
+      lucide.createIcons();
+    </script>
+  </body>
 </html>
-  `;
+`;
 
   try {
     const options = {
@@ -201,11 +303,12 @@ export async function GET(req: NextRequest) {
     const browser = await puppeteer.launch(options);
     const page = await browser.newPage();
     await page.setViewport({
-      width: 1200,
-      height: 700,
+      width: 1110,
+      height: 945,
       deviceScaleFactor: 2,
     });
     await page.setContent(html, { waitUntil: "networkidle0" });
+    await new Promise((resolve) => setTimeout(resolve, 500));
     const screenshot = await page.screenshot({ type: "png" });
     await browser.close();
 
