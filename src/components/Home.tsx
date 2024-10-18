@@ -11,7 +11,6 @@ import { Highlight } from "./ui/highlight";
 import BentoGrid from "./Bento1";
 import BioBlock from "./BioBlock";
 import { Graph, StreakStats, UserStats } from "@/types";
-import GitHubStatsCard from "./GithubStatCard";
 
 export interface ProjectType {
   title: string;
@@ -22,13 +21,10 @@ export interface ProjectType {
 export default function HomePage() {
   const [name, setName] = useState("");
   const [bio, setBio] = useState("");
-  const [experience, setExperience] = useState("");
-  const [jobRole, setJobRole] = useState("");
   const [githubURL, setGithubURL] = useState("");
   const [linkedinURL, setLinkedinURL] = useState("");
   const [imageUrl, setImageUrl] = useState("");
   const [twitterURL, setTwitterURL] = useState("");
-  const [youtubeURL, setYoutubeURL] = useState("");
   const [email, setEmail] = useState("");
   const [portfolioURL, setPortfolioURL] = useState("");
   const [showStats, setShowStats] = useState(false);
@@ -67,13 +63,9 @@ export default function HomePage() {
           />
 
           <BioBlock
-            linkedinURL={linkedinURL}
             setLinkedinURL={setLinkedinURL}
-            portfolioURL={portfolioURL}
             setPortfolioURL={setPortfolioURL}
             setBio={setBio}
-            setJobRole={setJobRole}
-            setExperience={setExperience}
             setSkills={setSkills}
           />
         </motion.div>
@@ -89,6 +81,8 @@ export default function HomePage() {
           showGraph={showGraph}
           graph={graph}
           portfolioUrl={portfolioURL}
+          skills={skills}
+          bio={bio}
         />
       </div>
     </div>

@@ -8,31 +8,24 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { useState } from "react";
 import { Badge } from "./ui/badge";
 import { toast } from "sonner";
+import crypto from "crypto";
 
 export default function BioBlock({
-  linkedinURL,
   setLinkedinURL,
-  portfolioURL,
   setPortfolioURL,
   setBio,
-  setJobRole,
-  setExperience,
   setSkills,
 }: {
-  linkedinURL?: string;
   setLinkedinURL: (url: string) => void;
-  portfolioURL?: string;
   setPortfolioURL: (url: string) => void;
   setBio: (bio: string) => void;
-  setJobRole: (role: string) => void;
-  setExperience: (exp: string) => void;
   setSkills: (skills: string[]) => void;
 }) {
   const [skillInput, setSkillInput] = useState("");
   const [skillSet, setSkillSet] = useState<string[]>([]);
-  const [exp, setExp] = useState("");
-  const [role, setRole] = useState("");
   const [bioText, setBioText] = useState("");
+  const [lUrl, setLUrl] = useState("");
+  const [pUrl, setPUrl] = useState("");
 
   const handleAddSkill = () => {
     if (skillInput.trim() !== "" && !skillSet.includes(skillInput.trim())) {
@@ -45,10 +38,15 @@ export default function BioBlock({
     setSkillSet(skillSet.filter((skillSet) => skillSet !== skillToRemove));
   };
 
+  const handleBioChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const text = e.target.value;
+    if (text.length <= 250) {
+      setBioText(text);
+    }
+  };
+
   const handleSave = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setExperience(exp);
-    setJobRole(role);
     setBio(bioText);
     setSkills(skillSet);
     toast.success("Profile updated successfully !");
@@ -63,12 +61,24 @@ export default function BioBlock({
             <h1 className="text-2xl font-bold mx-auto mb-2 text-blue-200">
               LinkedIn Username
             </h1>
-            <Input
-              className="w-full mt-2 focus-visible:ring-blue-700 placeholder:text-gray-200 bg-transparent border border-blue-200/50 text-secondary ring-offset-blue-500"
-              placeholder="Enter your username"
-              value={linkedinURL}
-              onChange={(e) => setLinkedinURL(e.target.value)}
-            />
+            <div className="relative mt-2">
+              <Input
+                className="w-full focus-visible:ring-purple-700 placeholder:text-gray-200 bg-transparent pr-10 text-white border-yellow-200/50 ring-offset-indigo-500"
+                placeholder="Enter your username"
+                type="url"
+                value={lUrl}
+                onChange={(e) => setLUrl(e.target.value)}
+              />
+              <Button
+                className="absolute top-0 right-0 p-2 px-2.5 bg-purple-500 hover:bg-purple-600"
+                onClick={() => {
+                  setLinkedinURL(lUrl);
+                  toast.success("LinkedIn URL saved");
+                }}
+              >
+                <Save className="text-white" size={20} />
+              </Button>
+            </div>
           </div>
         </Block>
 
@@ -81,13 +91,24 @@ export default function BioBlock({
             <h1 className="text-2xl font-bold mx-auto mb-2 text-gray-800">
               Your Website URL
             </h1>
-            <Input
-              className="w-full mt-2 focus-visible:ring-gray-700 placeholder:text-gray-100 bg-transparent text-white border-gray-700/50 ring-offset-gray-500"
-              placeholder="Enter your website url"
-              type="url"
-              value={portfolioURL}
-              onChange={(e) => setPortfolioURL(e.target.value)}
-            />
+            <div className="relative mt-2">
+              <Input
+                className="w-full focus-visible:ring-gray-600 placeholder:text-gray-200 bg-transparent pr-10 text-secondary border-yellow-200/50 ring-offset-gray-400"
+                placeholder="Enter your portfolio url"
+                type="url"
+                value={pUrl}
+                onChange={(e) => setPUrl(e.target.value)}
+              />
+              <Button
+                className="absolute top-0 right-0 p-2 px-2.5 bg-gray-500 hover:bg-gray-600"
+                onClick={() => {
+                  setPortfolioURL(pUrl);
+                  toast.success("Portfolio URL saved");
+                }}
+              >
+                <Save className="text-white" size={20} />
+              </Button>
+            </div>
           </div>
         </Block>
       </div>
@@ -104,54 +125,23 @@ export default function BioBlock({
           }}
         >
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="flex flex-col gap-4">
-              <div>
-                <label
-                  htmlFor="experience"
-                  className="block text-sm font-medium text-gray-100 mb-1"
-                >
-                  Experience (years)
-                </label>
-                <Input
-                  id="experience"
-                  type="number"
-                  value={exp}
-                  onChange={(e) => setExp(e.target.value)}
-                  placeholder="Years of experience"
-                  className="w-full bg-transparent border border-gray-500 ring-offset-secondary"
-                />
-              </div>
-              <div>
-                <label
-                  htmlFor="role"
-                  className="block text-sm font-medium text-gray-100 mb-1"
-                >
-                  Current Role
-                </label>
-                <Input
-                  id="role"
-                  type="text"
-                  value={role}
-                  onChange={(e) => setRole(e.target.value)}
-                  placeholder="e.g. Software Engineer"
-                  className="w-full bg-transparent border border-gray-500 ring-offset-secondary"
-                />
-              </div>
-            </div>
             <div className="h-full">
               <label
                 htmlFor="bio"
-                className="block text-sm font-medium text-gray-100 mb-1"
+                className="flex justify-start gap-4 items-center text-lg font-medium text-gray-100 mb-1"
               >
                 Bio
+                <p className="text-sm text-gray-400">
+                  ( {bioText.length}/250 )
+                </p>
               </label>
               <Textarea
                 id="bio"
                 value={bioText}
-                onChange={(e) => setBioText(e.target.value)}
+                onChange={handleBioChange}
                 placeholder="Tell us about yourself"
-                rows={4}
-                className="w-full resize-none bg-transparent outline-white border border-gray-700"
+                rows={5}
+                className="w-full resize-none bg-transparent outline-white border border-gray-600"
               />
             </div>
           </div>
@@ -160,7 +150,7 @@ export default function BioBlock({
             <div>
               <label
                 htmlFor="skills"
-                className="block text-sm font-medium text-gray-100 mb-1"
+                className="block text-lg font-medium text-gray-100 mb-1"
               >
                 Skills
               </label>
@@ -191,6 +181,9 @@ export default function BioBlock({
                 </span>
               </h1>
               <div className="flex flex-wrap gap-2 p-2">
+                {skillSet.length === 0 && (
+                  <p className="text-sm text-gray-400">No skills added yet</p>
+                )}
                 {skillSet.map((skillSet) => (
                   <Badge
                     key={skillSet}

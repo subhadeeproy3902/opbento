@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import puppeteer from "puppeteer";
 import fetchUserData from "@/actions/fetchUserData";
 import { fetchContributions } from "@/actions/githubGraphql";
+import crypto from "crypto";
 
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
@@ -10,6 +11,37 @@ export async function GET(req: NextRequest) {
   const i = searchParams.get("i");
   const x = searchParams.get("x");
   const l = searchParams.get("l");
+  const s = searchParams.get("s");
+  const key = searchParams.get("key");
+  const iv = searchParams.get("iv");
+
+  // &key=${encodeURIComponent(key.toString("hex"))}&iv=${encodeURIComponent(iv.toString("hex")
+
+  const algorithm = "aes-256-cbc";
+
+  function decrypt(encryptedText: string): string {
+
+    const keyz = Buffer.from(key!, "hex");
+    const ivz = Buffer.from(iv!, "hex");
+
+    const decipher = crypto.createDecipheriv(algorithm, keyz, ivz);
+    let decrypted = decipher.update(encryptedText, "hex", "utf8");
+    decrypted += decipher.final("utf8");
+    return decrypted;
+  }
+  const decryptedSkills: string = decrypt(s!);
+  const skillsArray: string[] = decryptedSkills.split(",");
+  console.log("Skills Array:", skillsArray);
+
+  const skillsHtml = skillsArray.map(
+    (skill, index) =>
+      `<div
+        key=${index}
+        class="justify-start px-2 py-1 bg-gradient-to-br from-green-400 to-blue-500 w-fit inline-flex items-center rounded-full border text-xs font-semibold border-transparent"
+      >
+        <span class="truncate">${skill}</span>
+      </div>`
+  ).join("");
 
   if (!g) {
     return NextResponse.json(
@@ -122,6 +154,16 @@ export async function GET(req: NextRequest) {
         >
           <h2 class="text-3xl text-white font-bold">Made using OP Bento</h2>
         </div>
+
+        <div className="bg-[##1f2937] overflow-hidden rounded-lg col-span-2 row-span-1">
+          <div className="flex flex-col gap-4 p-8">
+            <h1 className="text-2xl font-bold tracking-wide">My Skills</h1>
+            <div className="flex flex-wrap gap-2">
+              ${skillsHtml}
+            </div>
+          </div>
+        </div>
+
 
         <!-- Stats Grid -->
         <div class="grid gap-4 grid-cols-4 col-span-4 row-span-2">
@@ -321,9 +363,9 @@ ${contributionStats.longestStreakStartDate} - ${contributionStats.longestStreakE
     const browser = await puppeteer.launch(options);
     const page = await browser.newPage();
     await page.setViewport({
-      width: 1110,
-      height: 945,
-      deviceScaleFactor: 2,
+      width: 1100,
+      height: 1200,
+      deviceScaleFactor: 3,
     });
     await page.setContent(html, { waitUntil: "networkidle0" });
     await new Promise((resolve) => setTimeout(resolve, 700));

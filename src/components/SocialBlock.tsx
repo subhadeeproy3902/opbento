@@ -152,7 +152,7 @@ export default function SocialsBlock({
           </h1>
           <div className="relative mt-2">
             <Input
-              className="w-full focus-visible:ring-orange-700 placeholder:text-gray-200 bg-transparent pr-10 text-white border-yellow-200/50 ring-offset-orange-500"
+              className="w-full focus-visible:ring-orange-600 placeholder:text-gray-200 bg-transparent pr-10 text-white border-yellow-200/50 ring-offset-amber-500"
               placeholder="Enter your image url"
               type="url"
               value={iUrl}
@@ -231,7 +231,7 @@ export default function SocialsBlock({
           </h1>
           <div className="relative mt-2">
             <Input
-              className="w-full focus-visible:ring-blue-700 placeholder:text-gray-200 bg-transparent pr-10 border border-blue-200/50 text-secondary ring-offset-blue-500"
+              className="w-full focus-visible:ring-blue-700 placeholder:text-gray-200 bg-transparent pr-10 border border-blue-200/50 ring-offset-blue-500"
               placeholder="Enter your username"
               value={tUrl}
               onChange={(e) => setTUrl(e.target.value)}
