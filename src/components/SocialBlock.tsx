@@ -1,12 +1,8 @@
 import {
   Github,
   Linkedin,
-  Twitter,
-  Youtube,
-  CircleUser,
-  Save,
-  Loader,
-  Loader2,
+  Twitter, CircleUser,
+  Save, Loader2
 } from "lucide-react";
 import Block from "./ui/Block";
 import { Input } from "./ui/input";

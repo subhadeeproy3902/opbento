@@ -1,4 +1,4 @@
-import { Linkedin, Globe, PlusIcon, Cross, X, Save } from "lucide-react";
+import { Linkedin, Globe, PlusIcon, X, Save } from "lucide-react";
 import Block from "./ui/Block";
 import { Input } from "./ui/input";
 import { Highlight } from "./ui/highlight";
@@ -8,7 +8,6 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { useState } from "react";
 import { Badge } from "./ui/badge";
 import { toast } from "sonner";
-import crypto from "crypto";
 
 export default function BioBlock({
   setLinkedinURL,
