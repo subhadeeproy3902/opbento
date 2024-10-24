@@ -18,7 +18,6 @@ import {
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { Graph, StreakStats, UserStats } from "@/types";
-import Image from "next/image";
 import { generateContributionGraph } from "@/utils/generate-graph";
 import crypto from "crypto";
 
@@ -197,7 +196,7 @@ const BentoGrid = ({
               ? portfolioUrl.replace("https://", "")
               : portfolioUrl}
           </h1>
-          <Image
+          <img
             src="/earth.png"
             width={200}
             height={200}
@@ -276,7 +275,7 @@ const BentoGrid = ({
                   </div>
                 </div>
                 <div className="bg-gradient-to-t from-black to-slate-800/50 overflow-hidden relative rounded-xl p-4 flex flex-col justify-between col-span-2 row-span-2">
-                  <Image
+                  <img
                     src={"/surf.svg"}
                     alt=""
                     width={450}
@@ -294,7 +293,7 @@ const BentoGrid = ({
                   </div>
                 </div>
                 <div className="bg-muted/30 relative overflow-hidden rounded-xl p-4 flex flex-col justify-between col-span-2 row-span-1">
-                  <Image
+                  <img
                     src={"/blocks.svg"}
                     alt=""
                     width={400}

@@ -1,7 +1,6 @@
 import React from "react";
 import { Star, Activity, GitPullRequest, Users, GitBranch } from "lucide-react";
 import { UserStats } from "@/types";
-import Image from "next/image";
 
 const GitHubStatsCard = ({
   userName,
@@ -47,7 +46,7 @@ const GitHubStatsCard = ({
         </div>
       </div>
       <div className="bg-gradient-to-t from-black to-slate-800/50 overflow-hidden relative rounded-xl p-4 flex flex-col justify-between col-span-2 row-span-2">
-        <Image
+        <img
           src={"/surf.svg"}
           alt=""
           width={450}
@@ -65,7 +64,7 @@ const GitHubStatsCard = ({
         </div>
       </div>
       <div className="bg-muted/30 relative overflow-hidden rounded-xl p-4 flex flex-col justify-between col-span-2 row-span-1">
-        <Image
+        <img
           src={"/blocks.svg"}
           alt=""
           width={400}

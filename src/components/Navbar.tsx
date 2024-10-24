@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import GitHubButton from "./GithubButton";
 import Block from "./ui/Block";
 
@@ -8,7 +7,7 @@ export default function Navbar() {
   return (
     <Block className="col-span-12 text-3xl mb-8 bg-secondary/30 backdrop-blur-md leading-snug py-2 flex justify-between sticky top-2 z-50">
       <div className="flex items-center gap-4">
-        <Image
+        <img
           className="size-8 lg:size-12"
           src="/logo.png"
           alt=""
