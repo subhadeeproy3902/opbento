@@ -93,9 +93,7 @@ const BentoGrid = ({
       name
     )}&i=${encodeURIComponent(imageUrl)}&g=${encodeURIComponent(
       githubURL
-    )}&x=${encodeURIComponent(
-      twitterURL
-    )}&s=${encodeURIComponent(
+    )}&x=${encodeURIComponent(twitterURL)}&s=${encodeURIComponent(
       encryptedSkills
     )}&key=${encodeURIComponent(key.toString("hex"))}&iv=${encodeURIComponent(
       iv.toString("hex")
