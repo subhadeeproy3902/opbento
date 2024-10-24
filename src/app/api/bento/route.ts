@@ -3,6 +3,7 @@ import puppeteer from "puppeteer";
 import fetchUserData from "@/actions/fetchUserData";
 import { fetchContributions } from "@/actions/githubGraphql";
 import crypto from "crypto";
+import chromium from "chrome-aws-lambda";
 
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
@@ -20,7 +21,6 @@ export async function GET(req: NextRequest) {
   const algorithm = "aes-256-cbc";
 
   function decrypt(encryptedText: string): string {
-
     const keyz = Buffer.from(key!, "hex");
     const ivz = Buffer.from(iv!, "hex");
 
@@ -33,15 +33,17 @@ export async function GET(req: NextRequest) {
   const skillsArray: string[] = decryptedSkills.split(",");
   console.log("Skills Array:", skillsArray);
 
-  const skillsHtml = skillsArray.map(
-    (skill, index) =>
-      `<div
+  const skillsHtml = skillsArray
+    .map(
+      (skill, index) =>
+        `<div
         key=${index}
         class="justify-start px-2 py-1 bg-gradient-to-br from-green-400 to-blue-500 w-fit inline-flex items-center rounded-full border text-xs font-semibold border-transparent"
       >
         <span class="truncate">${skill}</span>
       </div>`
-  ).join("");
+    )
+    .join("");
 
   if (!g) {
     return NextResponse.json(
@@ -349,15 +351,10 @@ ${contributionStats.longestStreakStartDate} - ${contributionStats.longestStreakE
 `;
   try {
     const options = {
-      headless: true,
-      // executablePath: '/usr/bin/chromium-browser',
-      args: [
-        "--no-sandbox",
-        "--disable-setuid-sandbox",
-        "--disable-web-security",
-        "--hide-scrollbars",
-        "--font-render-hinting=none",
-      ],
+      args: chromium.args,
+      defaultViewport: chromium.defaultViewport,
+      executablePath: await chromium.executablePath,
+      headless: chromium.headless,
     };
 
     const browser = await puppeteer.launch(options);
