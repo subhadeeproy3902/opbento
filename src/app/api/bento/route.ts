@@ -14,7 +14,7 @@ export async function GET(req: NextRequest) {
   const x = searchParams.get("x");
   const l = searchParams.get("l");
   let htmlofGithubStats = ``;
-
+  
   if (g) {
     const { userStats } = await fetchUserData(g);
     const contributionStats = await fetchContributions(g);
@@ -313,7 +313,7 @@ ${contributionStats.longestStreakStartDate} - ${contributionStats.longestStreakE
       executablePath:
         process.env.CHROME_EXECUTABLE_PATH ||
         (await chromium.executablePath(
-          `https://github.com/subhadeeproy3902/opbento/blob/main/chromium-v130.0.0-pack.tar`
+          `https://github.com/Sparticuz/chromium/releases/download/v130.0.0/chromium-v130.0.0-pack.tar`
         )),
       headless: chromium.headless,
     });
