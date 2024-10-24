@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import puppeteer from "puppeteer";
+import puppeteer from "puppeteer-core";
 import fetchUserData from "@/actions/fetchUserData";
 import { fetchContributions } from "@/actions/githubGraphql";
 import crypto from "crypto";
