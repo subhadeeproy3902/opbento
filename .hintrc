@@ -5,6 +5,7 @@
   "hints": {
     "disown-opener": "off",
     "button-type": "off",
-    "axe/name-role-value": "off"
+    "axe/name-role-value": "off",
+    "no-inline-styles": "off"
   }
 }
