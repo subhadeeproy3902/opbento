@@ -18,6 +18,7 @@
     "@radix-ui/react-toast": "^1.2.2",
     "@types/flat-cache": "^2.0.2",
     "@types/nanoid": "^3.0.0",
+    "@types/puppeteer-core": "^7.0.4",
     "chrome-aws-lambda": "^10.1.0",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
