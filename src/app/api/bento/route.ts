@@ -5,6 +5,8 @@ import crypto from "crypto";
 import { NextRequest, NextResponse } from "next/server";
 import puppeteer from "puppeteer-core";
 
+export const maxDuration = 40;
+
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
   const n = searchParams.get("n");
@@ -369,6 +371,7 @@ ${contributionStats.longestStreakStartDate} - ${contributionStats.longestStreakE
       height: 1200,
       deviceScaleFactor: 3,
     });
+
     await page.setContent(html, { waitUntil: "networkidle0" });
     await new Promise((resolve) => setTimeout(resolve, 700));
     const screenshot = await page.screenshot({ type: "png" });
