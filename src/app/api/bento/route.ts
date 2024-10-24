@@ -1,11 +1,10 @@
 import fetchUserData from "@/actions/fetchUserData";
 import { fetchContributions } from "@/actions/githubGraphql";
 import chromium from "@sparticuz/chromium-min";
-import crypto from "crypto";
 import { NextRequest, NextResponse } from "next/server";
 import puppeteer from "puppeteer-core";
 
-export const maxDuration = 40;
+export const maxDuration = 25;
 
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
@@ -14,163 +13,13 @@ export async function GET(req: NextRequest) {
   const i = searchParams.get("i");
   const x = searchParams.get("x");
   const l = searchParams.get("l");
-  const s = searchParams.get("s");
-  const key = searchParams.get("key");
-  const iv = searchParams.get("iv");
+  let htmlofGithubStats = ``;
+  
+  if (g) {
+    const { userStats } = await fetchUserData(g);
+    const contributionStats = await fetchContributions(g);
 
-  // &key=${encodeURIComponent(key.toString("hex"))}&iv=${encodeURIComponent(iv.toString("hex")
-
-  const algorithm = "aes-256-cbc";
-
-  function decrypt(encryptedText: string): string {
-    const keyz = Buffer.from(key!, "hex");
-    const ivz = Buffer.from(iv!, "hex");
-
-    const decipher = crypto.createDecipheriv(algorithm, keyz, ivz);
-    let decrypted = decipher.update(encryptedText, "hex", "utf8");
-    decrypted += decipher.final("utf8");
-    return decrypted;
-  }
-  const decryptedSkills: string = decrypt(s!);
-  const skillsArray: string[] = decryptedSkills.split(",");
-  console.log("Skills Array:", skillsArray);
-
-  const skillsHtml = skillsArray
-    .map(
-      (skill, index) =>
-        `<div
-        key=${index}
-        class="justify-start px-2 py-1 bg-gradient-to-br from-green-400 to-blue-500 w-fit inline-flex items-center rounded-full border text-xs font-semibold border-transparent"
-      >
-        <span class="truncate">${skill}</span>
-      </div>`
-    )
-    .join("");
-
-  if (!g) {
-    return NextResponse.json(
-      { error: "GitHub username is required" },
-      { status: 400 }
-    );
-  }
-
-  // Fetch GitHub stats
-  const { userStats } = await fetchUserData(g);
-
-  // Fetch contribution data
-  const contributionStats = await fetchContributions(g);
-
-  // Create HTML content
-  const html = `<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Bento Grid</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link
-      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap"
-      rel="stylesheet"
-    />
-    <script src="https://unpkg.com/lucide@latest"></script>
-  </head>
-
-  <body class="bg-neutral-950 text-white font-['Space_Grotesk']">
-    <div class="max-w-5xl mx-auto">
-      <div
-        class="p-4 grid grid-cols-1 md:grid-cols-4 gap-4 max-w-5xl mt-2 mb-8 w-full mx-auto"
-      >
-        <div
-          class="bg-gradient-to-br from-cyan-400 via-blue-500 to-violet-600 py-6 px-8 rounded-lg col-span-1 row-span-1 min-h-32"
-        >
-          <p class="text-white text-xl">Hey I'm</p>
-          <h2 class="text-4xl text-white font-bold mb-2 capitalize">${n}</h2>
-        </div>
-        <div
-          class="bg-muted h-80 overflow-hidden rounded-lg col-span-2 row-span-2 flex items-center justify-center"
-        >
-          <img
-            src="${i}"
-            alt=""
-            class="w-full h-full object-cover"
-          />
-        </div>
-
-        <!-- Twitter Card -->
-        <a
-          href="https://x.com/${x}"
-          class="bg-gradient-to-br from-black to-blue-500 p-4 relative rounded-lg overflow-hidden col-span-1 row-span-1 min-h-[150px]"
-        >
-          <i
-            data-lucide="twitter"
-            class="absolute -top-3 -left-4 w-24 h-24 text-[#29BEF0]"
-          ></i>
-          <p class="z-20 absolute bottom-6 text-center w-full text-white">
-            @${x}
-          </p>
-        </a>
-
-        <!-- GitHub Card -->
-        <div
-          class="bg-muted relative overflow-hidden rounded-lg col-span-1 row-span-2"
-        >
-          <img
-            src="https://i.pinimg.com/736x/cf/95/4b/cf954b8923fbafc5cfc0c66344b6a6f9.jpg"
-            alt=""
-            class="absolute saturate-150 w-full h-full object-cover inset-0"
-          />
-          <div
-            class="absolute inset-0 bg-gradient-to-b to-black/80 from-transparent"
-          ></div>
-          <p class="z-20 absolute bottom-6 text-center w-full">
-            <a
-              href="https://github.com/${g}"
-              class="text-white font-semibold hover:underline p-2 px-4 bg-pink-600 opacity-80 rounded-md backdrop-blur"
-              >@${g}</a
-            >
-          </p>
-        </div>
-
-        <a
-          href="https://www.linkedin.com/in/${l}"
-          class="bg-gradient-to-tl from-black to-blue-600 p-4 relative rounded-lg overflow-hidden col-span-1 columns-3 row-span-1 min-h-[150px]"
-        >
-          <i
-            data-lucide="linkedin"
-            class="absolute -bottom-1 -right-2 w-20 h-20 text-[#56d2ff]"
-          ></i>
-          <p class="text-center w-full text-white">@${l}</p>
-        </a>
-
-        <!-- GitHub Activity Graph -->
-        <div
-          class="bg-muted overflow-hidden border border-red-600/40 rounded-lg col-span-2 row-span-1"
-        >
-          <img
-            src="https://github-readme-activity-graph.vercel.app/graph?username=${g}&bg_color=030312&color=ff8080&line=e00a60&point=ff7171&area=true&hide_border=true"
-            alt="graph"
-            class="w-full h-full object-cover"
-          />
-        </div>
-
-        <!-- OP Bento Card -->
-        <div
-          class="p-4 bg-gradient-to-br from-orange-600 via-yellow-600 to-rose-500 rounded-lg col-span-1 row-span-1 flex flex-col items-center justify-center min-h-32"
-        >
-          <h2 class="text-3xl text-white font-bold">Made using OP Bento</h2>
-        </div>
-
-        <div className="bg-[##1f2937] overflow-hidden rounded-lg col-span-2 row-span-1">
-          <div className="flex flex-col gap-4 p-8">
-            <h1 className="text-2xl font-bold tracking-wide">My Skills</h1>
-            <div className="flex flex-wrap gap-2">
-              ${skillsHtml}
-            </div>
-          </div>
-        </div>
-
-
-        <!-- Stats Grid -->
-        <div class="grid gap-4 grid-cols-4 col-span-4 row-span-2">
+    htmlofGithubStats = `<div class="grid gap-4 grid-cols-4 col-span-4 row-span-2">
           <div class="col-span-2 row-span-2">
             <div
               class="grid grid-cols-4 grid-rows-3 gap-4 auto-rows-fr rounded-xl overflow-hidden w-full h-full"
@@ -341,7 +190,111 @@ ${contributionStats.longestStreakStartDate} - ${contributionStats.longestStreakE
               </div>
             </div>
           </div>
+        </div>`
+  } else {
+    htmlofGithubStats = ``
+  }
+
+  // Create HTML content
+  const html = `<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Bento Grid</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://unpkg.com/lucide@latest"></script>
+  </head>
+
+  <body class="bg-neutral-950 text-white font-['Space_Grotesk']">
+    <div class="max-w-5xl mx-auto">
+      <div
+        class="p-4 grid grid-cols-1 md:grid-cols-4 gap-4 max-w-5xl mt-2 mb-8 w-full mx-auto"
+      >
+        <div
+          class="bg-gradient-to-br from-cyan-400 via-blue-500 to-violet-600 py-6 px-8 rounded-lg col-span-1 row-span-1 min-h-32"
+        >
+          <p class="text-white text-xl">Hey I'm</p>
+          <h2 class="text-4xl text-white font-bold mb-2 capitalize">${n}</h2>
         </div>
+        <div
+          class="bg-muted h-80 overflow-hidden rounded-lg col-span-2 row-span-2 flex items-center justify-center"
+        >
+          <img
+            src="${i}"
+            alt=""
+            class="w-full h-full object-cover"
+          />
+        </div>
+
+        <!-- Twitter Card -->
+        <a
+          href="https://x.com/${x}"
+          class="bg-gradient-to-br from-black to-blue-500 p-4 relative rounded-lg overflow-hidden col-span-1 row-span-1 min-h-[150px]"
+        >
+          <i
+            data-lucide="twitter"
+            class="absolute -top-3 -left-4 w-24 h-24 text-[#29BEF0]"
+          ></i>
+          <p class="z-20 absolute bottom-6 text-center w-full text-white">
+            @${x}
+          </p>
+        </a>
+
+        <!-- GitHub Card -->
+        <div
+          class="bg-muted relative overflow-hidden rounded-lg col-span-1 row-span-2"
+        >
+          <img
+            src="https://i.pinimg.com/736x/cf/95/4b/cf954b8923fbafc5cfc0c66344b6a6f9.jpg"
+            alt=""
+            class="absolute saturate-150 w-full h-full object-cover inset-0"
+          />
+          <div
+            class="absolute inset-0 bg-gradient-to-b to-black/80 from-transparent"
+          ></div>
+          <p class="z-20 absolute bottom-6 text-center w-full">
+            <a
+              href="https://github.com/${g}"
+              class="text-white font-semibold hover:underline p-2 px-4 bg-pink-600 opacity-80 rounded-md backdrop-blur"
+              >@${g}</a
+            >
+          </p>
+        </div>
+
+        <a
+          href="https://www.linkedin.com/in/${l}"
+          class="bg-gradient-to-tl from-black to-blue-600 p-4 relative rounded-lg overflow-hidden col-span-1 columns-3 row-span-1 min-h-[150px]"
+        >
+          <i
+            data-lucide="linkedin"
+            class="absolute -bottom-1 -right-2 w-20 h-20 text-[#56d2ff]"
+          ></i>
+          <p class="text-center w-full text-white">@${l}</p>
+        </a>
+
+        <!-- GitHub Activity Graph -->
+        <div
+          class="bg-muted overflow-hidden border border-red-600/40 rounded-lg col-span-2 row-span-1"
+        >
+          <img
+            src="https://github-readme-activity-graph.vercel.app/graph?username=${g}&bg_color=030312&color=ff8080&line=e00a60&point=ff7171&area=true&hide_border=true"
+            alt="graph"
+            class="w-full h-full object-cover"
+          />
+        </div>
+
+        <!-- OP Bento Card -->
+        <div
+          class="p-4 bg-gradient-to-br from-orange-600 via-yellow-600 to-rose-500 rounded-lg col-span-1 row-span-1 flex flex-col items-center justify-center min-h-32"
+        >
+          <h2 class="text-3xl text-white font-bold">Made using OP Bento</h2>
+        </div>
+
+        ${htmlofGithubStats}
       </div>
     </div>
 

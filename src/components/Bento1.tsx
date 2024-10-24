@@ -38,8 +38,6 @@ const BentoGrid = ({
   showGraph,
   graph,
   portfolioUrl,
-  skills,
-  bio,
 }: {
   name: string;
   githubURL: string;
@@ -52,8 +50,6 @@ const BentoGrid = ({
   showGraph: boolean;
   graph: Graph[] | undefined;
   portfolioUrl: string;
-  skills: string[];
-  bio: string;
 }) => {
   const [bentoLink, setBentoLink] = useState<string>("");
 
@@ -75,31 +71,13 @@ const BentoGrid = ({
   };
 
   useEffect(() => {
-    const algorithm = "aes-256-cbc";
-    const key = crypto.randomBytes(32);
-    const iv = crypto.randomBytes(16);
-    const skillsString = skills.join(",");
-
-    function encrypt(text: string): string {
-      const cipher = crypto.createCipheriv(algorithm, key, iv);
-      let encrypted = cipher.update(text, "utf8", "hex");
-      encrypted += cipher.final("hex");
-      return encrypted;
-    }
-
-    const encryptedSkills: string = encrypt(skillsString);
-
     const mdLink = `[![Bento Grid](https://opbento.vercel.app/api/bento?n=${encodeURIComponent(
       name
     )}&i=${encodeURIComponent(imageUrl)}&g=${encodeURIComponent(
       githubURL
-    )}&x=${encodeURIComponent(twitterURL)}&s=${encodeURIComponent(
-      encryptedSkills
-    )}&key=${encodeURIComponent(key.toString("hex"))}&iv=${encodeURIComponent(
-      iv.toString("hex")
-    )})](https://opbento.vercel.app)`;
+    )}&x=${encodeURIComponent(twitterURL)})](https://opbento.vercel.app)`;
     setBentoLink(mdLink);
-  }, [name, githubURL, twitterURL, imageUrl, skills]);
+  }, [name, githubURL, twitterURL, imageUrl]);
 
   const copyToClipboard = () => {
     navigator.clipboard.writeText(bentoLink).then(() => {
@@ -202,32 +180,6 @@ const BentoGrid = ({
             className="absolute -bottom-28 -right-28"
           />
         </div>
-
-        {bio.length !== 0 && (
-          <div className="bg-muted overflow-hidden rounded-lg col-span-2 row-span-1">
-            <div className="flex w-full flex-col items-start gap-x-8 gap-y-8 bg-gradient-to-b from-neutral-800 to-neutral-900 px-12 py-10 max-mdd:max-w-none max-md:p-8 text-pretty">
-              <h3 className="text-xl">{bio}</h3>
-            </div>
-          </div>
-        )}
-
-        {skills.length !== 0 && (
-          <div className="bg-muted overflow-hidden rounded-lg col-span-2 row-span-1">
-            <div className="flex flex-col gap-4 p-8">
-              <h1 className="text-xl font-bold tracking-wide">My Skills</h1>
-              <div className="flex flex-wrap gap-2">
-                {skills.map((skill, index) => (
-                  <div
-                    key={index}
-                    className="justify-start px-2 py-1 bg-gradient-to-br from-green-400 to-blue-500 w-fit inline-flex items-center rounded-full border text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent"
-                  >
-                    <span className="truncate">{skill}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        )}
 
         {stats && showStats && (
           <div className="grid gap-4 grid-cols-4 col-span-4 row-span-2">

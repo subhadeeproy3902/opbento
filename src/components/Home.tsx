@@ -20,16 +20,13 @@ export interface ProjectType {
 
 export default function HomePage() {
   const [name, setName] = useState("");
-  const [bio, setBio] = useState("");
   const [githubURL, setGithubURL] = useState("");
   const [linkedinURL, setLinkedinURL] = useState("");
   const [imageUrl, setImageUrl] = useState("");
   const [twitterURL, setTwitterURL] = useState("");
-  const [email, setEmail] = useState("");
   const [portfolioURL, setPortfolioURL] = useState("");
   const [showStats, setShowStats] = useState(false);
   const [showGraph, setShowGraph] = useState(false);
-  const [skills, setSkills] = useState<string[]>([]);
 
   const [stats, setStats] = useState<UserStats | undefined>(undefined);
   const [streak, setStreak] = useState<StreakStats | undefined>(undefined);
@@ -65,8 +62,6 @@ export default function HomePage() {
           <BioBlock
             setLinkedinURL={setLinkedinURL}
             setPortfolioURL={setPortfolioURL}
-            setBio={setBio}
-            setSkills={setSkills}
           />
         </motion.div>
         <BentoGrid
@@ -81,8 +76,6 @@ export default function HomePage() {
           showGraph={showGraph}
           graph={graph}
           portfolioUrl={portfolioURL}
-          skills={skills}
-          bio={bio}
         />
       </div>
     </div>
