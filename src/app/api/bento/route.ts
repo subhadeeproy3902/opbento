@@ -4,7 +4,7 @@ import chromium from "@sparticuz/chromium-min";
 import { NextRequest, NextResponse } from "next/server";
 import puppeteer from "puppeteer-core";
 
-export const maxDuration = 40;
+export const maxDuration = 45;
 
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
