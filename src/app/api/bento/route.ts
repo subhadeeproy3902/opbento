@@ -1,16 +1,13 @@
 import fetchUserData from "@/actions/fetchUserData";
 import { fetchContributions } from "@/actions/githubGraphql";
 import { NextRequest, NextResponse } from "next/server";
-import { readFile } from "node:fs/promises";
+import { promises as fs } from 'fs';
 import satori from "satori";
 
 export const maxDuration = 45;
-const getSatoshi = fetch(new URL("./Satori.ttf", import.meta.url)).then((res) =>
-  res.arrayBuffer()
-);
 
 export async function GET(req: NextRequest) {
-  const [satoshi] = await Promise.all([getSatoshi]);
+  const satoshi = await fs.readFile("./Satori.ttf").then(buffer => buffer.buffer.slice(0, buffer.byteLength));
   const { searchParams } = new URL(req.url);
   const n = searchParams.get("n");
   const g = searchParams.get("g");
@@ -243,10 +240,12 @@ export async function GET(req: NextRequest) {
     </body>
   </html>`;
 
+  const satoshiBuffer = Buffer.from(satoshi);
+
   const renderedHtml = await satori(html, {
     height: 800,
     width: 800,
-    fonts: [{ data: satoshi, name: "Inter" }],
+    fonts: [{ data: satoshiBuffer, name: "Inter" }],
   });
 
   return new NextResponse(renderedHtml, {
