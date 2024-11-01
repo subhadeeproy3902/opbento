@@ -3,6 +3,8 @@ import { fetchContributions } from "@/actions/githubGraphql";
 import chromium from "@sparticuz/chromium-min";
 import { NextRequest, NextResponse } from "next/server";
 import puppeteer from "puppeteer-core";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { storage } from "@/lib/firebase";
 
 export const maxDuration = 45;
 
@@ -319,21 +321,23 @@ ${contributionStats.longestStreakStartDate} - ${contributionStats.longestStreakE
     });
 
     const page = await browser.newPage();
-    await page.setViewport({
-      width: 1100,
-      height: 1200,
-      deviceScaleFactor: 3,
-    });
-
+    await page.setViewport({ width: 1100, height: 1200, deviceScaleFactor: 3 });
     await page.setContent(html, { waitUntil: "networkidle0" });
     await new Promise((resolve) => setTimeout(resolve, 700));
     const screenshot = await page.screenshot({ type: "png" });
     await browser.close();
 
-    return new NextResponse(screenshot, {
-      headers: {
-        "Content-Type": "image/png",
-        "Content-Disposition": 'inline; filename="bento.png"',
+    const blob = new Blob([screenshot], { type: "image/png" });
+    const fileName = `bento_${Date.now()}.png`;
+    const storageRef = ref(storage, `opbento2/${fileName}`);
+
+    await uploadBytes(storageRef, blob, { cacheControl: "public, max-age=60" });
+    const downloadUrl = await getDownloadURL(storageRef);
+
+    return new NextResponse(JSON.stringify({ url: downloadUrl }), {
+      headers: { 
+        "Content-Type": "application/json",
+        "Cache-Control": "public, max-age=60"
       },
     });
   } catch (error) {
