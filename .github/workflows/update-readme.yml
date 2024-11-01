@@ -50,7 +50,7 @@ jobs:
       - name: Create new README.md
         if: env.skip != 'true'
         run: |
-          IMAGE_URL=${{ steps.fetch_bento_url.outputs.image_url }}
+          IMAGE_URL=$(cat last_image_url.txt)  # Read the URL from last_image_url.txt
           echo "# Bento GitHub Stats" > README.md
           echo "![Bento GitHub Stats]($IMAGE_URL)" >> README.md
           echo "Created new README.md with the latest image URL."
