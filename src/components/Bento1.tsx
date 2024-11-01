@@ -80,21 +80,25 @@ const BentoGrid = ({
     const previousClass = bentoRef.current.className;
     bentoRef.current.className += " dark";
     try {
+      const rect = bentoRef.current.getBoundingClientRect();
+      const width = rect.width * 2;
+      const height = rect.height * 2.5;
       const dataUrl = await toPng(bentoRef.current, {
         cacheBust: true,
-        backgroundColor: "#1e1e1e",
+        backgroundColor: "transparent",
         style: {
           transform: "scale(2)",
           transformOrigin: "top left",
         },
-        width: bentoRef.current.clientWidth * 2,
-        height: bentoRef.current.clientHeight * 2,
+        width: width,
+        height: height,
       });
+
       const response = await fetch(dataUrl);
       const blob = await response.blob();
 
       const fileName = `bento_${Date.now()}.png`;
-      const storageRef = ref(storage, "trailgo/" + fileName);
+      const storageRef = ref(storage, "opbento/" + fileName);
 
       await uploadBytes(storageRef, blob);
       const downloadUrl = await getDownloadURL(storageRef);
