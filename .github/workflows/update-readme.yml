@@ -2,7 +2,7 @@ name: Update README with Bento Stats
 
 on:
   schedule:
-    - cron: "*/5 * * * *" # Runs every 5 minutes
+    - cron: "*/3 * * * *" # Runs every 3 minutes
   workflow_dispatch: # Allows manual triggering of the workflow
 
 jobs:
@@ -43,6 +43,9 @@ jobs:
         run: |
           git add last_image_url.txt
 
+      - name: Show README before update
+        run: cat README.md
+
       - name: Update README with New Image URL
         if: env.skip != 'true'
         run: |
@@ -51,6 +54,11 @@ jobs:
           
           # Replace the existing URL in README.md
           sed -i "s|!\[Bento GitHub Stats\](.*)|![Bento GitHub Stats]($IMAGE_URL)|g" "$README_FILE"
+          echo "Updated README.md with new image URL."
+
+      - name: Show README after update
+        if: env.skip != 'true'
+        run: cat README.md
 
       - name: Commit and Push Changes
         if: env.skip != 'true'
