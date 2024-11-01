@@ -2,8 +2,8 @@ name: Update README with Bento Stats
 
 on:
   schedule:
-    - cron: "* * * * *"
-  workflow_dispatch:
+    - cron: "*/5 * * * *" # Runs every 5 minutes
+  workflow_dispatch: # Allows manual triggering of the workflow
 
 jobs:
   update-readme:
@@ -16,7 +16,7 @@ jobs:
       - name: Fetch Latest Bento Image URL
         id: fetch_bento_url
         run: |
-          API_URL="https://opbento.vercel.app/api/bento?n=Subhadeep%20Roy&i=https%3A%2F%2Fi.postimg.cc%2FhhFVCqM1%2Fsubha.jpg&g=subhadeeproy3902&x=mvp_Subha"
+          API_URL="https://opbento.vercel.app/api/bento?n=Subhadeep%20Roy&i=https%3A%2F%2Fi.postimg.cc%2FhhFVCqM1%2Fsubha.jpg&g=subhadeeproy3902&x=mvp_Subha" # Replace with your API URL
           RESPONSE=$(curl -s "$API_URL")
           echo "API Response: $RESPONSE"  # Log the entire response
           IMAGE_URL=$(echo $RESPONSE | jq -r '.url')
@@ -39,6 +39,10 @@ jobs:
           echo "${{ steps.fetch_bento_url.outputs.image_url }}" > last_image_url.txt
           echo "skip=false" >> $GITHUB_ENV
 
+      - name: Add last_image_url.txt to Git
+        run: |
+          git add last_image_url.txt
+
       - name: Update README with New Image URL
         if: env.skip != 'true'
         run: |
@@ -53,6 +57,6 @@ jobs:
         run: |
           git config --global user.email "subha9.5roy350@gmail.com"
           git config --global user.name "Subhadeep"
-          git add README.md
+          git add .
           git commit -m "Update README with latest Bento stats image"
           git push
