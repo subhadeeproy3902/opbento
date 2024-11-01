@@ -1,0 +1,39 @@
+name: Update README with Bento Stats
+
+on:
+  schedule:
+    - cron: "* * * * *"
+  workflow_dispatch:
+
+jobs:
+  update-readme:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Fetch Latest Bento Image URL
+        id: fetch_bento_url
+        run: |
+          API_URL="https://yourdomain.com/api/github-bento-stats"
+          RESPONSE=$(curl -s "$API_URL")
+          IMAGE_URL=$(echo $RESPONSE | jq -r '.url')
+          echo "Fetched Image URL: $IMAGE_URL"
+          echo "::set-output name=image_url::$IMAGE_URL"
+
+      - name: Update README with New Image URL
+        run: |
+          IMAGE_URL=${{ steps.fetch_bento_url.outputs.image_url }}
+          README_FILE="README.md"
+          
+          # Replace the existing URL in README.md
+          sed -i "s|!\[Bento GitHub Stats\](.*)|![Bento GitHub Stats]($IMAGE_URL)|g" "$README_FILE"
+
+      - name: Commit and Push Changes
+        run: |
+          git config --global user.email "subha9.5roy350@gmail.com"
+          git config --global user.name "Subhadeep"
+          git add README.md
+          git commit -m "Update README with latest Bento stats image"
+          git push
