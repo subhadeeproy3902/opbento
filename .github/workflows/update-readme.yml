@@ -2,8 +2,8 @@ name: Update README with Bento Stats
 
 on:
   schedule:
-    - cron: "* * * * *"
-  workflow_dispatch:
+    - cron: "*/5 * * * *" # Runs every 5 minutes
+  workflow_dispatch: # Allows manual triggering of the workflow
 
 jobs:
   update-readme:
@@ -16,13 +16,31 @@ jobs:
       - name: Fetch Latest Bento Image URL
         id: fetch_bento_url
         run: |
-          API_URL="https://opbento.vercel.app/api/bento?n=Subhadeep%20Roy&i=https%3A%2F%2Fi.postimg.cc%2FhhFVCqM1%2Fsubha.jpg&g=subhadeeproy3902&x=mvp_Subha"
+          API_URL="https://yourdomain.com/api/github-bento-stats" # Replace with your API URL
           RESPONSE=$(curl -s "$API_URL")
+          echo "API Response: $RESPONSE"  # Log the entire response
           IMAGE_URL=$(echo $RESPONSE | jq -r '.url')
           echo "Fetched Image URL: $IMAGE_URL"
           echo "::set-output name=image_url::$IMAGE_URL"
 
+      - name: Check for URL Change
+        id: check_url_change
+        run: |
+          if [ -f last_image_url.txt ]; then
+            LAST_URL=$(cat last_image_url.txt)
+            echo "Last URL: $LAST_URL"  # Log the last URL
+            echo "New URL: ${{ steps.fetch_bento_url.outputs.image_url }}"  # Log the new URL
+            if [ "$LAST_URL" = "${{ steps.fetch_bento_url.outputs.image_url }}" ]; then
+              echo "No changes detected in the image URL."
+              echo "skip=true" >> $GITHUB_ENV
+              exit 0
+            fi
+          fi
+          echo "${{ steps.fetch_bento_url.outputs.image_url }}" > last_image_url.txt
+          echo "skip=false" >> $GITHUB_ENV
+
       - name: Update README with New Image URL
+        if: env.skip != 'true'
         run: |
           IMAGE_URL=${{ steps.fetch_bento_url.outputs.image_url }}
           README_FILE="README.md"
@@ -31,6 +49,7 @@ jobs:
           sed -i "s|!\[Bento GitHub Stats\](.*)|![Bento GitHub Stats]($IMAGE_URL)|g" "$README_FILE"
 
       - name: Commit and Push Changes
+        if: env.skip != 'true'
         run: |
           git config --global user.email "subha9.5roy350@gmail.com"
           git config --global user.name "Subhadeep"
