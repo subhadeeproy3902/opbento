@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-import { useEffect, useState } from "react";
+import { useRef, useState } from "react";
 import { Space_Grotesk } from "next/font/google";
 import { cn } from "@/lib/utils";
 import {
@@ -19,7 +19,10 @@ import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { Graph, StreakStats, UserStats } from "@/types";
 import { generateContributionGraph } from "@/utils/generate-graph";
-import crypto from "crypto";
+import { storage } from "@/lib/firebase";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import { toPng } from "html-to-image";
+import { toast } from "sonner";
 
 const space = Space_Grotesk({
   subsets: ["latin"],
@@ -70,24 +73,51 @@ const BentoGrid = ({
     }
   };
 
-  useEffect(() => {
-    const mdLink = `[![Bento Grid](https://opbento.vercel.app/api/bento?n=${encodeURIComponent(
-      name
-    )}&i=${encodeURIComponent(imageUrl)}&g=${encodeURIComponent(
-      githubURL
-    )}&x=${encodeURIComponent(twitterURL)})](https://opbento.vercel.app)`;
-    setBentoLink(mdLink);
-  }, [name, githubURL, twitterURL, imageUrl]);
+  const bentoRef = useRef<HTMLDivElement>(null);
 
-  const copyToClipboard = () => {
-    navigator.clipboard.writeText(bentoLink).then(() => {
-      alert("Copied");
-    });
+  const handleGenerateLink = async () => {
+    if (!bentoRef.current) return;
+    const previousClass = bentoRef.current.className;
+    bentoRef.current.className += " dark";
+    try {
+      const dataUrl = await toPng(bentoRef.current, {
+        cacheBust: true,
+        backgroundColor: "#1e1e1e",
+        style: {
+          transform: "scale(2)",
+          transformOrigin: "top left",
+        },
+        width: bentoRef.current.clientWidth * 2,
+        height: bentoRef.current.clientHeight * 2,
+      });
+      const response = await fetch(dataUrl);
+      const blob = await response.blob();
+
+      const fileName = `bento_${Date.now()}.png`;
+      const storageRef = ref(storage, "trailgo/" + fileName);
+
+      await uploadBytes(storageRef, blob);
+      const downloadUrl = await getDownloadURL(storageRef);
+
+      setBentoLink(downloadUrl);
+    } catch (error) {
+      console.error("Error generating or uploading the image:", error);
+    } finally {
+      bentoRef.current.className = previousClass;
+    }
+  };
+
+  const copyToClipboard = async () => {
+    await navigator.clipboard.writeText(
+      `[![OpBento](${bentoLink})](https://opbento.vercel.app)`
+    );
+    toast.success("Copied to clipboard");
   };
 
   return (
     <div className="max-w-5xl mx-auto">
       <div
+        ref={bentoRef}
         className={cn(
           "p-4 grid grid-cols-1 md:grid-cols-4 gap-4 max-w-5xl mt-32 mb-8 w-full mx-auto",
           space.className
@@ -130,7 +160,7 @@ const BentoGrid = ({
 
         <div className="bg-muted relative overflow-hidden rounded-lg col-span-1 row-span-2">
           <img
-            src="https://i.pinimg.com/736x/cf/95/4b/cf954b8923fbafc5cfc0c66344b6a6f9.jpg"
+            src="https://i.postimg.cc/NGK80VQ1/cf954b8923fbafc5cfc0c66344b6a6f9.jpg"
             alt=""
             className="absolute saturate-150 size-full object-cover inset-0"
           />
@@ -353,8 +383,20 @@ const BentoGrid = ({
           </div>
         )}
       </div>
+
+      {/* Button for Generating */}
+      <Button
+        className="mx-auto"
+        onClick={handleGenerateLink}
+      >
+        Generate Bento
+      </Button>
+
       <div className="relative mt-4">
-        <Input value={bentoLink} readOnly />
+        <Input
+          value={`[![OpBento](${bentoLink})](https://opbento.vercel.app)`}
+          readOnly
+        />
         <Button className="absolute top-0 right-0" onClick={copyToClipboard}>
           <Clipboard />
         </Button>
