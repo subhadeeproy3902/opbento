@@ -82,7 +82,7 @@ const BentoGrid = ({
     try {
       const rect = bentoRef.current.getBoundingClientRect();
       const width = rect.width * 2;
-      const height = rect.height * 2.5;
+      const height = rect.height * 2.1;
       const dataUrl = await toPng(bentoRef.current, {
         cacheBust: true,
         backgroundColor: "transparent",
