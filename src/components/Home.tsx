@@ -3,7 +3,6 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Mail, MapPinIcon } from "lucide-react";
 import Block from "./ui/Block";
 import Navbar from "./Navbar";
 import SocialsBlock from "./SocialBlock";
@@ -84,7 +83,6 @@ export default function HomePage() {
 
 const HeaderBlock = () => (
   <Block className="col-span-12 row-span-2 md:col-span-6 relative">
-    {/* A badge */}
     <h1 className="mb-4 text-3xl sm:text-4xl font-bold sm:leading-normal">
       Make your Github Profile <Highlight>modern and trendy !</Highlight>
     </h1>

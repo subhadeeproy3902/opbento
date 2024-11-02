@@ -290,9 +290,9 @@ const GitHubButton: React.FC = () => {
   return (
     <div className="flex justify-center">
       <a
-        href="https://github.com/naymurdev/uilayout"
+        href="https://github.com/subhadeeproy3902/opbento"
         target="_blank"
-        className="relative inline-block w-36 h-[1.5em] mx-auto group dark:bg-black bg-white dark:border-white border-black border-2 rounded-lg"
+        className="relative text-3xl inline-block w-36 h-[1.5em] mx-auto group dark:bg-black bg-white dark:border-white border-black border-2 rounded-lg"
       >
         <div className="absolute w-[112.81%] h-[128.57%] top-[8.57%] left-1/2 -translate-x-1/2 filter blur-[19px] opacity-70">
           <span className="absolute inset-0 rounded-lg bg-[#d9d9d9] filter blur-[6.5px]"></span>
