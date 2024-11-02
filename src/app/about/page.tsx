@@ -88,7 +88,7 @@ const Creators = () => {
             />
 
             <div className="p-4 sm:p-6">
-              <h3 className="mt-0.5 text-lg font-semibold">Subadeep Roy</h3>
+              <h3 className="mt-0.5 text-lg font-semibold">Subhadeep Roy</h3>
 
               <p className="mt-2 line-clamp-3 text-sm/relaxed text-muted-foreground">
                 Highly frank ,fueled with enthusiasm and a connoisseur of
@@ -124,6 +124,62 @@ const Creators = () => {
                   <a
                     target="__blank"
                     href={"https://www.linkedin.com/in/subhadeep3902/"}
+                  >
+                    Linkedin{" "}
+                    <span>
+                      <Linkedin className="ml-2 size-5" />
+                    </span>
+                  </a>
+                </Button>
+              </div>
+            </div>
+          </article>
+          <article className="overflow-hidden bg-card border hover:border-primary/25 group rounded-lg shadow transition-all duration-500 hover:shadow-lg hover:shadow-primary/10">
+            <Image
+              alt="subha"
+              width={500}
+              height={400}
+              src="https://i.postimg.cc/FH6q8M8r/71373838.jpg"
+              className="h-[360px] w-full group-hover:scale-105 transition-all duration-500 object-cover object-top"
+            />
+
+            <div className="p-4 sm:p-6">
+              <h3 className="mt-0.5 text-lg font-semibold">Arghya Ghosh</h3>
+
+              <p className="mt-2 line-clamp-3 text-sm/relaxed text-muted-foreground">
+                Likes to design and build software that makes people more badass
+                at what they do.|
+              </p>
+              <div className="flex justify-around pt-10 pb-2">
+                <Button
+                  asChild
+                  className="bg-lime-500 text-black hover:bg-lime-400"
+                >
+                  <a target="__blank" href={"https://uiuxarghya.vercel.app/"}>
+                    Website{" "}
+                    <span>
+                      <Earth className="ml-2 size-5" />
+                    </span>
+                  </a>
+                </Button>
+                <Button
+                  asChild
+                  className="bg-zinc-800 text-white hover:bg-slate-700"
+                >
+                  <a target="__blank" href={"https://github.com/uiuxarghya"}>
+                    Github{" "}
+                    <span>
+                      <Github className="ml-2 size-5" />
+                    </span>
+                  </a>
+                </Button>
+                <Button
+                  asChild
+                  className="bg-blue-600 text-white hover:bg-blue-500"
+                >
+                  <a
+                    target="__blank"
+                    href={"https://www.linkedin.com/in/uiuxarghya/"}
                   >
                     Linkedin{" "}
                     <span>
