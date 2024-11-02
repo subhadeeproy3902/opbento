@@ -3,14 +3,23 @@ import { fetchContributions } from "@/actions/githubGraphql";
 import chromium from "@sparticuz/chromium-min";
 import { NextRequest, NextResponse } from "next/server";
 import puppeteer from "puppeteer-core";
-import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { ref, uploadBytes, deleteObject, getDownloadURL } from "firebase/storage";
 import { storage } from "@/lib/firebase";
 import { generateContributionGraph } from "@/utils/generate-graph";
 import { fetchYearContributions } from "@/actions/fetchYearContribution";
+import fs from "fs";
+import path from "path";
 
 export const maxDuration = 45;
 
 export async function GET(req: NextRequest) {
+  const urlFilePath = path.resolve("./last_image_url.txt");
+
+  let previousImagePath = null;
+  if (fs.existsSync(urlFilePath)) {
+    previousImagePath = fs.readFileSync(urlFilePath, "utf-8").trim();
+  }
+
   const { searchParams } = new URL(req.url);
   const n = searchParams.get("n");
   const g = searchParams.get("g");
@@ -220,7 +229,7 @@ ${contributionStats.longestStreakStartDate} - ${contributionStats.longestStreakE
   <body class="bg-neutral-950 text-white font-['Space_Grotesk']">
     <div class="max-w-5xl mx-auto">
       <div
-        class="p-1 grid grid-cols-1 md:grid-cols-4 gap-4 max-w-5xl my-8 w-full mx-auto"
+        class="p-1 grid grid-cols-1 md:grid-cols-4 gap-4 max-w-5xl w-full mx-auto"
       >
         <!-- Name Card -->
         <div class="text-white py-6 px-8 rounded-lg bg-gradient-to-br from-cyan-400 via-blue-500 to-violet-600 col-span-1 row-span-1 min-h-32">
@@ -336,7 +345,7 @@ ${contributionStats.longestStreakStartDate} - ${contributionStats.longestStreakE
     const page = await browser.newPage();
     await page.setViewport({
       width: 1100,
-      height: 1210,
+      height: 1200,
       deviceScaleFactor: 1.2,
     });
     await page.setContent(html, { waitUntil: "networkidle0" });
@@ -350,6 +359,13 @@ ${contributionStats.longestStreakStartDate} - ${contributionStats.longestStreakE
 
     await uploadBytes(storageRef, blob, { cacheControl: "public, max-age=60" });
     const downloadUrl = await getDownloadURL(storageRef);
+
+    if (previousImagePath) {
+      const previousImageRef = ref(storage, previousImagePath);
+      await deleteObject(previousImageRef).catch(error => {
+        console.error("Error deleting previous image:", error);
+      });
+    }
 
     return new NextResponse(JSON.stringify({ url: downloadUrl }), {
       headers: {
