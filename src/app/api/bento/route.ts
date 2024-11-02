@@ -16,7 +16,7 @@ export async function GET(req: NextRequest) {
   const x = searchParams.get("x");
   const l = searchParams.get("l");
   let htmlofGithubStats = ``;
-  
+
   if (g) {
     const { userStats } = await fetchUserData(g);
     const contributionStats = await fetchContributions(g);
@@ -335,7 +335,7 @@ ${contributionStats.longestStreakStartDate} - ${contributionStats.longestStreakE
     const downloadUrl = await getDownloadURL(storageRef);
 
     return new NextResponse(JSON.stringify({ url: downloadUrl }), {
-      headers: { 
+      headers: {
         "Content-Type": "application/json",
         "Cache-Control": "public, max-age=60"
       },

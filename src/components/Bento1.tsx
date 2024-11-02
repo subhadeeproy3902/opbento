@@ -10,6 +10,7 @@ import {
   GitBranch,
   GitPullRequest,
   Linkedin,
+  Loader2,
   Star,
   Trophy,
   TwitterIcon,
@@ -55,6 +56,7 @@ const BentoGrid = ({
   portfolioUrl: string;
 }) => {
   const [bentoLink, setBentoLink] = useState<string>("");
+  const [apiLink, setApiLink] = useState<string>("");
 
   const getColor = (value: number) => {
     switch (value) {
@@ -75,7 +77,19 @@ const BentoGrid = ({
 
   const bentoRef = useRef<HTMLDivElement>(null);
 
+  const [loading, setLoading] = useState(false);
+
   const handleGenerateLink = async () => {
+    setLoading(true);
+    setApiLink(
+      `https://opbento.vercel.app/api/bento?n=${encodeURIComponent(
+        name
+      )}&i=${encodeURIComponent(
+        imageUrl
+      )}&g=${githubURL}&x=${encodeURIComponent(
+        twitterURL
+      )}&l=${encodeURIComponent(encodeURIComponent(linkedinURL))}`
+    );
     if (!bentoRef.current) return;
     const previousClass = bentoRef.current.className;
     bentoRef.current.className += " dark";
@@ -101,21 +115,113 @@ const BentoGrid = ({
       const storageRef = ref(storage, "opbento/" + fileName);
 
       await uploadBytes(storageRef, blob);
-      const downloadUrl = await getDownloadURL(storageRef);
+      const downloadUrl = await getDownloadURL(storageRef).then((url) =>
+        setBentoLink(`[![OpBento](${url})](https://opbento.vercel.app)`)
+      );
 
-      setBentoLink(downloadUrl);
+      const scriptContent = `
+#!/bin/bash
+
+# Prompt for GitHub details and user-specific links
+read -p "Enter your GitHub username: " USERNAME
+read -p "Enter your GitHub email: " EMAIL
+
+# Define API and image link based on provided input
+API_LINK="${apiLink}"
+BENTO_LINK="${bentoLink}"
+
+echo "Generated API Link: \$API_LINK"
+echo "Generated Bento Link: \$BENTO_LINK"
+
+# Create README.md dynamically with Bento Link
+echo "# Bento GitHub Stats for \$USERNAME" > README.md
+echo "\$BENTO_LINK" >> README.md
+echo "Updated README.md with dynamic Bento GitHub Stats link."
+
+# Create .github/workflows directory and GitHub Actions workflow file
+mkdir -p .github/workflows
+touch .github/workflows/update_bento_readme.yml
+
+# Generate content for GitHub Actions workflow
+cat <<EOF > .github/workflows/update_bento_readme.yml
+
+name: Update README with Bento Stats
+
+on:
+  schedule:
+    - cron: "*/10 * * * *" # Runs every 5 minutes
+  workflow_dispatch: # Allows manual triggering of the workflow
+
+jobs:
+  update-readme:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Fetch Latest Bento Image URL
+        id: fetch_bento_url
+        run: |
+          API_URL="${apiLink}"
+          RESPONSE=$(curl -s "$API_URL")
+          echo "API Response: $RESPONSE"  # Log the entire response
+          IMAGE_URL=$(echo $RESPONSE | jq -r '.url')
+          echo "Fetched Image URL: $IMAGE_URL"
+          echo "::set-output name=image_url::$IMAGE_URL"
+
+      - name: Delete current README.md
+        if: env.skip != 'true'
+        run: |
+          if [ -f README.md ]; then
+            rm README.md
+            echo "Deleted old README.md"
+          fi
+
+      - name: Create new README.md
+        if: env.skip != 'true'
+        run: |
+          IMAGE_URL=$(cat last_image_url.txt)  # Read the URL from last_image_url.txt
+          echo "# Bento GitHub Stats" > README.md
+          echo "![Bento GitHub Stats]($IMAGE_URL)" >> README.md
+          echo "Created new README.md with the latest image URL."
+
+      - name: Commit and Push Changes
+        if: env.skip != 'true'
+        run: |
+          git config --global user.email "\$EMAIL"
+          git config --global user.name "\$USERNAME"
+          git add .
+          git commit -m "Update README with latest Bento stats image"
+          git push
+
+EOF
+
+git config --global user.email "\$EMAIL"
+git config --global user.name "\$USERNAME"
+git add .
+git commit -m "Setup OpBento GitHub Action"
+git push
+
+echo "Setup complete! Your GitHub Actions workflow will run every 5 minutes and update the README with the latest Bento stats link."
+`;
+
+      // Download the script
+      const blob2 = new Blob([scriptContent], { type: "text/plain" });
+      const url = URL.createObjectURL(blob2);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "setup_bento_stats.sh";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      setLoading(false);
+      URL.revokeObjectURL(url);
     } catch (error) {
       console.error("Error generating or uploading the image:", error);
     } finally {
       bentoRef.current.className = previousClass;
     }
-  };
-
-  const copyToClipboard = async () => {
-    await navigator.clipboard.writeText(
-      `[![OpBento](${bentoLink})](https://opbento.vercel.app)`
-    );
-    toast.success("Copied to clipboard");
   };
 
   return (
@@ -389,22 +495,10 @@ const BentoGrid = ({
       </div>
 
       {/* Button for Generating */}
-      <Button
-        className="mx-auto"
-        onClick={handleGenerateLink}
-      >
-        Generate Bento
+      <Button className="mx-auto" onClick={handleGenerateLink}>
+        Generate Bento{" "}
+        {loading && <Loader2 className="ml-2 w-d h-4 animate-spin" />}
       </Button>
-
-      <div className="relative mt-4">
-        <Input
-          value={`[![OpBento](${bentoLink})](https://opbento.vercel.app)`}
-          readOnly
-        />
-        <Button className="absolute top-0 right-0" onClick={copyToClipboard}>
-          <Clipboard />
-        </Button>
-      </div>
     </div>
   );
 };
