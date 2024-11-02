@@ -345,7 +345,7 @@ ${contributionStats.longestStreakStartDate} - ${contributionStats.longestStreakE
     const page = await browser.newPage();
     await page.setViewport({
       width: 1100,
-      height: 1190,
+      height: 1160,
       deviceScaleFactor: 1.2,
     });
     await page.setContent(html, { waitUntil: "networkidle0" });
