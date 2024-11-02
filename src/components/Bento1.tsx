@@ -81,15 +81,6 @@ const BentoGrid = ({
 
   const handleGenerateLink = async () => {
     setLoading(true);
-    setApiLink(
-      `https://opbento.vercel.app/api/bento?n=${encodeURIComponent(
-        name
-      )}&i=${encodeURIComponent(
-        imageUrl
-      )}&g=${githubURL}&x=${encodeURIComponent(
-        twitterURL
-      )}&l=${encodeURIComponent(encodeURIComponent(linkedinURL))}`
-    );
     if (!bentoRef.current) return;
     const previousClass = bentoRef.current.className;
     bentoRef.current.className += " dark";
@@ -115,9 +106,24 @@ const BentoGrid = ({
       const storageRef = ref(storage, "opbento/" + fileName);
 
       await uploadBytes(storageRef, blob);
-      const downloadUrl = await getDownloadURL(storageRef).then((url) =>
-        setBentoLink(`[![OpBento](${url})](https://opbento.vercel.app)`)
-      );
+      const downloadUrl = await getDownloadURL(storageRef);
+
+      const newApiLink = `https://opbento.vercel.app/api/bento?n=${encodeURIComponent(
+        name
+      )}&i=${encodeURIComponent(
+        imageUrl
+      )}&g=${githubURL}&x=${encodeURIComponent(
+        twitterURL
+      )}&l=${encodeURIComponent(encodeURIComponent(linkedinURL))}`;
+      const newBentoLink = `[![OpBento](${downloadUrl})](https://opbento.vercel.app)`;
+
+      // Update state with new links
+      setApiLink(newApiLink);
+      setBentoLink(newBentoLink);
+
+      // Debugging output to ensure links are set correctly
+      console.log("API Link:", newApiLink);
+      console.log("Bento Link:", newBentoLink);
 
       const scriptContent = `
 #!/bin/bash
@@ -127,8 +133,8 @@ read -p "Enter your GitHub username: " USERNAME
 read -p "Enter your GitHub email: " EMAIL
 
 # Define API and image link based on provided input
-API_LINK="${apiLink}"
-BENTO_LINK="${bentoLink}"
+API_LINK="${newApiLink}"
+BENTO_LINK="${newBentoLink}"
 
 echo "Generated API Link: \$API_LINK"
 echo "Generated Bento Link: \$BENTO_LINK"
@@ -163,7 +169,7 @@ jobs:
       - name: Fetch Latest Bento Image URL
         id: fetch_bento_url
         run: |
-          API_URL="${apiLink}"
+          API_URL="$API_LINK"
           RESPONSE=$(curl -s "$API_URL")
           echo "API Response: $RESPONSE"  # Log the entire response
           IMAGE_URL=$(echo $RESPONSE | jq -r '.url')
