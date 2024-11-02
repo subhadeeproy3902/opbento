@@ -24,6 +24,7 @@ import { storage } from "@/lib/firebase";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { toPng } from "html-to-image";
 import { toast } from "sonner";
+import Image from "next/image";
 
 const space = Space_Grotesk({
   subsets: ["latin"],
@@ -247,7 +248,7 @@ echo "Setup complete! Your GitHub Actions workflow will run every 5 minutes and 
         </div>
 
         <div className="bg-muted h-80 overflow-hidden rounded-lg col-span-2 row-span-2 flex items-center justify-center">
-          <img
+          <Image
             src={
               imageUrl ||
               "https://images.unsplash.com/photo-1541701494587-cb58502866ab?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
@@ -255,7 +256,7 @@ echo "Setup complete! Your GitHub Actions workflow will run every 5 minutes and 
             alt={name}
             width={500}
             height={500}
-            className="size-full object-cover"
+            className="size-full hover:scale-110 duration-500 transition-all ease object-cover"
           />
         </div>
 
@@ -269,7 +270,7 @@ echo "Setup complete! Your GitHub Actions workflow will run every 5 minutes and 
             color="#29BEF0"
             strokeWidth={1}
           />
-          <p className="z-20 absolute bottom-6 text-center w-full">
+          <p className="z-20 absolute bottom-6 text-xl text-center w-full">
             @{twitterURL}
           </p>
         </a>
@@ -292,7 +293,7 @@ echo "Setup complete! Your GitHub Actions workflow will run every 5 minutes and 
         </div>
 
         <a
-          href={"https://www.linkedin.com/in/" + twitterURL}
+          href={"https://www.linkedin.com/in/" + linkedinURL}
           className="bg-gradient-to-tl from-black to-blue-600 p-4 relative rounded-lg overflow-hidden col-span-1 columns-3 row-span-1 min-h-[150px]"
         >
           <Linkedin
@@ -301,7 +302,7 @@ echo "Setup complete! Your GitHub Actions workflow will run every 5 minutes and 
             color="#56d2ff"
             strokeWidth={1}
           />
-          <p className="text-center w-full">@{linkedinURL}</p>
+          <p className="text-center text-lg w-full">@{linkedinURL}</p>
         </a>
 
         <div className="bg-muted overflow-hidden border border-red-600/40 rounded-lg col-span-2 row-span-1">
@@ -502,7 +503,7 @@ echo "Setup complete! Your GitHub Actions workflow will run every 5 minutes and 
 
       <Button className="mx-4" onClick={handleGenerateLink}>
         Generate Bento{" "}
-        {loading && <Loader2 className="ml-2 w-d h-4 animate-spin" />}
+        {loading && <Loader2 className="ml-2 size-4 animate-spin" />}
       </Button>
     </div>
   );

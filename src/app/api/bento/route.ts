@@ -26,7 +26,6 @@ export async function GET(req: NextRequest) {
             <div
               class="grid grid-cols-4 grid-rows-3 gap-4 auto-rows-fr rounded-xl overflow-hidden w-full h-full"
             >
-              <!-- Total Stars Card -->
               <div
                 class="bg-gradient-to-br from-amber-500/40 via-amber-500/10 to-transparent rounded-xl p-4 flex flex-col justify-between col-span-2 relative row-span-2"
               >
@@ -197,7 +196,6 @@ ${contributionStats.longestStreakStartDate} - ${contributionStats.longestStreakE
     htmlofGithubStats = ``
   }
 
-  // Create HTML content
   const html = `<!DOCTYPE html>
 <html lang="en">
   <head>
