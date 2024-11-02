@@ -199,7 +199,7 @@ ${contributionStats.longestStreakStartDate} - ${contributionStats.longestStreakE
             </div>
           </div>
         </div>
-        <div class="bg-gradient-to-br from-green-950/80 p-4 col-span-4 row-span-2 rounded-lg w-full h-full">       
+               
         `;
   } else {
     htmlofGithubStats = ``;
@@ -215,13 +215,12 @@ ${contributionStats.longestStreakStartDate} - ${contributionStats.longestStreakE
       href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap"
       rel="stylesheet"
     />
-    <script src="https://unpkg.com/lucide@latest"></script>
   </head>
 
   <body class="bg-neutral-950 text-white font-['Space_Grotesk']">
     <div class="max-w-5xl mx-auto">
       <div
-        class="p-4 grid grid-cols-1 md:grid-cols-4 gap-4 max-w-5xl mt-32 mb-8 w-full mx-auto"
+        class="p-4 grid grid-cols-1 md:grid-cols-4 gap-4 max-w-5xl mt-20 mb-8 w-full mx-auto"
       >
         <!-- Name Card -->
         <div class="text-white py-6 px-8 rounded-lg bg-gradient-to-br from-cyan-400 via-blue-500 to-violet-600 col-span-1 row-span-1 min-h-32">
@@ -304,29 +303,21 @@ ${contributionStats.longestStreakStartDate} - ${contributionStats.longestStreakE
         </div>
 
         ${htmlofGithubStats}
-          <div class="flex items-center justify-between">
-    <h1 class="text-2xl font-bold"></h1>
-    <div class="flex items-center justify-end text-sm">
-      <span>Less</span>
-      <div class="flex gap-2 mx-3" id="legend"></div>
-      <span>More</span>
-    </div>
-  </div>
-  <div class="flex justify-center pb-4 items-center w-full h-full" id="graph-container">
-    ${graphSVG}
-  </div>
-</div>
+
+        <div class="bg-gradient-to-br from-green-950/80 p-4 col-span-4 row-span-2 rounded-lg w-full h-full">
+          <div class="flex items-center flex-col justify-between">
+              <h1 className="text-2xl font-bold">
+                ${g}'s Contribution Graph
+              </h1>
+          <div class="flex justify-center pb-4 items-center w-full h-full" id="graph-container">
+              ${graphSVG}
+          </div>
+        </div>
+      </div>
       </div>
     </div>
-
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
     <script>
-    const legend = document.getElementById('legend');
-[0, 1, 2, 3, 4].forEach(value => {
-  const div = document.createElement('div');
-  div.className = 'w-4 h-4 rounded-sm';
-  div.style.backgroundColor = getColor(value);
-  legend.appendChild(div);
-});
       lucide.createIcons();
     </script>
   </body>
@@ -346,7 +337,7 @@ ${contributionStats.longestStreakStartDate} - ${contributionStats.longestStreakE
     });
 
     const page = await browser.newPage();
-    await page.setViewport({ width: 1100, height: 1200, deviceScaleFactor: 3 });
+    await page.setViewport({ width: 1100, height: 1210, deviceScaleFactor: 2 });
     await page.setContent(html, { waitUntil: "networkidle0" });
     await new Promise((resolve) => setTimeout(resolve, 700));
     const screenshot = await page.screenshot({ type: "png" });
