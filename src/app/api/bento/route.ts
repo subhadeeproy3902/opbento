@@ -5,6 +5,8 @@ import { NextRequest, NextResponse } from "next/server";
 import puppeteer from "puppeteer-core";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { storage } from "@/lib/firebase";
+import { generateContributionGraph } from "@/utils/generate-graph";
+import { fetchYearContributions } from "@/actions/fetchYearContribution";
 
 export const maxDuration = 45;
 
@@ -15,13 +17,18 @@ export async function GET(req: NextRequest) {
   const i = searchParams.get("i");
   const x = searchParams.get("x");
   const l = searchParams.get("l");
+  const p = searchParams.get("p");
   let htmlofGithubStats = ``;
-
+  let graphSVG = "";
   if (g) {
+    const currentYear = new Date().getFullYear();
+    const contributionDays = await fetchYearContributions(g, currentYear);
+    graphSVG = generateContributionGraph(contributionDays);
     const { userStats } = await fetchUserData(g);
     const contributionStats = await fetchContributions(g);
 
-    htmlofGithubStats = `<div class="grid gap-4 grid-cols-4 col-span-4 row-span-2">
+    htmlofGithubStats = `
+<div class="grid gap-4 grid-cols-4 col-span-4 row-span-2">
           <div class="col-span-2 row-span-2">
             <div
               class="grid grid-cols-4 grid-rows-3 gap-4 auto-rows-fr rounded-xl overflow-hidden w-full h-full"
@@ -191,9 +198,11 @@ ${contributionStats.longestStreakStartDate} - ${contributionStats.longestStreakE
               </div>
             </div>
           </div>
-        </div>`
+        </div>
+        <div class="bg-gradient-to-br from-green-950/80 p-4 col-span-4 row-span-2 rounded-lg w-full h-full">       
+        `;
   } else {
-    htmlofGithubStats = ``
+    htmlofGithubStats = ``;
   }
 
   const html = `<!DOCTYPE html>
@@ -212,21 +221,20 @@ ${contributionStats.longestStreakStartDate} - ${contributionStats.longestStreakE
   <body class="bg-neutral-950 text-white font-['Space_Grotesk']">
     <div class="max-w-5xl mx-auto">
       <div
-        class="p-4 grid grid-cols-1 md:grid-cols-4 gap-4 max-w-5xl mt-2 mb-8 w-full mx-auto"
+        class="p-4 grid grid-cols-1 md:grid-cols-4 gap-4 max-w-5xl mt-32 mb-8 w-full mx-auto"
       >
-        <div
-          class="bg-gradient-to-br from-cyan-400 via-blue-500 to-violet-600 py-6 px-8 rounded-lg col-span-1 row-span-1 min-h-32"
-        >
-          <p class="text-white text-xl">Hey I'm</p>
-          <h2 class="text-4xl text-white font-bold mb-2 capitalize">${n}</h2>
+        <!-- Name Card -->
+        <div class="text-white py-6 px-8 rounded-lg bg-gradient-to-br from-cyan-400 via-blue-500 to-violet-600 col-span-1 row-span-1 min-h-32">
+          <p class="text-xl">Hey I'm</p>
+          <h2 class="text-4xl font-bold mb-2 capitalize">${n}</h2>
         </div>
-        <div
-          class="bg-muted h-80 overflow-hidden rounded-lg col-span-2 row-span-2 flex items-center justify-center"
-        >
+
+        <!-- Image Card -->
+        <div class="bg-muted h-80 overflow-hidden rounded-lg col-span-2 row-span-2 flex items-center justify-center">
           <img
             src="${i}"
-            alt=""
-            class="w-full h-full object-cover"
+            alt="${n}"
+            class="w-full h-full hover:scale-110 duration-500 transition-all ease object-cover"
           />
         </div>
 
@@ -237,73 +245,86 @@ ${contributionStats.longestStreakStartDate} - ${contributionStats.longestStreakE
         >
           <i
             data-lucide="twitter"
-            class="absolute -top-3 -left-4 w-24 h-24 text-[#29BEF0]"
+            class="absolute glow -top-3 -left-4 w-24 h-24 text-[#29BEF0]"
+            stroke-width="1"
           ></i>
-          <p class="z-20 absolute bottom-6 text-center w-full text-white">
-            @${x}
-          </p>
+          <p class="z-20 absolute bottom-6 text-xl text-center w-full">@${x}</p>
         </a>
 
         <!-- GitHub Card -->
-        <div
-          class="bg-muted relative overflow-hidden rounded-lg col-span-1 row-span-2"
-        >
+        <div class="bg-muted relative overflow-hidden rounded-lg col-span-1 row-span-2">
           <img
-            src="https://i.pinimg.com/736x/cf/95/4b/cf954b8923fbafc5cfc0c66344b6a6f9.jpg"
+            src="https://i.postimg.cc/NGK80VQ1/cf954b8923fbafc5cfc0c66344b6a6f9.jpg"
             alt=""
             class="absolute saturate-150 w-full h-full object-cover inset-0"
           />
-          <div
-            class="absolute inset-0 bg-gradient-to-b to-black/80 from-transparent"
-          ></div>
+          <div class="absolute inset-0 bg-gradient-to-b to-black/80 from-transparent"></div>
           <p class="z-20 absolute bottom-6 text-center w-full">
             <a
               href="https://github.com/${g}"
               class="text-white font-semibold hover:underline p-2 px-4 bg-pink-600 opacity-80 rounded-md backdrop-blur"
-              >@${g}</a
-            >
+            >@${g}</a>
           </p>
         </div>
 
+        <!-- LinkedIn Card -->
         <a
           href="https://www.linkedin.com/in/${l}"
           class="bg-gradient-to-tl from-black to-blue-600 p-4 relative rounded-lg overflow-hidden col-span-1 columns-3 row-span-1 min-h-[150px]"
         >
           <i
             data-lucide="linkedin"
-            class="absolute -bottom-1 -right-2 w-20 h-20 text-[#56d2ff]"
+            class="absolute glow -bottom-1 -right-2 w-20 h-20 text-[#56d2ff]"
+            stroke-width="1"
           ></i>
-          <p class="text-center w-full text-white">@${l}</p>
+          <p class="text-center text-lg w-full">@${l}</p>
         </a>
 
         <!-- GitHub Activity Graph -->
-        <div
-          class="bg-muted overflow-hidden border border-red-600/40 rounded-lg col-span-2 row-span-1"
-        >
+        <div class="bg-muted overflow-hidden border border-red-600/40 rounded-lg col-span-2 row-span-1">
           <img
             src="https://github-readme-activity-graph.vercel.app/graph?username=${g}&bg_color=030312&color=ff8080&line=e00a60&point=ff7171&area=true&hide_border=true"
             alt="graph"
-            class="w-full h-full object-cover"
+            class="w-full object-cover h-[150px]"
           />
         </div>
 
-        <!-- OP Bento Card -->
-        <div
-          class="p-4 bg-gradient-to-br from-orange-600 via-yellow-600 to-rose-500 rounded-lg col-span-1 row-span-1 flex flex-col items-center justify-center min-h-32"
-        >
-          <h2 class="text-3xl text-white font-bold">Made using OP Bento</h2>
+        <!-- Portfolio URL Card -->
+        <div class="p-4 bg-gradient-to-br from-gray-100 via-gray-300 to-gray-600/80 rounded-lg col-span-1 row-span-1 flex relative flex-col items-center justify-center min-h-32 overflow-hidden">
+          <h1 class="font-semibold text-xl bg-gradient-to-b from-[#797979] to-[#040e1f] bg-clip-text absolute top-6 break-all left-4 text-transparent leading-[100%] tracking-tighter">
+            ${p?.startsWith("https://") ? p.replace("https://", "") : p}
+          </h1>
+          <img
+            src="https://i.postimg.cc/cJnD7cGL/earth.png"
+            width="200"
+            height="200"
+            alt=""
+            class="absolute -bottom-24 -right-24"
+          />
         </div>
 
         ${htmlofGithubStats}
+          <div class="flex items-center justify-between">
+    <h1 class="text-2xl font-bold"></h1>
+    <div class="flex items-center justify-end text-sm">
+      <span>Less</span>
+      <div class="flex gap-2 mx-3" id="legend"></div>
+      <span>More</span>
+    </div>
+  </div>
+  <div class="flex justify-center pb-4 items-center w-full h-full" id="graph-container">
+    ${graphSVG}
+  </div>
+</div>
       </div>
     </div>
 
     <script>
+    
       lucide.createIcons();
     </script>
   </body>
-</html>
-`;
+</html>`;
   try {
     const isLocal = !!process.env.CHROME_EXECUTABLE_PATH;
 
@@ -335,7 +356,7 @@ ${contributionStats.longestStreakStartDate} - ${contributionStats.longestStreakE
     return new NextResponse(JSON.stringify({ url: downloadUrl }), {
       headers: {
         "Content-Type": "application/json",
-        "Cache-Control": "public, max-age=60"
+        "Cache-Control": "public, max-age=60",
       },
     });
   } catch (error) {

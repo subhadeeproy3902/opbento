@@ -115,7 +115,9 @@ const BentoGrid = ({
         imageUrl
       )}&g=${githubURL}&x=${encodeURIComponent(
         twitterURL
-      )}&l=${encodeURIComponent(encodeURIComponent(linkedinURL))}`;
+      )}&l=${encodeURIComponent(linkedinURL)}&p=${encodeURIComponent(
+        portfolioUrl
+      )}`;
       const newBentoLink = `[![OpBento](${downloadUrl})](https://opbento.vercel.app)`;
 
       // Update state with new links
