@@ -337,7 +337,11 @@ ${contributionStats.longestStreakStartDate} - ${contributionStats.longestStreakE
     });
 
     const page = await browser.newPage();
-    await page.setViewport({ width: 1100, height: 1210, deviceScaleFactor: 2 });
+    await page.setViewport({
+      width: 1100,
+      height: 1210,
+      deviceScaleFactor: 1.2,
+    });
     await page.setContent(html, { waitUntil: "networkidle0" });
     await new Promise((resolve) => setTimeout(resolve, 700));
     const screenshot = await page.screenshot({ type: "png" });
