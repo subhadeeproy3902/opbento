@@ -320,7 +320,13 @@ ${contributionStats.longestStreakStartDate} - ${contributionStats.longestStreakE
     </div>
 
     <script>
-    
+    const legend = document.getElementById('legend');
+[0, 1, 2, 3, 4].forEach(value => {
+  const div = document.createElement('div');
+  div.className = 'w-4 h-4 rounded-sm';
+  div.style.backgroundColor = getColor(value);
+  legend.appendChild(div);
+});
       lucide.createIcons();
     </script>
   </body>
