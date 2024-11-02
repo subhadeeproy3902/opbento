@@ -500,8 +500,7 @@ echo "Setup complete! Your GitHub Actions workflow will run every 5 minutes and 
         )}
       </div>
 
-      {/* Button for Generating */}
-      <Button className="mx-auto" onClick={handleGenerateLink}>
+      <Button className="mx-4" onClick={handleGenerateLink}>
         Generate Bento{" "}
         {loading && <Loader2 className="ml-2 w-d h-4 animate-spin" />}
       </Button>
