@@ -220,7 +220,7 @@ ${contributionStats.longestStreakStartDate} - ${contributionStats.longestStreakE
   <body class="bg-neutral-950 text-white font-['Space_Grotesk']">
     <div class="max-w-5xl mx-auto">
       <div
-        class="p-4 grid grid-cols-1 md:grid-cols-4 gap-4 max-w-5xl mt-20 mb-8 w-full mx-auto"
+        class="p-1 grid grid-cols-1 md:grid-cols-4 gap-4 max-w-5xl my-8 w-full mx-auto"
       >
         <!-- Name Card -->
         <div class="text-white py-6 px-8 rounded-lg bg-gradient-to-br from-cyan-400 via-blue-500 to-violet-600 col-span-1 row-span-1 min-h-32">
@@ -305,15 +305,12 @@ ${contributionStats.longestStreakStartDate} - ${contributionStats.longestStreakE
         ${htmlofGithubStats}
 
         <div class="bg-gradient-to-br from-green-950/80 p-4 col-span-4 row-span-2 rounded-lg w-full h-full">
-          <div class="flex items-center flex-col justify-between">
-              <h1 className="text-2xl font-bold">
-                ${g}'s Contribution Graph
-              </h1>
-          <div class="flex justify-center pb-4 items-center w-full h-full" id="graph-container">
-              ${graphSVG}
+          <div class="flex items-center justify-between"><h1 class="text-2xl font-bold">subhadeeproy3902's Contribution Graph</h1><div class="flex items-center justify-end text-sm"><span>Less</span><div class="flex gap-2 mx-3"><div class="w-4 h-4 rounded-sm" title="Contribution level 0" style="background-color: rgb(25, 25, 25);"></div><div class="w-4 h-4 rounded-sm" title="Contribution level 1" style="background-color: rgb(20, 83, 45);"></div><div class="w-4 h-4 rounded-sm" title="Contribution level 2" style="background-color: rgb(30, 122, 30);"></div><div class="w-4 h-4 rounded-sm" title="Contribution level 3" style="background-color: rgb(40, 167, 69);"></div><div class="w-4 h-4 rounded-sm" title="Contribution level 4" style="background-color: rgb(0, 239, 87);"></div></div><span>More</span></div></div>
+
+          <div class="flex justify-center pb-4 items-center w-full h-full">
+            ${graphSVG}
           </div>
         </div>
-      </div>
       </div>
     </div>
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
