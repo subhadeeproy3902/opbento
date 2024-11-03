@@ -70,6 +70,7 @@ const BentoGrid = ({
   };
 
   const [loading, setLoading] = useState(false);
+
   const handleDownload = async () => {
     try {
       const yamlLink = document.createElement("a");
@@ -118,6 +119,7 @@ const BentoGrid = ({
       toast.error("Error downloading file");
     }
   };
+  
   const handleGenerateLink = async () => {
     setLoading(true);
     const apiURL = `/api/bento?n=${encodeURIComponent(
@@ -138,9 +140,7 @@ const BentoGrid = ({
   };
 
   const copyToClipboard = async () => {
-    await navigator.clipboard.writeText(
-      `[![OpBento](${bentoLink})](https://opbento.vercel.app)`
-    );
+    await navigator.clipboard.writeText(`![OpBento](${bentoLink})`);
     toast.success("Copied to clipboard");
   };
 
@@ -417,9 +417,11 @@ const BentoGrid = ({
           Generate Bento
           {loading && <Loader2 className="ml-2 size-4 animate-spin" />}
         </Button>
-        <Button onClick={handleDownload} variant={"secondary"}>
-          Download Files <Download size={16} className="ml-2" />
-        </Button>
+        {bentoLink && (
+          <Button onClick={handleDownload} variant={"secondary"}>
+            Download Files <Download size={16} className="ml-2" />
+          </Button>
+        )}
       </div>
       <div className="relative mt-4">
         <Input

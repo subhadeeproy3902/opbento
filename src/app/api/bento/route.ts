@@ -358,6 +358,7 @@ ${contributionStats.longestStreakStartDate} - ${contributionStats.longestStreakE
     await page.setViewport({
       width: 1100,
       height: 1160,
+      deviceScaleFactor: 1.4,
     });
     await page.setContent(html, { waitUntil: "networkidle0" });
     await new Promise((resolve) => setTimeout(resolve, 700));
@@ -369,8 +370,10 @@ ${contributionStats.longestStreakStartDate} - ${contributionStats.longestStreakE
 
     await uploadBytes(storageRef, blob, { cacheControl: "public, max-age=60" });
     const downloadUrl = await getDownloadURL(storageRef);
-
-    return new NextResponse(JSON.stringify({ url: downloadUrl }), {
+    const url = new URL(downloadUrl);
+    url.searchParams.delete("token");
+    const newUrl = url.toString();
+    return new NextResponse(JSON.stringify({ url: newUrl }), {
       headers: {
         "Content-Type": "application/json",
         "Cache-Control": "public, max-age=60",
