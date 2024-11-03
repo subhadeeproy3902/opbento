@@ -6,6 +6,7 @@ import {
   Activity,
   Calendar,
   Clipboard,
+  Download,
   Flame,
   GitBranch,
   GitPullRequest,
@@ -78,46 +79,54 @@ const BentoGrid = ({
   const bentoRef = useRef<HTMLDivElement>(null);
 
   const [loading, setLoading] = useState(false);
-const handleDownload = async () => {
-  try {
-    const response = await fetch("/getNewBento.ts.template");
-    if (!response.ok) {
-      throw new Error(`Failed to fetch template: ${response.statusText}`);
+  const handleDownload = async () => {
+    try {
+      const yamlLink = document.createElement("a");
+      yamlLink.href = "/update-bento.yml";
+      yamlLink.download = "update-bento.yml";
+      document.body.appendChild(yamlLink);
+      yamlLink.click();
+      document.body.removeChild(yamlLink);
+      window.URL.revokeObjectURL(yamlLink.href);
+
+      await new Promise((resolve) => setTimeout(resolve, 100));
+
+      const response = await fetch("/getNewBento.ts.template");
+      if (!response.ok) {
+        throw new Error(`Failed to fetch template: ${response.statusText}`);
+      }
+
+      let fileContent = await response.text();
+
+      const apiUrl = `https://opbento.vercel.app/api/bento?name=${encodeURIComponent(
+        name
+      )}&githubURL=${encodeURIComponent(
+        githubURL
+      )}&twitterURL=${encodeURIComponent(
+        twitterURL
+      )}&linkedinURL=${encodeURIComponent(
+        linkedinURL
+      )}&imageUrl=${encodeURIComponent(
+        imageUrl
+      )}&portfolioUrl=${encodeURIComponent(portfolioUrl)}`;
+
+      fileContent = `const apiUrl = "${apiUrl}";\n` + fileContent;
+
+      const blob = new Blob([fileContent], { type: "text/typescript" });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "getBento.ts";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      window.URL.revokeObjectURL(url);
+      toast.success("Files downloaded successfully");
+    } catch (error) {
+      console.error("Error downloading file:", error);
+      toast.error("Error downloading file");
     }
-
-    let fileContent = await response.text();
-
-    // Construct the API URL
-    const apiUrl = `https://opbento.vercel.app/api/bento?name=${encodeURIComponent(
-      name
-    )}&githubURL=${encodeURIComponent(
-      githubURL
-    )}&twitterURL=${encodeURIComponent(
-      twitterURL
-    )}&linkedinURL=${encodeURIComponent(
-      linkedinURL
-    )}&imageUrl=${encodeURIComponent(
-      imageUrl
-    )}&portfolioUrl=${encodeURIComponent(portfolioUrl)}`;
-
-    // Update the file content with the API URL
-    fileContent = `const apiUrl = "${apiUrl}";\n` + fileContent;
-
-    // Create and trigger download
-    const blob = new Blob([fileContent], { type: "text/typescript" });
-    const url = window.URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = "getBento.ts";
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    window.URL.revokeObjectURL(url);
-  } catch (error) {
-    console.error("Error downloading file:", error);
-    // Handle error appropriately (show user feedback etc.)
-  }
-};
+  };
   const handleGenerateLink = async () => {
     setLoading(true);
     if (!bentoRef.current) return;
@@ -431,12 +440,15 @@ const handleDownload = async () => {
           </div>
         )}
       </div>
-
-      <Button className="mx-auto" onClick={handleGenerateLink}>
-        Generate Bento{" "}
-        {loading && <Loader2 className="ml-2 w-4 h-4 animate-spin" />}
-      </Button>
-      <Button onClick={handleDownload}>Download getBento.ts</Button>
+      <div className="flex gap-4">
+        <Button className="" onClick={handleGenerateLink}>
+          Generate Bento{" "}
+          {loading && <Loader2 className="ml-2 w-4 h-4 animate-spin" />}
+        </Button>
+        <Button onClick={handleDownload} variant={"secondary"}>
+          Download Files <Download size={16} className="ml-2"/>{" "}
+        </Button>
+      </div>
       <div className="relative mt-4">
         <Input
           value={`[![OpBento](${bentoLink})](https://opbento.vercel.app)`}

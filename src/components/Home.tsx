@@ -32,52 +32,55 @@ export default function HomePage() {
   const [graph, setGraph] = useState<Graph[] | undefined>(undefined);
 
   return (
-    <div className="w-full">
-      <div className="min-h-svh p-4 max-w-7xl mx-auto w-full">
-        <Navbar />
-        <motion.div
-          initial="initial"
-          animate="animate"
-          transition={{
-            staggerChildren: 0.08,
-          }}
-          className="grid max-w-7x mx-auto grid-flow-dense grid-cols-12 gap-4 w-full"
-        >
-          <HeaderBlock />
-          <SocialsBlock
-            setName={setName}
-            setGithubURL={setGithubURL}
-            setShowStats={setShowStats}
-            setShowGraph={setShowGraph}
-            setTwitterURL={setTwitterURL}
-            setImageUrl={setImageUrl}
-            setStats={setStats}
-            setStreak={setStreak}
-            showStats={showStats}
-            showGraph={showGraph}
-            setGraph={setGraph}
-          />
+    <>
+      <div className="block md:hidden py-20 px-10">Open in PC</div>
+      <div className="md:block hidden w-full">
+        <div className="min-h-svh p-4 max-w-7xl mx-auto w-full">
+          <Navbar />
+          <motion.div
+            initial="initial"
+            animate="animate"
+            transition={{
+              staggerChildren: 0.08,
+            }}
+            className="grid max-w-7x mx-auto grid-flow-dense grid-cols-12 gap-4 w-full"
+          >
+            <HeaderBlock />
+            <SocialsBlock
+              setName={setName}
+              setGithubURL={setGithubURL}
+              setShowStats={setShowStats}
+              setShowGraph={setShowGraph}
+              setTwitterURL={setTwitterURL}
+              setImageUrl={setImageUrl}
+              setStats={setStats}
+              setStreak={setStreak}
+              showStats={showStats}
+              showGraph={showGraph}
+              setGraph={setGraph}
+            />
 
-          <BioBlock
-            setLinkedinURL={setLinkedinURL}
-            setPortfolioURL={setPortfolioURL}
+            <BioBlock
+              setLinkedinURL={setLinkedinURL}
+              setPortfolioURL={setPortfolioURL}
+            />
+          </motion.div>
+          <BentoGrid
+            name={name}
+            githubURL={githubURL}
+            twitterURL={twitterURL}
+            linkedinURL={linkedinURL}
+            imageUrl={imageUrl}
+            stats={stats}
+            showStats={showStats}
+            streak={streak}
+            showGraph={showGraph}
+            graph={graph}
+            portfolioUrl={portfolioURL}
           />
-        </motion.div>
-        <BentoGrid
-          name={name}
-          githubURL={githubURL}
-          twitterURL={twitterURL}
-          linkedinURL={linkedinURL}
-          imageUrl={imageUrl}
-          stats={stats}
-          showStats={showStats}
-          streak={streak}
-          showGraph={showGraph}
-          graph={graph}
-          portfolioUrl={portfolioURL}
-        />
+        </div>
       </div>
-    </div>
+    </>
   );
 }
 
