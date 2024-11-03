@@ -3,23 +3,19 @@ import { fetchContributions } from "@/actions/githubGraphql";
 import chromium from "@sparticuz/chromium-min";
 import { NextRequest, NextResponse } from "next/server";
 import puppeteer from "puppeteer-core";
-import { ref, uploadBytes, deleteObject, getDownloadURL } from "firebase/storage";
+import {
+  ref,
+  uploadBytes,
+  deleteObject,
+  getDownloadURL,
+} from "firebase/storage";
 import { storage } from "@/lib/firebase";
 import { generateContributionGraph } from "@/utils/generate-graph";
 import { fetchYearContributions } from "@/actions/fetchYearContribution";
-import fs from "fs";
-import path from "path";
 
 export const maxDuration = 45;
 
 export async function GET(req: NextRequest) {
-  const urlFilePath = path.resolve("./last_image_url.txt");
-
-  let previousImagePath = null;
-  if (fs.existsSync(urlFilePath)) {
-    previousImagePath = fs.readFileSync(urlFilePath, "utf-8").trim();
-  }
-
   const { searchParams } = new URL(req.url);
   const n = searchParams.get("n");
   const g = searchParams.get("g");
@@ -27,6 +23,22 @@ export async function GET(req: NextRequest) {
   const x = searchParams.get("x");
   const l = searchParams.get("l");
   const p = searchParams.get("p");
+  const firebaseurl =
+    "https://firebasestorage.googleapis.com/v0/b/smartkaksha-fe32c.appspot.com/o/opbento2%2F" +
+    g +
+    ".png?alt=media";
+
+  try {
+    const previousImageRef = ref(storage, firebaseurl);
+    if (previousImageRef) {
+      await deleteObject(previousImageRef).catch((error) => {
+        console.error("Error deleting previous image:", error);
+      });
+    }
+  } catch (error) {
+    console.error("Error deleting previous image:", error);
+  }
+
   let htmlofGithubStats = ``;
   let graphSVG = "";
   if (g) {
@@ -354,18 +366,10 @@ ${contributionStats.longestStreakStartDate} - ${contributionStats.longestStreakE
     await browser.close();
 
     const blob = new Blob([screenshot], { type: "image/png" });
-    const fileName = `bento_${Date.now()}.png`;
-    const storageRef = ref(storage, `opbento2/${fileName}`);
+    const storageRef = ref(storage, `opbento/${g}.png`);
 
     await uploadBytes(storageRef, blob, { cacheControl: "public, max-age=60" });
     const downloadUrl = await getDownloadURL(storageRef);
-
-    if (previousImagePath) {
-      const previousImageRef = ref(storage, previousImagePath);
-      await deleteObject(previousImageRef).catch(error => {
-        console.error("Error deleting previous image:", error);
-      });
-    }
 
     return new NextResponse(JSON.stringify({ url: downloadUrl }), {
       headers: {

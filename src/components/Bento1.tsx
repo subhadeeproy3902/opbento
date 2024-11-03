@@ -61,17 +61,17 @@ const BentoGrid = ({
   const getColor = (value: number) => {
     switch (value) {
       case 0:
-        return "#191919"; // Darkest green for value 0
+        return "#191919"; 
       case 1:
-        return "#14532D"; // Dark green for value 1
+        return "#14532D"; 
       case 2:
-        return "#1E7A1E"; // Medium dark green for value 2
+        return "#1E7A1E"; 
       case 3:
-        return "#28A745"; // Medium green for value 3
+        return "#28A745"; 
       case 4:
-        return "#00ef57"; // Light green for value 4
+        return "#00ef57"; 
       default:
-        return "#27272A"; // Default color
+        return "#27272A"; 
     }
   };
 
@@ -102,16 +102,16 @@ const BentoGrid = ({
       const response = await fetch(dataUrl);
       const blob = await response.blob();
 
-      const fileName = `bento_${Date.now()}.png`;
+      const fileName = `${githubURL}.png`;
       const storageRef = ref(storage, "opbento/" + fileName);
 
       await uploadBytes(storageRef, blob);
       const downloadUrl = await getDownloadURL(storageRef);
-      setLoading(false);
       setBentoLink(downloadUrl);
     } catch (error) {
       console.error("Error generating or uploading the image:", error);
     } finally {
+      setLoading(false);
       bentoRef.current.className = previousClass;
     }
   };
@@ -394,7 +394,8 @@ const BentoGrid = ({
       </div>
 
       <Button className="mx-auto" onClick={handleGenerateLink}>
-        Generate Bento {loading && <Loader2 className="ml-2 w-4 h-4 animate-spin" />}
+        Generate Bento{" "}
+        {loading && <Loader2 className="ml-2 w-4 h-4 animate-spin" />}
       </Button>
 
       <div className="relative mt-4">
