@@ -17,12 +17,12 @@ export const maxDuration = 45;
 
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
-  const n = searchParams.get("n");
-  const g = searchParams.get("g");
-  const i = searchParams.get("i");
-  const x = searchParams.get("x");
-  const l = searchParams.get("l");
-  const p = searchParams.get("p");
+  const n = decodeURIComponent(searchParams.get("n") || "");
+  const g = decodeURIComponent(searchParams.get("g") || "");
+  const i = decodeURIComponent(searchParams.get("i") || "");
+  const x = decodeURIComponent(searchParams.get("x") || "");
+  const l = decodeURIComponent(searchParams.get("l") || "");
+  const p = decodeURIComponent(searchParams.get("p") || "");
   const firebaseurl =
     "https://firebasestorage.googleapis.com/v0/b/smartkaksha-fe32c.appspot.com/o/opbento2%2F" +
     g +
@@ -358,7 +358,6 @@ ${contributionStats.longestStreakStartDate} - ${contributionStats.longestStreakE
     await page.setViewport({
       width: 1100,
       height: 1160,
-      deviceScaleFactor: 1.2,
     });
     await page.setContent(html, { waitUntil: "networkidle0" });
     await new Promise((resolve) => setTimeout(resolve, 700));

@@ -61,23 +61,52 @@ const BentoGrid = ({
   const getColor = (value: number) => {
     switch (value) {
       case 0:
-        return "#191919"; 
+        return "#191919";
       case 1:
-        return "#14532D"; 
+        return "#14532D";
       case 2:
-        return "#1E7A1E"; 
+        return "#1E7A1E";
       case 3:
-        return "#28A745"; 
+        return "#28A745";
       case 4:
-        return "#00ef57"; 
+        return "#00ef57";
       default:
-        return "#27272A"; 
+        return "#27272A";
     }
   };
 
   const bentoRef = useRef<HTMLDivElement>(null);
 
   const [loading, setLoading] = useState(false);
+  const handleDownload = async () => {
+    const response = await fetch("/getBento.ts");
+    let fileContent = await response.text();
+    const apiurl = encodeURI(
+      `https://opbento.vercel.app/api/bento?name=${encodeURIComponent(
+        name
+      )}&githubURL=${encodeURIComponent(
+        githubURL
+      )}&twitterURL=${encodeURIComponent(
+        twitterURL
+      )}&linkedinURL=${encodeURIComponent(
+        linkedinURL
+      )}&imageUrl=${encodeURIComponent(
+        imageUrl
+      )}&portfolioUrl=${encodeURIComponent(portfolioUrl)}`
+    );
+
+    fileContent = `const apiUrl = ${apiurl};\n` + fileContent;
+
+    const blob = new Blob([fileContent], { type: "text/typescript" });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.style.display = "none";
+    a.href = url;
+    a.download = "getBento.ts";
+    document.body.appendChild(a);
+    a.click();
+    window.URL.revokeObjectURL(url);
+  };
 
   const handleGenerateLink = async () => {
     setLoading(true);
@@ -104,10 +133,10 @@ const BentoGrid = ({
 
       const fileName = `${githubURL}.png`;
       const storageRef = ref(storage, "opbento/" + fileName);
-
       await uploadBytes(storageRef, blob);
       const downloadUrl = await getDownloadURL(storageRef);
       setBentoLink(downloadUrl);
+      toast.success("Image generated and uploaded successfully");
     } catch (error) {
       console.error("Error generating or uploading the image:", error);
     } finally {
@@ -397,7 +426,7 @@ const BentoGrid = ({
         Generate Bento{" "}
         {loading && <Loader2 className="ml-2 w-4 h-4 animate-spin" />}
       </Button>
-
+      <Button onClick={handleDownload}>Download getBento.ts</Button>
       <div className="relative mt-4">
         <Input
           value={`[![OpBento](${bentoLink})](https://opbento.vercel.app)`}
