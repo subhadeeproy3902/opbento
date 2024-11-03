@@ -77,14 +77,31 @@ export default function BioBlock({
           </div>
         </Block>
       </div>
-      <Block className="col-span-12 p-0 md:col-span-6 grid-rows-1 h-full relative bg-transparent">
+      <Block className="col-span-12 p-0 md:col-span-6 grid-rows-1 overflow-hidden h-full relative bg-transparent">
         <img
           src="/home.png"
           alt="grid"
-          className="mx-auto w-full relative h-full object-cover rounded-2xl"
+          className="mx-auto w-full relative hover:saturate-150 transition-all hover:scale-105 duration-500 h-full object-cover rounded-xl"
         />
       </Block>
       <div className="col-span-12 sm:col-span-6 grid-rows-4 md:col-span-3 space-y-4">
+        <Block className="bg-gradient-to-br from-green-500 to-cyan-500 h-[230px]">
+          <h2 className="text-2xl font-semibold mb-4 flex items-center">
+            <FileQuestion className="mr-2" />
+            Documentation
+          </h2>
+          <p className="mb-4 text-sm">
+            We have a guide for you get started with the project. It includes
+            installation, usage and customization
+          </p>
+          <Link
+            href="/guide"
+            className="w-full inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-secondary text-secondary-foreground hover:bg-secondary/80 h-10 px-4 py-2"
+          >
+            Read Guide
+          </Link>
+        </Block>
+
         <Block className="bg-gradient-to-br from-purple-400 to-indigo-600 h-[230px]">
           <h2 className="text-2xl font-semibold mb-4 flex items-center">
             <Zap className="mr-2" />
@@ -97,20 +114,6 @@ export default function BioBlock({
           <Button variant="secondary" className="w-full">
             Begin Your Journey
           </Button>
-        </Block>
-
-        <Block className="bg-gradient-to-br from-green-400 to-cyan-500 h-[230px]">
-          <h2 className="text-2xl font-semibold mb-4 flex items-center">
-            <FileQuestion className="mr-2" />
-            Documentation
-          </h2>
-          <p className="mb-4 text-sm">
-            We have a guide for you get started with the project. It includes
-            installation, usage and customization
-          </p>
-          <Link href="/guide" className="w-full inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-secondary text-secondary-foreground hover:bg-secondary/80 h-10 px-4 py-2">
-            Read Guide
-          </Link>
         </Block>
       </div>
     </>
