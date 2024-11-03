@@ -78,36 +78,46 @@ const BentoGrid = ({
   const bentoRef = useRef<HTMLDivElement>(null);
 
   const [loading, setLoading] = useState(false);
-  const handleDownload = async () => {
-    const response = await fetch("/getBento.ts");
+const handleDownload = async () => {
+  try {
+    const response = await fetch("/getNewBento.ts.template");
+    if (!response.ok) {
+      throw new Error(`Failed to fetch template: ${response.statusText}`);
+    }
+
     let fileContent = await response.text();
-    const apiurl = encodeURI(
-      `https://opbento.vercel.app/api/bento?name=${encodeURIComponent(
-        name
-      )}&githubURL=${encodeURIComponent(
-        githubURL
-      )}&twitterURL=${encodeURIComponent(
-        twitterURL
-      )}&linkedinURL=${encodeURIComponent(
-        linkedinURL
-      )}&imageUrl=${encodeURIComponent(
-        imageUrl
-      )}&portfolioUrl=${encodeURIComponent(portfolioUrl)}`
-    );
 
-    fileContent = `const apiUrl = ${apiurl};\n` + fileContent;
+    // Construct the API URL
+    const apiUrl = `https://opbento.vercel.app/api/bento?name=${encodeURIComponent(
+      name
+    )}&githubURL=${encodeURIComponent(
+      githubURL
+    )}&twitterURL=${encodeURIComponent(
+      twitterURL
+    )}&linkedinURL=${encodeURIComponent(
+      linkedinURL
+    )}&imageUrl=${encodeURIComponent(
+      imageUrl
+    )}&portfolioUrl=${encodeURIComponent(portfolioUrl)}`;
 
+    // Update the file content with the API URL
+    fileContent = `const apiUrl = "${apiUrl}";\n` + fileContent;
+
+    // Create and trigger download
     const blob = new Blob([fileContent], { type: "text/typescript" });
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement("a");
-    a.style.display = "none";
     a.href = url;
     a.download = "getBento.ts";
     document.body.appendChild(a);
     a.click();
+    document.body.removeChild(a);
     window.URL.revokeObjectURL(url);
-  };
-
+  } catch (error) {
+    console.error("Error downloading file:", error);
+    // Handle error appropriately (show user feedback etc.)
+  }
+};
   const handleGenerateLink = async () => {
     setLoading(true);
     if (!bentoRef.current) return;
