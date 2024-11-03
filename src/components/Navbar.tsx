@@ -15,7 +15,7 @@ export default function Navbar() {
           width={30}
           height={30}
         />
-        <p className="text-lg font-black md:text-xl lg:text-2xl">OP Bento</p>
+        <p className="text-lg font-black md:text-xl lg:text-2xl hidden sm:block">OP Bento</p>
       </div>
       <div className="flex items-center gap-10">
         <Link href="/about" className="hover:underline hover:text-primary duration-300 transition-all md:text-lg font-semibold">

@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { Space_Grotesk } from "next/font/google";
 import { cn } from "@/lib/utils";
 import {
@@ -21,9 +21,6 @@ import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { Graph, StreakStats, UserStats } from "@/types";
 import { generateContributionGraph } from "@/utils/generate-graph";
-import { storage } from "@/lib/firebase";
-import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
-import { toPng } from "html-to-image";
 import { toast } from "sonner";
 import Image from "next/image";
 
@@ -39,9 +36,7 @@ const BentoGrid = ({
   linkedinURL,
   imageUrl,
   stats,
-  showStats,
   streak,
-  showGraph,
   graph,
   portfolioUrl,
 }: {
@@ -51,9 +46,7 @@ const BentoGrid = ({
   linkedinURL: string;
   imageUrl: string;
   stats: UserStats | undefined;
-  showStats: boolean;
   streak: StreakStats | undefined;
-  showGraph: boolean;
   graph: Graph[] | undefined;
   portfolioUrl: string;
 }) => {
@@ -75,8 +68,6 @@ const BentoGrid = ({
         return "#27272A";
     }
   };
-
-  const bentoRef = useRef<HTMLDivElement>(null);
 
   const [loading, setLoading] = useState(false);
   const handleDownload = async () => {
@@ -129,39 +120,21 @@ const BentoGrid = ({
   };
   const handleGenerateLink = async () => {
     setLoading(true);
-    if (!bentoRef.current) return;
-    const previousClass = bentoRef.current.className;
-    bentoRef.current.className += " dark";
+    const apiURL = `/api/bento?n=${encodeURIComponent(
+      name
+    )}&i=${encodeURIComponent(imageUrl)}&g=${encodeURIComponent(
+      githubURL
+    )}&x=${encodeURIComponent(twitterURL)}&l=${encodeURIComponent(
+      linkedinURL
+    )}&p=${encodeURIComponent(portfolioUrl)}`;
     try {
-      const rect = bentoRef.current.getBoundingClientRect();
-      const width = rect.width * 2;
-      const height = rect.height * 2.1;
-      const dataUrl = await toPng(bentoRef.current, {
-        cacheBust: true,
-        backgroundColor: "transparent",
-        style: {
-          transform: "scale(2)",
-          transformOrigin: "top left",
-        },
-        width: width,
-        height: height,
-      });
-
-      const response = await fetch(dataUrl);
-      const blob = await response.blob();
-
-      const fileName = `${githubURL}.png`;
-      const storageRef = ref(storage, "opbento/" + fileName);
-      await uploadBytes(storageRef, blob);
-      const downloadUrl = await getDownloadURL(storageRef);
-      setBentoLink(downloadUrl);
-      toast.success("Image generated and uploaded successfully");
+      const res = await fetch(apiURL);
+      const data = await res.json();
+      setBentoLink(data.url);
     } catch (error) {
       console.error("Error generating or uploading the image:", error);
-    } finally {
-      setLoading(false);
-      bentoRef.current.className = previousClass;
     }
+    setLoading(false);
   };
 
   const copyToClipboard = async () => {
@@ -174,7 +147,6 @@ const BentoGrid = ({
   return (
     <div className="max-w-5xl mx-auto">
       <div
-        ref={bentoRef}
         className={cn(
           "p-4 grid grid-cols-1 md:grid-cols-4 gap-4 max-w-5xl mt-32 mb-8 w-full mx-auto",
           space.className
@@ -268,7 +240,7 @@ const BentoGrid = ({
           />
         </div>
 
-        {stats && showStats && (
+        {stats && (
           <div className="grid gap-4 grid-cols-4 col-span-4 row-span-2">
             <div className="col-span-2 row-span-2">
               <div className="grid grid-cols-4 grid-rows-3 gap-4 auto-rows-fr rounded-xl overflow-hidden size-full">
@@ -410,7 +382,7 @@ const BentoGrid = ({
           </div>
         )}
 
-        {graph && showGraph && (
+        {graph && (
           <div className="bg-gradient-to-br from-green-950/80 p-4 col-span-4 row-span-2 rounded-lg w-full h-full">
             <div className="flex items-center justify-between">
               <h1 className="text-2xl font-bold">

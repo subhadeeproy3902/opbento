@@ -1,8 +1,10 @@
 import {
   Github,
   Linkedin,
-  Twitter, CircleUser,
-  Save, Loader2
+  Twitter,
+  CircleUser,
+  Save,
+  Loader2,
 } from "lucide-react";
 import Block from "./ui/Block";
 import { Input } from "./ui/input";
@@ -16,10 +18,6 @@ import { toast } from "sonner";
 export default function SocialsBlock({
   setName,
   setGithubURL,
-  showStats,
-  setShowStats,
-  showGraph,
-  setShowGraph,
   setTwitterURL,
   setImageUrl,
   setStats,
@@ -28,15 +26,11 @@ export default function SocialsBlock({
 }: {
   setName: (name: string) => void;
   setGithubURL: (url: string) => void;
-  setShowStats: (show: boolean) => void;
-  setShowGraph: (show: boolean) => void;
   setTwitterURL: (url: string) => void;
   setImageUrl: (url: string) => void;
   setStats: (stats: UserStats | undefined) => void;
   setStreak: (streak: StreakStats | undefined) => void;
   setGraph: (graph: Graph[] | undefined) => void;
-  showStats: boolean;
-  showGraph: boolean;
 }) {
   const [tUrl, setTUrl] = useState("");
   const [gUrl, setGUrl] = useState("");
@@ -49,73 +43,37 @@ export default function SocialsBlock({
     setGraph(undefined);
     setStats(undefined);
     setStreak(undefined);
-    if (!showStats && !showGraph) {
-      setGithubURL(gUrl);
-      toast.success("Github Username saved");
-      setLoading(false);
-      return;
-    }
     if (!gUrl) {
       toast.error("Github Username is required");
       setLoading(false);
       return;
     }
 
-    if (showStats && showGraph) {
-      const res1 = await fetch("/api/stats?&username=" + gUrl);
-      const data = await res1.json();
-      if (data.error) {
-        toast.error("Username not found");
-        setLoading(false);
-        return;
-      }
-      setStats(data.stats);
-      const res2 = await fetch("/api/streak?&username=" + gUrl);
-      const streak = await res2.json();
-      setStreak(streak.stats);
-
-      const res3 = await fetch("/api/graph?username=" + gUrl);
-      const graph = await res3.json();
-      setGraph(graph);
+    const res1 = await fetch("/api/stats?&username=" + gUrl);
+    const data = await res1.json();
+    if (data.error) {
+      toast.error("Username not found");
+      setLoading(false);
+      return;
     }
+    setStats(data.stats);
+    const res2 = await fetch("/api/streak?&username=" + gUrl);
+    const streak = await res2.json();
+    setStreak(streak.stats);
 
-    if (showStats && !showGraph) {
-      const res1 = await fetch("/api/stats?&username=" + gUrl);
-      const data = await res1.json();
-      if (data.error) {
-        toast.error("Username not found");
-        setLoading(false);
-        return;
-      }
-      setStats(data.stats);
-      const res2 = await fetch("/api/streak?&username=" + gUrl);
-      const streak = await res2.json();
-      setStreak(streak.stats);
-    }
-
-    if (showGraph && !showStats) {
-      const res = await fetch("/api/graph?username=" + gUrl);
-      const graph = await res.json();
-      setGraph(graph);
-    }
+    const res3 = await fetch("/api/graph?username=" + gUrl);
+    const graph = await res3.json();
+    setGraph(graph);
 
     setGithubURL(gUrl);
-    if (showStats && showGraph) {
-      toast.success(gUrl + " stat cards and contribution graph added");
-    }
-    if (showStats) {
-      toast.success(gUrl + " stat cards added");
-    }
-    if (showGraph) {
-      toast.success(gUrl + " contribution graph added");
-    }
+    toast.success("Github Username saved");
     setLoading(false);
   };
 
   return (
     <>
       <Block className="col-span-12 sm:col-span-6 bg-red-500 md:col-span-3">
-        <div className="grid h-full text-3xl text-white">
+        <div className="grid h-full text-3xl text-white py-4">
           <CircleUser size={18} className="w-6 h-6 absolute top-2 left-2" />
           <h1 className="text-2xl font-bold mx-auto mb-2 text-rose-200">
             Your Name
@@ -168,12 +126,12 @@ export default function SocialsBlock({
       </Block>
 
       <Block className="col-span-12 sm:col-span-6 bg-green-600 md:col-span-3">
-        <div className="grid h-full text-3xl text-white">
+        <div className="grid h-full text-3xl text-white py-4">
           <Github size={18} className="w-5 h-5 absolute top-2 left-2" />
           <h1 className="text-2xl font-bold mx-auto mb-2 text-green-200">
             Github Username
           </h1>
-          <div className="relative mt-2 mb-3">
+          <div className="relative mt-2">
             <Input
               className="w-full pr-10 focus-visible:ring-green-700 placeholder:text-gray-200 bg-transparent border border-green-200/50 text-white ring-offset-green-600"
               placeholder="Enter your username"
@@ -192,26 +150,6 @@ export default function SocialsBlock({
                 <Save className="text-white" size={20} />
               )}
             </Button>
-          </div>
-          <div className="flex justify-between items-center">
-            <div className="flex items-center space-x-2">
-              <Label htmlFor="stats">Stats</Label>
-              <Switch
-                className="data-[state=checked]:bg-emerald-200"
-                id="stats"
-                onCheckedChange={async (checked) => {
-                  setShowStats(checked);
-                }}
-              />
-            </div>
-            <div className="flex items-center space-x-2">
-              <Label htmlFor="graph">Graph</Label>
-              <Switch
-                className="data-[state=checked]:bg-emerald-200"
-                id="graph"
-                onCheckedChange={(checked) => setShowGraph(checked)}
-              />
-            </div>
           </div>
         </div>
       </Block>
