@@ -3,6 +3,7 @@ import { Poppins } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/ui/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
+import Clarity from "@/components/Clarity";
 
 const inter = Poppins({
   subsets: ["latin"],
@@ -21,6 +22,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="dark">
+      {process.env.NODE_ENV === "production" ? <Clarity /> : null}
       <body className={inter.className}>
         <ThemeProvider attribute="class" defaultTheme="dark">
           <Toaster richColors />
