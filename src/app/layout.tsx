@@ -1,9 +1,9 @@
+import Clarity from "@/components/Clarity";
+import { Toaster } from "@/components/ui/sonner";
+import { ThemeProvider } from "@/components/ui/theme-provider";
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import "./globals.css";
-import { ThemeProvider } from "@/components/ui/theme-provider";
-import { Toaster } from "@/components/ui/sonner";
-import Clarity from "@/components/Clarity";
 
 const inter = Poppins({
   subsets: ["latin"],
@@ -13,6 +13,8 @@ const inter = Poppins({
 export const metadata: Metadata = {
   title: "OP Bento",
   description: "Create cool bento grids for your Github Readme!",
+  metadataBase: new URL("https://opbento.vercel.app"),
+  manifest: "/manifest.json",
 };
 
 export default function RootLayout({

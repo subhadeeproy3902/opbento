@@ -21,6 +21,13 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/app/api/bento/route.ts", "public/getNewBento.ts.template"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    "src/app/api/bento/route.ts",
+    "public/getNewBento.ts.template"
+  ],
   "exclude": ["node_modules"]
 }

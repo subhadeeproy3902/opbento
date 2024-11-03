@@ -442,11 +442,11 @@ const BentoGrid = ({
       </div>
       <div className="flex gap-4">
         <Button className="" onClick={handleGenerateLink}>
-          Generate Bento{" "}
-          {loading && <Loader2 className="ml-2 w-4 h-4 animate-spin" />}
+          Generate Bento
+          {loading && <Loader2 className="ml-2 size-4 animate-spin" />}
         </Button>
         <Button onClick={handleDownload} variant={"secondary"}>
-          Download Files <Download size={16} className="ml-2"/>{" "}
+          Download Files <Download size={16} className="ml-2" />
         </Button>
       </div>
       <div className="relative mt-4">
