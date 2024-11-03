@@ -108,7 +108,7 @@ const BentoGrid = ({
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
-      a.download = "getBento.ts";
+      a.download = "getNewBento.ts";
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
@@ -119,7 +119,7 @@ const BentoGrid = ({
       toast.error("Error downloading file");
     }
   };
-  
+
   const handleGenerateLink = async () => {
     setLoading(true);
     const apiURL = `/api/bento?n=${encodeURIComponent(

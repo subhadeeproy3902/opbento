@@ -199,14 +199,14 @@ export default function Component() {
                   folder named
                   <strong> .github/workflows </strong> and add the{" "}
                   <strong> action.yml </strong>
-                  file in it. And in the main directory add the getbento.ts
+                  file in it. And in the main directory add the getNewBento.ts
                   file. So that the setup will be look like below.
                 </p>
 
                 <div className="w-72 mt-5 rounded-xl cursor-pointer bg-neutral-400/10 p-4">
                   <Tree contentTree="Your Repo">
                     <Tree contentTree="README.md" />
-                    <Tree contentTree="getbento.ts" />
+                    <Tree contentTree="getNewBento.ts" />
                     <Tree contentTree=".github" defaultCollapsed={false}>
                       <Tree contentTree="workflows">
                         <Tree contentTree="action.yml" />
