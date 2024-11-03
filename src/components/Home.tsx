@@ -24,63 +24,52 @@ export default function HomePage() {
   const [imageUrl, setImageUrl] = useState("");
   const [twitterURL, setTwitterURL] = useState("");
   const [portfolioURL, setPortfolioURL] = useState("");
-  const [showStats, setShowStats] = useState(false);
-  const [showGraph, setShowGraph] = useState(false);
 
   const [stats, setStats] = useState<UserStats | undefined>(undefined);
   const [streak, setStreak] = useState<StreakStats | undefined>(undefined);
   const [graph, setGraph] = useState<Graph[] | undefined>(undefined);
 
   return (
-    <>
-      <div className="block md:hidden py-20 px-10">Open in PC</div>
-      <div className="md:block hidden w-full">
-        <div className="min-h-svh p-4 max-w-7xl mx-auto w-full">
-          <Navbar />
-          <motion.div
-            initial="initial"
-            animate="animate"
-            transition={{
-              staggerChildren: 0.08,
-            }}
-            className="grid max-w-7x mx-auto grid-flow-dense grid-cols-12 gap-4 w-full"
-          >
-            <HeaderBlock />
-            <SocialsBlock
-              setName={setName}
-              setGithubURL={setGithubURL}
-              setShowStats={setShowStats}
-              setShowGraph={setShowGraph}
-              setTwitterURL={setTwitterURL}
-              setImageUrl={setImageUrl}
-              setStats={setStats}
-              setStreak={setStreak}
-              showStats={showStats}
-              showGraph={showGraph}
-              setGraph={setGraph}
-            />
-
-            <BioBlock
-              setLinkedinURL={setLinkedinURL}
-              setPortfolioURL={setPortfolioURL}
-            />
-          </motion.div>
-          <BentoGrid
-            name={name}
-            githubURL={githubURL}
-            twitterURL={twitterURL}
-            linkedinURL={linkedinURL}
-            imageUrl={imageUrl}
-            stats={stats}
-            showStats={showStats}
-            streak={streak}
-            showGraph={showGraph}
-            graph={graph}
-            portfolioUrl={portfolioURL}
+    <div className="w-full">
+      <div className="min-h-svh p-4 max-w-7xl mx-auto w-full">
+        <Navbar />
+        <motion.div
+          initial="initial"
+          animate="animate"
+          transition={{
+            staggerChildren: 0.08,
+          }}
+          className="grid max-w-7x mx-auto grid-flow-dense grid-cols-12 gap-4 w-full"
+        >
+          <HeaderBlock />
+          <SocialsBlock
+            setName={setName}
+            setGithubURL={setGithubURL}
+            setTwitterURL={setTwitterURL}
+            setImageUrl={setImageUrl}
+            setStats={setStats}
+            setStreak={setStreak}
+            setGraph={setGraph}
           />
-        </div>
+
+          <BioBlock
+            setLinkedinURL={setLinkedinURL}
+            setPortfolioURL={setPortfolioURL}
+          />
+        </motion.div>
+        <BentoGrid
+          name={name}
+          githubURL={githubURL}
+          twitterURL={twitterURL}
+          linkedinURL={linkedinURL}
+          imageUrl={imageUrl}
+          stats={stats}
+          streak={streak}
+          graph={graph}
+          portfolioUrl={portfolioURL}
+        />
       </div>
-    </>
+    </div>
   );
 }
 
