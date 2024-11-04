@@ -29,7 +29,7 @@ export async function GET(req: NextRequest) {
   if (!g) {
     return new NextResponse("Github username is required", { status: 400 });
   }
-  
+
   const firebaseurl =
     "https://firebasestorage.googleapis.com/v0/b/smartkaksha-fe32c.appspot.com/o/opbento2%2F" +
     g +
@@ -374,7 +374,7 @@ ${contributionStats.longestStreakStartDate} - ${contributionStats.longestStreakE
     await browser.close();
 
     const blob = new Blob([screenshot], { type: "image/png" });
-    const storageRef = ref(storage, `opbento/${g}.png`);
+    const storageRef = ref(storage, `opbento/${g}${uniqueId}.png`);
 
     await uploadBytes(storageRef, blob, { cacheControl: "public, max-age=60" });
     const downloadUrl = await getDownloadURL(storageRef);
