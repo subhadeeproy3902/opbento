@@ -35,6 +35,7 @@ import { generateContributionGraph } from "@/utils/generate-graph";
 import { toast } from "sonner";
 import Image from "next/image";
 import Link from "next/link";
+import { generateRandomString } from "@/utils/calculations";
 
 const space = Space_Grotesk({
   subsets: ["latin"],
@@ -84,6 +85,7 @@ const BentoGrid = ({
   const [loading, setLoading] = useState(false);
   const [isGenerated, setIsGenerated] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const randomId = generateRandomString(5);
 
   const handleDownload = async () => {
     try {
@@ -114,7 +116,9 @@ const BentoGrid = ({
         linkedinURL
       )}&imageUrl=${encodeURIComponent(
         imageUrl
-      )}&portfolioUrl=${encodeURIComponent(portfolioUrl)}`;
+      )}&portfolioUrl=${encodeURIComponent(
+        portfolioUrl
+      )}&z=${encodeURIComponent(randomId)}`;
 
       fileContent = `const apiUrl = "${apiUrl}";\n` + fileContent;
 
@@ -147,7 +151,7 @@ const BentoGrid = ({
       githubURL
     )}&x=${encodeURIComponent(twitterURL)}&l=${encodeURIComponent(
       linkedinURL
-    )}&p=${encodeURIComponent(portfolioUrl)}`;
+    )}&p=${encodeURIComponent(portfolioUrl)}&z=${encodeURIComponent(randomId)}`;
     try {
       const res = await fetch(apiURL);
       const data = await res.json();
@@ -439,7 +443,7 @@ const BentoGrid = ({
         )}
       </div>
       <div className="flex gap-4 w-full">
-        {!githubURL && (
+        {githubURL && (
           <Button className="w-fit mx-auto" onClick={handleGenerateLink}>
             Generate Bento
             {loading && <Loader2 className="ml-2 size-4 animate-spin" />}

@@ -1,14 +1,31 @@
-export const calculateTotalContributions = (contributionDays: { date: string, contributionCount: number }[]): { total: number, firstContributionDate: string | null } => {
-  const total = contributionDays.reduce((total, day) => total + day.contributionCount, 0);
-  const firstContributionDate = contributionDays.find(day => day.contributionCount > 0)?.date || null;
-  return { total, firstContributionDate };
-}
+import { randomBytes } from "crypto";
 
-export const calculateLongestStreak = (contributionDays: { date: string, contributionCount: number }[]): { longestStreak: number, startDate: string | null, endDate: string | null } => {
-  let longestStreak = 0, tempStreak = 0;
+export const calculateTotalContributions = (
+  contributionDays: { date: string; contributionCount: number }[]
+): { total: number; firstContributionDate: string | null } => {
+  const total = contributionDays.reduce(
+    (total, day) => total + day.contributionCount,
+    0
+  );
+  const firstContributionDate =
+    contributionDays.find((day) => day.contributionCount > 0)?.date || null;
+  return { total, firstContributionDate };
+};
+
+export const calculateLongestStreak = (
+  contributionDays: { date: string; contributionCount: number }[]
+): {
+  longestStreak: number;
+  startDate: string | null;
+  endDate: string | null;
+} => {
+  let longestStreak = 0,
+    tempStreak = 0;
   let lastDate: Date | null = null;
-  let streakStartDate: string | null = null, streakEndDate: string | null = null;
-  let longestStartDate: string | null = null, longestEndDate: string | null = null;
+  let streakStartDate: string | null = null,
+    streakEndDate: string | null = null;
+  let longestStartDate: string | null = null,
+    longestEndDate: string | null = null;
 
   for (const day of contributionDays) {
     const currentDate = new Date(day.date);
@@ -16,7 +33,8 @@ export const calculateLongestStreak = (contributionDays: { date: string, contrib
     if (day.contributionCount > 0) {
       if (!tempStreak) streakStartDate = day.date; // Start tracking streak
       if (lastDate) {
-        const dayDifference = (currentDate.getTime() - lastDate.getTime()) / (1000 * 60 * 60 * 24);
+        const dayDifference =
+          (currentDate.getTime() - lastDate.getTime()) / (1000 * 60 * 60 * 24);
         if (dayDifference === 1) {
           tempStreak++;
           streakEndDate = day.date; // Update streak end date
@@ -52,10 +70,20 @@ export const calculateLongestStreak = (contributionDays: { date: string, contrib
     longestEndDate = streakEndDate;
   }
 
-  return { longestStreak, startDate: longestStartDate, endDate: longestEndDate };
-}
+  return {
+    longestStreak,
+    startDate: longestStartDate,
+    endDate: longestEndDate,
+  };
+};
 
-export const calculateCurrentStreak = (contributionDays: { date: string, contributionCount: number }[]): { currentStreak: number, startDate: string | null, endDate: string | null } => {
+export const calculateCurrentStreak = (
+  contributionDays: { date: string; contributionCount: number }[]
+): {
+  currentStreak: number;
+  startDate: string | null;
+  endDate: string | null;
+} => {
   let currentStreak = 0;
   let streakStartDate: string | null = null;
   let streakEndDate: string | null = null;
@@ -64,7 +92,8 @@ export const calculateCurrentStreak = (contributionDays: { date: string, contrib
   // Loop from the most recent day backwards
   for (let i = contributionDays.length - 1; i >= 0; i--) {
     const currentDate = new Date(contributionDays[i].date);
-    const dayDifference = (lastDate.getTime() - currentDate.getTime()) / (1000 * 60 * 60 * 24);
+    const dayDifference =
+      (lastDate.getTime() - currentDate.getTime()) / (1000 * 60 * 60 * 24);
 
     if (contributionDays[i].contributionCount > 0 && dayDifference <= 1) {
       if (!currentStreak) streakStartDate = contributionDays[i].date; // Start tracking the current streak
@@ -77,20 +106,26 @@ export const calculateCurrentStreak = (contributionDays: { date: string, contrib
   }
 
   return { currentStreak, startDate: streakStartDate, endDate: streakEndDate };
-}
+};
 
 export const formatDate = (dateString: string | null): string | null => {
   if (!dateString) return null;
   const date = new Date(dateString);
   const options: Intl.DateTimeFormatOptions = {
-    month: 'short',
-    day: 'numeric',
+    month: "short",
+    day: "numeric",
   };
 
   // If the year is not the current year, include the year in the format
   if (date.getFullYear() !== new Date().getFullYear()) {
-    options.year = 'numeric';
+    options.year = "numeric";
   }
 
-  return date.toLocaleDateString('en-US', options);
+  return date.toLocaleDateString("en-US", options);
+};
+
+export function generateRandomString(length: number) {
+  return randomBytes(Math.ceil(length / 2))
+    .toString("hex")
+    .slice(0, length);
 }

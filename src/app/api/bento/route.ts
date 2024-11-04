@@ -23,12 +23,17 @@ export async function GET(req: NextRequest) {
   const x = decodeURIComponent(searchParams.get("x") || "");
   const l = decodeURIComponent(searchParams.get("l") || "");
   const p = decodeURIComponent(searchParams.get("p") || "");
+
+  const uniqueId = decodeURIComponent(searchParams.get("z") || "");
+
   if (!g) {
     return new NextResponse("Github username is required", { status: 400 });
   }
+  
   const firebaseurl =
     "https://firebasestorage.googleapis.com/v0/b/smartkaksha-fe32c.appspot.com/o/opbento2%2F" +
     g +
+    uniqueId +
     ".png?alt=media";
 
   try {
