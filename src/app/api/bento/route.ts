@@ -342,7 +342,7 @@ ${contributionStats.longestStreakStartDate} - ${contributionStats.longestStreakE
         </div>
       </div>
       <div
-      class="bg-zinc-900/40 shadow-md rounded-xl absolute py-2 px-4 text-xs text-foreground/70 -rotate-6 backdrop-blur-md -bottom-1 right-0">
+      class="bg-zinc-900/40 shadow-md rounded-xl absolute py-2 px-4 text-xs text-foreground/70 -rotate-6 backdrop-blur-md bottom-2 right-1">
       made by <span class="uppercase ml-1 text-rose-500">opbento</span>
     </div>
     </div>
