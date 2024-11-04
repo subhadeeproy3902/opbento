@@ -38,7 +38,7 @@ export default function RootLayout({
 
 const Footer = () => {
   return (
-    <footer className="mt-12 mb-4">
+    <footer className="mt-20 mb-4">
       <p className="text-center text-muted-foreground">
         Made with ❤️ by{" "}
         <a href="/about" className="text-red-300 hover:underline">

@@ -2,7 +2,15 @@
 
 import { useState, useEffect } from "react";
 import { motion, useScroll, useSpring } from "framer-motion";
-import { Check, CirclePlay, Download, File, Menu, Settings, X } from "lucide-react";
+import {
+  Check,
+  CirclePlay,
+  Download,
+  File,
+  Menu,
+  Settings,
+  X,
+} from "lucide-react";
 import Link from "next/link";
 import { Spotlight } from "@/components/ui/Spotlight";
 import Image from "next/image";
@@ -252,15 +260,13 @@ export default function Component() {
                         >
                           <path
                             stroke="currentColor"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
                             d="m1 9 4-4-4-4"
                           />
                         </svg>
-                        <p
-                          className="ms-1 text-sm font-medium md:ms-2 inline-flex items-center  dark:text-gray-400 dark:hover:text-white"
-                        >
+                        <p className="ms-1 text-sm font-medium md:ms-2 inline-flex items-center  dark:text-gray-400 dark:hover:text-white">
                           <CirclePlay className="w-4 h-4 mr-2" />
                           Actions
                         </p>
@@ -277,9 +283,9 @@ export default function Component() {
                         >
                           <path
                             stroke="currentColor"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
                             d="m1 9 4-4-4-4"
                           />
                         </svg>

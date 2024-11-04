@@ -439,7 +439,7 @@ const BentoGrid = ({
         )}
       </div>
       <div className="flex gap-4 w-full">
-        {githubURL && (
+        {!githubURL && (
           <Button className="w-fit mx-auto" onClick={handleGenerateLink}>
             Generate Bento
             {loading && <Loader2 className="ml-2 size-4 animate-spin" />}

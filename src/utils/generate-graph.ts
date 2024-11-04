@@ -42,7 +42,7 @@ export const generateContributionGraph = (
             const x = svgPadding + weekIndex * (dayWidth + weekPadding);
             const y = svgPadding + dayIndex * (dayHeight + dayPadding);
             const fillColor = getFillColor(day.contributionCount);
-            return `<rect x="${x}" y="${y}" width="${dayWidth}" height="${dayHeight}" fill="${fillColor}" stroke-width="0.5" rx="2" ry="2" />`;
+            return `<rect x="${x}" y="${y}" width="${dayWidth}" height="${dayHeight}" fill="${fillColor}" strokeWidth="0.5" rx="2" ry="2" />`;
           })
           .join("")
       )
