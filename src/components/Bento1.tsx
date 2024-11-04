@@ -35,6 +35,7 @@ import { toast } from "sonner";
 import Image from "next/image";
 import Link from "next/link";
 import { generateRandomString } from "@/utils/calculations";
+import { TextShimmer } from "./ui/text-shimmer";
 
 const randomId = generateRandomString(5);
 
@@ -171,13 +172,8 @@ const BentoGrid = ({
   };
 
   return (
-    <div className="max-w-5xl mx-auto">
-      <div
-        className={cn(
-          "sm:p-4 grid relative grid-cols-1 md:grid-cols-4 gap-y-4 sm:gap-4 max-w-5xl mt-32 mb-8 w-full mx-auto",
-          space.className
-        )}
-      >
+    <div className={cn("max-w-5xl mx-auto", space.className)}>
+      <div className="sm:p-4 grid relative grid-cols-1 md:grid-cols-4 gap-y-4 sm:gap-4 max-w-5xl mt-32 mb-8 w-full mx-auto">
         <div className="text-white py-6 px-8 rounded-lg bg-gradient-to-br from-cyan-400 via-blue-500 to-violet-600 to col-span-1 row-span-1 min-h-32">
           <p className="text-xl">Hey Im</p>
           <h2 className="text-4xl font-bold mb-2 capitalize">
@@ -442,11 +438,16 @@ const BentoGrid = ({
         </div>
       </div>
       {githubURL && (
-        <div className="flex gap-4 w-full">
+        <div className="flex flex-col items-center justify-center gap-2 mb-6 w-full">
           <Button className="w-fit mx-auto" onClick={handleGenerateLink}>
             Generate Bento
             {loading && <Loader2 className="ml-2 size-4 animate-spin" />}
           </Button>
+          {loading && (
+            <TextShimmer className="text-sm tracking-wide">
+              Generating , wait for 10secs...
+            </TextShimmer>
+          )}
           <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
             <AlertDialogContent className="max-w-2xl bg-gradient-to-b from-[#1A1A1A] to-[#121212] border-gray-800 shadow-2xl rounded-xl overflow-hidden">
               <AlertDialogHeader className="relative">
