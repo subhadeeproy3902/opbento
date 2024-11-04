@@ -249,7 +249,7 @@ ${contributionStats.longestStreakStartDate} - ${contributionStats.longestStreakE
   <body class="bg-neutral-950 text-white font-['Space_Grotesk']">
     <div class="max-w-5xl mx-auto">
       <div
-        class="p-1 grid grid-cols-1 md:grid-cols-4 gap-4 max-w-5xl mt-4 w-full mx-auto"
+        class="p-1 grid grid-cols-1 md:grid-cols-4 gap-4 max-w-5xl mt-4 w-full mx-auto relative"
       >
         <!-- Name Card -->
         <div class="text-white py-6 px-8 rounded-lg bg-gradient-to-br from-cyan-400 via-blue-500 to-violet-600 col-span-1 row-span-1 min-h-32">
@@ -341,6 +341,10 @@ ${contributionStats.longestStreakStartDate} - ${contributionStats.longestStreakE
           </div>
         </div>
       </div>
+      <div
+      class="bg-zinc-900/40 shadow-md rounded-xl absolute py-2 px-4 text-xs text-foreground/70 -rotate-6 backdrop-blur-md -bottom-1 right-0">
+      made by <span class="uppercase ml-1 text-rose-500">opbento</span>
+    </div>
     </div>
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
     <script>
