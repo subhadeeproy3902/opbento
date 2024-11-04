@@ -1,10 +1,10 @@
 import { Linkedin, Globe, Save, Zap, FileQuestion } from "lucide-react";
 import Block from "./ui/Block";
+import homeimg from "@/home.png";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { useState } from "react";
 import { toast } from "sonner";
-import { BlurVignette, BlurVignetteArticle } from "./ui/blur-vignette";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -78,8 +78,11 @@ export default function BioBlock({
         </Block>
       </div>
       <Block className="col-span-12 p-0 md:col-span-6 grid-rows-1 overflow-hidden h-full relative bg-transparent">
-        <img
-          src="/home.png"
+        <Image
+          src={homeimg}
+          placeholder="blur"
+          width={450}
+          height={400}
           alt="grid"
           className="mx-auto w-full relative hover:saturate-150 transition-all hover:scale-105 duration-500 h-full object-cover rounded-xl"
         />
@@ -111,7 +114,9 @@ export default function BioBlock({
             Its fully open source and you can contribute to it. If you got any
             ideas or suggestions, feel free to open an issue or a pull request.
           </p>
-          <Link href="https://github.com/edgexhq/opbento" className="w-full inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-secondary text-secondary-foreground hover:bg-secondary/80 h-10 px-4 py-2"
+          <Link
+            href="https://github.com/edgexhq/opbento"
+            className="w-full inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-secondary text-secondary-foreground hover:bg-secondary/80 h-10 px-4 py-2"
           >
             Begin Your Journey
           </Link>

@@ -1,16 +1,12 @@
 import {
-  Github,
-  Linkedin,
-  Twitter,
+  Github, Twitter,
   CircleUser,
   Save,
   Loader2,
-  Image,
+  Image
 } from "lucide-react";
 import Block from "./ui/Block";
 import { Input } from "./ui/input";
-import { Switch } from "./ui/switch";
-import { Label } from "./ui/label";
 import { Graph, StreakStats, UserStats } from "@/types";
 import { useState } from "react";
 import { Button } from "./ui/button";
