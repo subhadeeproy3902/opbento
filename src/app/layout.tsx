@@ -1,6 +1,5 @@
 import Clarity from "@/components/Clarity";
 import { Toaster } from "@/components/ui/sonner";
-import { ThemeProvider } from "@/components/ui/theme-provider";
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import "./globals.css";
@@ -26,11 +25,9 @@ export default function RootLayout({
     <html lang="en" className="dark">
       {process.env.NODE_ENV === "production" ? <Clarity /> : null}
       <body className={inter.className}>
-        <ThemeProvider attribute="class" defaultTheme="dark">
-          <Toaster richColors />
-          {children}
-          <Footer />
-        </ThemeProvider>
+        <Toaster richColors />
+        {children}
+        <Footer />
       </body>
     </html>
   );
