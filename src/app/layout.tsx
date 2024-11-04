@@ -1,6 +1,6 @@
 import Clarity from "@/components/Clarity";
 import { Toaster } from "@/components/ui/sonner";
-import { ThemeProvider } from "@/components/ui/theme-provider";
+import { ThemeProvider } from "next-themes";
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import "./globals.css";
