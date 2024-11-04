@@ -565,7 +565,7 @@ const BentoGrid = ({
             {/* Guide Button */}
             <div className="flex justify-between items-center">
               <Link
-                href="https://opbento.edgexhq.tech/guide"
+                href="/guide"
                 className="text-gray-400 inline-flex items-center gap-2 hover:text-white transition-colors text-sm py-2 h-auto"
               >
                 Guide <Link2 className="text-red-500" />
