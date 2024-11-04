@@ -37,6 +37,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { generateRandomString } from "@/utils/calculations";
 
+const randomId = generateRandomString(5);
+
 const space = Space_Grotesk({
   subsets: ["latin"],
   weight: ["400", "300", "600", "700", "500"],
@@ -85,7 +87,6 @@ const BentoGrid = ({
   const [loading, setLoading] = useState(false);
   const [isGenerated, setIsGenerated] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
-  const randomId = generateRandomString(5);
 
   const handleDownload = async () => {
     try {
