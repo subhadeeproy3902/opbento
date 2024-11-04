@@ -1,4 +1,5 @@
-# 🧊 OP Bento - Transform Your GitHub Profile with a Stunning Bento Grid
+# 🧊 OP Bento 
+## Transform Your GitHub Profile with a Stunning Bento Grid
 
 ![screenshot](src/app/opengraph-image.jpg)
 
@@ -58,11 +59,11 @@ If you find OP Bento helpful, please give us a ⭐ on GitHub and share it with o
 
 **Enjoy a refreshed GitHub profile with OP Bento!** 😎✨
 
-## Authors 😎
+## 😎 Authors 
 
 - Subhadeep Roy [@subhadeeproy3902](git.new/Subha)
 - Anish Biswas [@Xeven777](git.new/anish)
-- Arghya Ghosh [@uiuxarghya](https://github.com/uiuxarghya)
+- Arghya Ghosh [@uiuxarghya](git.new/uiuxarghya)
 
 ---
 
