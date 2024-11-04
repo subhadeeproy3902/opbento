@@ -23,6 +23,9 @@ export async function GET(req: NextRequest) {
   const x = decodeURIComponent(searchParams.get("x") || "");
   const l = decodeURIComponent(searchParams.get("l") || "");
   const p = decodeURIComponent(searchParams.get("p") || "");
+  if (!g) {
+    return new NextResponse("Github username is required", { status: 400 });
+  }
   const firebaseurl =
     "https://firebasestorage.googleapis.com/v0/b/smartkaksha-fe32c.appspot.com/o/opbento2%2F" +
     g +
@@ -326,7 +329,7 @@ ${contributionStats.longestStreakStartDate} - ${contributionStats.longestStreakE
         ${htmlofGithubStats}
 
         <div class="bg-gradient-to-br from-green-950/80 p-4 col-span-4 row-span-2 rounded-lg w-full h-full">
-          <div class="flex items-center justify-between"><h1 class="text-2xl font-bold">subhadeeproy3902's Contribution Graph</h1><div class="flex items-center justify-end text-sm"><span>Less</span><div class="flex gap-2 mx-3"><div class="w-4 h-4 rounded-sm" title="Contribution level 0" style="background-color: rgb(25, 25, 25);"></div><div class="w-4 h-4 rounded-sm" title="Contribution level 1" style="background-color: rgb(20, 83, 45);"></div><div class="w-4 h-4 rounded-sm" title="Contribution level 2" style="background-color: rgb(30, 122, 30);"></div><div class="w-4 h-4 rounded-sm" title="Contribution level 3" style="background-color: rgb(40, 167, 69);"></div><div class="w-4 h-4 rounded-sm" title="Contribution level 4" style="background-color: rgb(0, 239, 87);"></div></div><span>More</span></div></div>
+          <div class="flex items-center justify-between"><h1 class="text-2xl font-bold">${g}'s Contribution Graph</h1><div class="flex items-center justify-end text-sm"><span>Less</span><div class="flex gap-2 mx-3"><div class="w-4 h-4 rounded-sm" title="Contribution level 0" style="background-color: rgb(25, 25, 25);"></div><div class="w-4 h-4 rounded-sm" title="Contribution level 1" style="background-color: rgb(20, 83, 45);"></div><div class="w-4 h-4 rounded-sm" title="Contribution level 2" style="background-color: rgb(30, 122, 30);"></div><div class="w-4 h-4 rounded-sm" title="Contribution level 3" style="background-color: rgb(40, 167, 69);"></div><div class="w-4 h-4 rounded-sm" title="Contribution level 4" style="background-color: rgb(0, 239, 87);"></div></div><span>More</span></div></div>
 
           <div class="flex justify-center pb-4 items-center w-full h-full">
             ${graphSVG}
