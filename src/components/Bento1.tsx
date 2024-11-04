@@ -2,20 +2,31 @@
 import { useState } from "react";
 import { Space_Grotesk } from "next/font/google";
 import { cn } from "@/lib/utils";
+import confetti from "canvas-confetti";
+import {
+  AlertDialog,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import {
   Activity,
+  AlertTriangle,
   Calendar,
   Clipboard,
   Download,
+  FileText,
   Flame,
   GitBranch,
   GitPullRequest,
+  Link2,
   Linkedin,
   Loader2,
   Star,
   Trophy,
   TwitterIcon,
   Users,
+  X,
 } from "lucide-react";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
@@ -23,6 +34,7 @@ import { Graph, StreakStats, UserStats } from "@/types";
 import { generateContributionGraph } from "@/utils/generate-graph";
 import { toast } from "sonner";
 import Image from "next/image";
+import Link from "next/link";
 
 const space = Space_Grotesk({
   subsets: ["latin"],
@@ -70,6 +82,8 @@ const BentoGrid = ({
   };
 
   const [loading, setLoading] = useState(false);
+  const [isGenerated, setIsGenerated] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
   const handleDownload = async () => {
     try {
@@ -121,7 +135,12 @@ const BentoGrid = ({
   };
 
   const handleGenerateLink = async () => {
+    if (isGenerated) {
+      setIsOpen(true);
+      return;
+    }
     setLoading(true);
+    setIsGenerated(false);
     const apiURL = `/api/bento?n=${encodeURIComponent(
       name
     )}&i=${encodeURIComponent(imageUrl)}&g=${encodeURIComponent(
@@ -137,6 +156,13 @@ const BentoGrid = ({
       console.error("Error generating or uploading the image:", error);
     }
     setLoading(false);
+    setIsGenerated(true);
+    confetti({
+      particleCount: 100,
+      spread: 70,
+      origin: { y: 0.6 },
+    });
+    setIsOpen(true);
   };
 
   const copyToClipboard = async () => {
@@ -417,20 +443,138 @@ const BentoGrid = ({
           Generate Bento
           {loading && <Loader2 className="ml-2 size-4 animate-spin" />}
         </Button>
-        {bentoLink && (
-          <Button onClick={handleDownload} variant={"secondary"}>
-            Download Files <Download size={16} className="ml-2" />
-          </Button>
-        )}
-      </div>
-      <div className="relative mt-4">
-        <Input
-          value={`[![OpBento](${bentoLink})](https://opbento.vercel.app)`}
-          readOnly
-        />
-        <Button className="absolute top-0 right-0" onClick={copyToClipboard}>
-          <Clipboard />
-        </Button>
+        <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
+          <AlertDialogContent className="max-w-2xl bg-gradient-to-b from-[#1A1A1A] to-[#121212] border-gray-800 shadow-2xl rounded-xl overflow-hidden">
+            <AlertDialogHeader className="relative">
+              <AlertDialogTitle className="text-2xl font-bold text-white mb-2">
+                Your OP Bento is ready
+              </AlertDialogTitle>
+              <Button
+                variant="ghost"
+                className="absolute right-0 top-0 text-gray-400 hover:text-white"
+                onClick={() => setIsOpen(false)}
+              >
+                <X className="w-5 h-5" />
+              </Button>
+            </AlertDialogHeader>
+
+            {/* Warning Note */}
+            <div className="bg-yellow-900/20 border border-red-700/50 rounded-lg px-4 py-3 mb-4">
+              <div className="flex items-center gap-2 text-red-500">
+                <AlertTriangle className="w-4 h-4 flex-shrink-0" />
+                <p className="text-xs font-medium">
+                  Do not change the existing files else setup won't work
+                </p>
+              </div>
+            </div>
+
+            {/* Embed Link Section */}
+            <div className="space-y-2 mb-4">
+              <div className="flex items-center gap-2 text-sm font-medium text-white">
+                <Link2 className="w-4 h-4" />
+                <h3 className="flex flex-wrap items-center gap-3 text-base">
+                  Embed Link
+                  <p className="text-gray-500 text-xs">
+                    Paste this in your README.md
+                  </p>
+                </h3>
+              </div>
+              <div className="flex gap-2 relative ">
+                <Input
+                  value={`[![OpBento](${bentoLink})](https://opbento.vercel.app)`}
+                  readOnly
+                  className="focus:ring-offset-secondary pr-16"
+                />
+                <Button
+                  className="absolute top-0 right-0"
+                  onClick={copyToClipboard}
+                >
+                  <Clipboard />
+                </Button>
+              </div>
+            </div>
+
+            {/* Download Files Section */}
+            <div className="space-y-2 mb-4">
+              {bentoLink && (
+                <Button onClick={handleDownload} variant={"secondary"}>
+                  Download Files <Download size={16} className="ml-2" />
+                </Button>
+              )}
+            </div>
+
+            {/* Files Section */}
+            <div className="grid grid-cols-2 gap-3 mb-4">
+              <button className="group bg-[#1E1E1E] hover:bg-[#252525] transition-all duration-300 rounded-xl p-2 flex items-center justify-between border border-gray-800 hover:border-gray-700">
+                <div className="flex items-center gap-2">
+                  <div className="bg-blue-500/10 rounded-lg aspect-square w-8 h-8 p-1.5">
+                    <span className="font-mono text-blue-400 text-xs">TS</span>
+                  </div>
+                  <span className="text-gray-300 font-medium text-sm">
+                    getNewBento.ts
+                  </span>
+                </div>
+                <div className="bg-[#1A1A1A] group-hover:bg-[#2A2A2A] p-1.5 rounded-lg transition-colors">
+                  <svg
+                    width="12"
+                    height="12"
+                    viewBox="0 0 16 16"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M8 12L3 7L4.4 5.55L8 9.15L11.6 5.55L13 7L8 12Z"
+                      fill="#4ADE80"
+                    />
+                  </svg>
+                </div>
+              </button>
+
+              <button className="group bg-[#1E1E1E] hover:bg-[#252525] transition-all duration-300 rounded-xl p-2 flex items-center justify-between border border-gray-800 hover:border-gray-700">
+                <div className="flex items-center gap-2">
+                  <div className="bg-red-500/10 rounded-lg p-1.5">
+                    <FileText className="w-5 h-5 text-red-400" />
+                  </div>
+                  <span className="text-gray-300 font-medium text-sm">
+                    update-bento.yml
+                  </span>
+                </div>
+                <div className="bg-[#1A1A1A] group-hover:bg-[#2A2A2A] p-1.5 rounded-lg transition-colors">
+                  <svg
+                    width="12"
+                    height="12"
+                    viewBox="0 0 16 16"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M8 12L3 7L4.4 5.55L8 9.15L11.6 5.55L13 7L8 12Z"
+                      fill="#4ADE80"
+                    />
+                  </svg>
+                </div>
+              </button>
+            </div>
+
+            {/* Guide Button */}
+            <div className="flex justify-between items-center">
+              <Link
+                href="https://opbento.live/guide"
+                className="text-gray-400 inline-flex items-center gap-2 hover:text-white transition-colors text-sm py-2 h-auto"
+              >
+                Guide <Link2 className="text-red-500" />
+              </Link>
+
+              <Button
+                variant="ghost"
+                onClick={() => setIsOpen(false)}
+                className="text-gray-400 hover:text-white transition-colors text-sm py-2 h-auto"
+              >
+                Close
+              </Button>
+            </div>
+          </AlertDialogContent>
+        </AlertDialog>
       </div>
     </div>
   );

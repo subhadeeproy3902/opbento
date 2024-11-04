@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { motion, useScroll, useSpring } from "framer-motion";
-import { Check, Download, File, Menu, X } from "lucide-react";
+import { Check, CirclePlay, Download, File, Menu, Settings, X } from "lucide-react";
 import Link from "next/link";
 import { Spotlight } from "@/components/ui/Spotlight";
 import Image from "next/image";
@@ -45,6 +45,7 @@ export default function Component() {
     "Introduction",
     "Get your OP Bento",
     "After you have generated your Bento",
+    "Github Settings",
     "Finale",
   ];
 
@@ -134,7 +135,7 @@ export default function Component() {
                   alt="OP Bento"
                   className="mt-8 w-full rounded-2xl"
                 />
-                <div className="flex items-center gap-4 text-foreground/80 mt-8 text-base sm:text-[1.1rem] leading-relaxed">
+                <div className="flex flex-wrap items-center gap-4 text-foreground/80 mt-8 text-base sm:text-[1.1rem] leading-relaxed">
                   Click on the{" "}
                   <button className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2 ">
                     Generate Bento{" "}
@@ -214,6 +215,89 @@ export default function Component() {
                     </Tree>
                   </Tree>
                 </div>
+              </section>
+
+              <section id="github-settings" className="mt-16">
+                <motion.h2
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5 }}
+                  className="text-2xl sm:text-[2rem] font-bold mb-8"
+                >
+                  Your repo settings
+                </motion.h2>
+                <p className="text-foreground/80 text-base sm:text-[1.1rem] leading-relaxed">
+                  Dont forget to allow <strong> Write Permissions </strong> in
+                  your repo settings. This is required to update your Bento or
+                  else
+                  <code> update-bento.yml </code> will not update your README.
+                </p>
+
+                <nav className="flex mt-5" aria-label="Breadcrumb">
+                  <ol className="inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse">
+                    <li className="inline-flex items-center">
+                      <p className="inline-flex items-center text-sm font-medium text-red-500 ">
+                        <Settings className="w-4 h-4 mr-2" />
+                        Settings
+                      </p>
+                    </li>
+                    <li>
+                      <div className="flex items-center">
+                        <svg
+                          className="rtl:rotate-180 w-3 h-3 text-gray-400 mx-1"
+                          aria-hidden="true"
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 6 10"
+                        >
+                          <path
+                            stroke="currentColor"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="m1 9 4-4-4-4"
+                          />
+                        </svg>
+                        <p
+                          className="ms-1 text-sm font-medium md:ms-2 inline-flex items-center  dark:text-gray-400 dark:hover:text-white"
+                        >
+                          <CirclePlay className="w-4 h-4 mr-2" />
+                          Actions
+                        </p>
+                      </div>
+                    </li>
+                    <li aria-current="page">
+                      <div className="flex items-center">
+                        <svg
+                          className="rtl:rotate-180 w-3 h-3 text-gray-400 mx-1"
+                          aria-hidden="true"
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 6 10"
+                        >
+                          <path
+                            stroke="currentColor"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="m1 9 4-4-4-4"
+                          />
+                        </svg>
+                        <span className="ms-1 text-sm font-medium  md:ms-2 text-gray-400">
+                          General
+                        </span>
+                      </div>
+                    </li>
+                  </ol>
+                </nav>
+
+                <Image
+                  width={1000}
+                  height={1000}
+                  src="/guide2.png"
+                  alt="OP Bento"
+                  className="mt-8 w-full h-full rounded-2xl"
+                />
               </section>
 
               <section id="finale" className="mt-16">

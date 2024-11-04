@@ -111,9 +111,10 @@ export default function BioBlock({
             Its fully open source and you can contribute to it. If you got any
             ideas or suggestions, feel free to open an issue or a pull request.
           </p>
-          <Button variant="secondary" className="w-full">
+          <Link href="https://github.com/subhadeeproy3902/opbento" className="w-full inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-secondary text-secondary-foreground hover:bg-secondary/80 h-10 px-4 py-2"
+          >
             Begin Your Journey
-          </Button>
+          </Link>
         </Block>
       </div>
     </>
