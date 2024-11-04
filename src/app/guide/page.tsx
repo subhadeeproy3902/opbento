@@ -97,7 +97,7 @@ export default function Component() {
                 ></motion.h2>
                 <p className="text-foreground/80 text-base sm:text-[1.1rem] leading-relaxed mb-8">
                   Hey there, GitHub superstar! Ready to give your profile some
-                  serious swagger? With OP Bento, you'll turn your profile into
+                  serious swagger? With OP Bento, you&apos;ll turn your profile into
                   a dynamic, eye-catching showcase that updates automatically
                   with your latest GitHub stats. Think of it as a mini homepage
                   that shows the world what you’re working on, without you

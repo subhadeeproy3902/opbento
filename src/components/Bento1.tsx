@@ -1,4 +1,3 @@
-/* eslint-disable @next/next/no-img-element */
 import { useState } from "react";
 import { Space_Grotesk } from "next/font/google";
 import { cn } from "@/lib/utils";
@@ -417,7 +416,7 @@ const BentoGrid = ({
           <div className="bg-gradient-to-br from-green-950/80 p-4 col-span-4 row-span-2 rounded-lg w-full h-full">
             <div className="flex items-center justify-between">
               <h1 className="text-2xl font-bold">
-                {githubURL}'s Contribution Graph
+                {githubURL}&apos;s Contribution Graph
               </h1>
               <div className="flex items-center justify-end text-sm">
                 <span>Less</span>
@@ -470,7 +469,7 @@ const BentoGrid = ({
               <div className="flex items-center gap-2 text-red-500">
                 <AlertTriangle className="w-4 h-4 flex-shrink-0" />
                 <p className="text-xs font-medium">
-                  Do not change the existing files else setup won't work
+                  Do not change the existing files else setup won&apos;t work
                 </p>
               </div>
             </div>
