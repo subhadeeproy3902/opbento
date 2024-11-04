@@ -178,7 +178,7 @@ const BentoGrid = ({
     <div className="max-w-5xl mx-auto">
       <div
         className={cn(
-          "p-4 grid grid-cols-1 md:grid-cols-4 gap-4 max-w-5xl mt-32 mb-8 w-full mx-auto",
+          "sm:p-4 grid grid-cols-1 md:grid-cols-4 gap-y-4 sm:gap-4 max-w-5xl mt-32 mb-8 w-full mx-auto",
           space.className
         )}
       >
