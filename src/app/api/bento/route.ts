@@ -31,7 +31,7 @@ export async function GET(req: NextRequest) {
   }
 
   const firebaseurl =
-    "https://firebasestorage.googleapis.com/v0/b/smartkaksha-fe32c.appspot.com/o/opbento2%2F" +
+    "https://firebasestorage.googleapis.com/v0/b/smartkaksha-fe32c.appspot.com/o/opbento%2F" +
     g +
     uniqueId +
     ".png?alt=media";
