@@ -185,7 +185,7 @@ const BentoGrid = ({
         <div className="text-white py-6 px-8 rounded-lg bg-gradient-to-br from-cyan-400 via-blue-500 to-violet-600 to col-span-1 row-span-1 min-h-32">
           <p className="text-xl">Hey Im</p>
           <h2 className="text-4xl font-bold mb-2 capitalize">
-            {name || "Nigga"}
+            {name || "User"}
           </h2>
         </div>
 
