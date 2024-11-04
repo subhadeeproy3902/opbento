@@ -106,17 +106,17 @@ const BentoGrid = ({
 
       let fileContent = await response.text();
 
-      const apiUrl = `https://opbento.edgexhq.tech/api/bento?name=${encodeURIComponent(
+      const apiUrl = `https://opbento.edgexhq.tech/api/bento?n=${encodeURIComponent(
         name
-      )}&githubURL=${encodeURIComponent(
+      )}&g=${encodeURIComponent(
         githubURL
-      )}&twitterURL=${encodeURIComponent(
+      )}&x=${encodeURIComponent(
         twitterURL
-      )}&linkedinURL=${encodeURIComponent(
+      )}&l=${encodeURIComponent(
         linkedinURL
-      )}&imageUrl=${encodeURIComponent(
+      )}&i=${encodeURIComponent(
         imageUrl
-      )}&portfolioUrl=${encodeURIComponent(
+      )}&p=${encodeURIComponent(
         portfolioUrl
       )}&z=${encodeURIComponent(randomId)}`;
 
