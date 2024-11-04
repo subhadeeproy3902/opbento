@@ -13,7 +13,7 @@ const inter = Poppins({
 export const metadata: Metadata = {
   title: "OP Bento",
   description: "Create cool bento grids for your Github Readme!",
-  metadataBase: new URL("https://opbento.vercel.app"),
+  metadataBase: new URL("https://opbento.edgexhq.tech"),
   manifest: "/manifest.json",
 };
 

@@ -104,7 +104,7 @@ const BentoGrid = ({
 
       let fileContent = await response.text();
 
-      const apiUrl = `https://opbento.vercel.app/api/bento?name=${encodeURIComponent(
+      const apiUrl = `https://opbento.edgexhq.tech/api/bento?name=${encodeURIComponent(
         name
       )}&githubURL=${encodeURIComponent(
         githubURL
@@ -481,7 +481,7 @@ const BentoGrid = ({
               </div>
               <div className="flex gap-2 relative ">
                 <Input
-                  value={`[![OpBento](${bentoLink})](https://opbento.vercel.app)`}
+                  value={`[![OpBento](${bentoLink})](https://opbento.edgexhq.tech)`}
                   readOnly
                   className="focus:ring-offset-secondary pr-16"
                 />
@@ -559,7 +559,7 @@ const BentoGrid = ({
             {/* Guide Button */}
             <div className="flex justify-between items-center">
               <Link
-                href="https://opbento.live/guide"
+                href="https://opbento.edgexhq.tech/guide"
                 className="text-gray-400 inline-flex items-center gap-2 hover:text-white transition-colors text-sm py-2 h-auto"
               >
                 Guide <Link2 className="text-red-500" />
