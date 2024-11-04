@@ -26,7 +26,7 @@ export default function Block ({ className, ...rest }:{
         damping: 50,
       }}
       className={cn(
-        "col-span-4 rounded-lg border bg-card p-6",
+        "col-span-4 rounded-lg border bg-card p-6 relative",
         className
       )}
       {...rest}
