@@ -438,11 +438,13 @@ const BentoGrid = ({
           </div>
         )}
       </div>
-      <div className="flex gap-4">
-        <Button className="" onClick={handleGenerateLink}>
-          Generate Bento
-          {loading && <Loader2 className="ml-2 size-4 animate-spin" />}
-        </Button>
+      <div className="flex gap-4 w-full">
+        {githubURL && (
+          <Button className="w-fit mx-auto" onClick={handleGenerateLink}>
+            Generate Bento
+            {loading && <Loader2 className="ml-2 size-4 animate-spin" />}
+          </Button>
+        )}
         <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
           <AlertDialogContent className="max-w-2xl bg-gradient-to-b from-[#1A1A1A] to-[#121212] border-gray-800 shadow-2xl rounded-xl overflow-hidden">
             <AlertDialogHeader className="relative">
