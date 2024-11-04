@@ -290,7 +290,7 @@ const GitHubButton: React.FC = () => {
   return (
     <div className="flex justify-center">
       <a
-        href="https://github.com/subhadeeproy3902/opbento"
+        href="https://github.com/edgexhq/opbento"
         target="_blank"
         className="relative text-3xl inline-block w-36 h-[1.5em] mx-auto group dark:bg-black bg-white dark:border-white border-black border-2 rounded-lg"
       >

@@ -24,7 +24,7 @@ in case you are stuck:
 
 <br>
 
-**1.** Fork [this](https://github.com/subhadeeproy3902/opbento.git) repository.
+**1.** Fork [this](https://github.com/edgexhq/opbento.git) repository.
 
 **2.** Clone your forked copy of the project.
 
@@ -41,7 +41,7 @@ cd opbento.git
 **4.** Add a reference(remote) to the original repository.
 
 ```
-git remote add upstream https://github.com/subhadeeproy3902/opbento.git
+git remote add upstream https://github.com/edgexhq/opbento.git
 ```
 
 **5.** Check the remotes for this repository.

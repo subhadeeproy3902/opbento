@@ -49,7 +49,7 @@ We’re open-source and welcome contributions! If you’d like to add features o
 
 ## 📜 License
 
-This project is licensed under the **GNU License**. See the [LICENSE](https://github.com/subhadeeproy3902/opbento/blob/main/LICENSE) file for more information.
+This project is licensed under the **GNU License**. See the [LICENSE](https://github.com/edgexhq/opbento/blob/main/LICENSE) file for more information.
 
 ---
 
