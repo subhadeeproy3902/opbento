@@ -13,6 +13,9 @@ export const metadata: Metadata = {
   title: "OP Bento",
   description: "Create cool bento grids for your Github Readme!",
   metadataBase: new URL("https://opbento.edgexhq.tech"),
+  verification: {
+    google: "e-76yievhM3kVEKPitYXxWAJQiazZqXkOZDANgbl-OI",
+  },
   manifest: "/manifest.json",
 };
 
