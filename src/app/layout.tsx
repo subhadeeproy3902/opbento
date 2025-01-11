@@ -36,15 +36,19 @@ export default function RootLayout({
   );
 }
 
-const Footer = () => {
+export function Footer() {
   return (
     <footer className="mt-20 mb-4">
       <p className="text-center text-muted-foreground">
-        Made with ❤️ by{" "}
+        Made with{" "}
+        <span aria-label="love" role="img">
+          ❤️
+        </span>{" "}
+        by{" "}
         <a href="/about" className="text-red-300 hover:underline">
-          @RealDevs
+          @Team EdgeX
         </a>
       </p>
     </footer>
   );
-};
+}
