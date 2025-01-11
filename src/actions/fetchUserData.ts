@@ -1,4 +1,4 @@
-"use server"
+"use server";
 
 import { GitHubResponse, UserStats } from "@/types";
 import getUserStats from "./getUserStats";
@@ -53,7 +53,9 @@ const userStatsQuery = `
   }
 `;
 
-const fetchUserData = async (login: string): Promise<{ userStats: UserStats }> => {
+const fetchUserData = async (
+  login: string,
+): Promise<{ userStats: UserStats }> => {
   const query = `
     query ($username: String!) {
       user(login: $username) {
@@ -64,7 +66,7 @@ const fetchUserData = async (login: string): Promise<{ userStats: UserStats }> =
 
   const response: GitHubResponse = await githubGraphql({
     query,
-    variables: { username: login }
+    variables: { username: login },
   });
 
   const { user } = response;
@@ -72,7 +74,7 @@ const fetchUserData = async (login: string): Promise<{ userStats: UserStats }> =
   const userStats: UserStats = getUserStats(user);
 
   return {
-    userStats
+    userStats,
   };
 };
 

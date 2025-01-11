@@ -1,5 +1,5 @@
 export const generateContributionGraph = (
-  contributionDays: { date: string; contributionCount: number }[]
+  contributionDays: { date: string; contributionCount: number }[],
 ) => {
   const dayWidth = 13;
   const dayHeight = 13;
@@ -44,7 +44,7 @@ export const generateContributionGraph = (
             const fillColor = getFillColor(day.contributionCount);
             return `<rect x="${x}" y="${y}" width="${dayWidth}" height="${dayHeight}" fill="${fillColor}" strokeWidth="0.5" rx="2" ry="2" />`;
           })
-          .join("")
+          .join(""),
       )
       .join("")}
   </svg>

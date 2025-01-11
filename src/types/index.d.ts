@@ -4,12 +4,12 @@ export interface UserStats {
   Repositories: number;
   Organizations: number;
   Gists: number;
-  'Pull Requests': number;
+  "Pull Requests": number;
   Issues: number;
   Commits: number;
   Sponsors: number;
-  'Contributed To': number;
-  'Star Earned': number;
+  "Contributed To": number;
+  "Star Earned": number;
 }
 
 export interface User {
@@ -32,7 +32,6 @@ export interface GitHubResponse {
   rateLimit: any;
 }
 
-
 export type StreakStats = {
   totalContributions: number;
   firstDateofContribution: string | null;
@@ -48,4 +47,4 @@ export type StreakStats = {
 export type Graph = {
   date: string;
   contributionCount: number;
-}
+};

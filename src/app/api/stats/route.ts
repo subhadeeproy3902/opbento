@@ -8,7 +8,7 @@ export async function GET(req: NextRequest) {
   if (!username) {
     return NextResponse.json(
       { error: "Username is required" },
-      { status: 400 }
+      { status: 400 },
     );
   }
 
@@ -23,12 +23,12 @@ export async function GET(req: NextRequest) {
         headers: {
           "Content-Type": "application/json",
         },
-      }
+      },
     );
   } catch (error) {
     return NextResponse.json(
       { error: "Failed to fetch data" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

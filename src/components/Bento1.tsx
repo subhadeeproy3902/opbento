@@ -108,13 +108,13 @@ const BentoGrid = ({
       let fileContent = await response.text();
 
       const apiUrl = `https://opbento.edgexhq.tech/api/bento?n=${encodeURIComponent(
-        name
+        name,
       )}&g=${encodeURIComponent(githubURL)}&x=${encodeURIComponent(
-        twitterURL
+        twitterURL,
       )}&l=${encodeURIComponent(linkedinURL)}&i=${encodeURIComponent(
-        imageUrl
+        imageUrl,
       )}&p=${encodeURIComponent(portfolioUrl)}&z=${encodeURIComponent(
-        randomId
+        randomId,
       )}`;
 
       fileContent = `const apiUrl = "${apiUrl}";\n` + fileContent;
@@ -143,11 +143,11 @@ const BentoGrid = ({
     setLoading(true);
     setIsGenerated(false);
     const apiURL = `/api/bento?n=${encodeURIComponent(
-      name
+      name,
     )}&i=${encodeURIComponent(imageUrl)}&g=${encodeURIComponent(
-      githubURL
+      githubURL,
     )}&x=${encodeURIComponent(twitterURL)}&l=${encodeURIComponent(
-      linkedinURL
+      linkedinURL,
     )}&p=${encodeURIComponent(portfolioUrl)}&z=${encodeURIComponent(randomId)}`;
     try {
       const res = await fetch(apiURL);

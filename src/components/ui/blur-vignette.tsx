@@ -1,5 +1,5 @@
-import React, { createContext, useContext } from 'react';
-import { cn } from '@/lib/utils';
+import React, { createContext, useContext } from "react";
+import { cn } from "@/lib/utils";
 interface BlurVignetteContextProps {
   radius?: string;
   inset?: string;
@@ -8,10 +8,10 @@ interface BlurVignetteContextProps {
 }
 
 const BlurVignetteContext = createContext<BlurVignetteContextProps>({
-  radius: '24px',
-  inset: '20px',
-  transitionLength: '44px',
-  blur: '6px',
+  radius: "24px",
+  inset: "20px",
+  transitionLength: "44px",
+  blur: "6px",
 });
 
 export const useBlurVignetteContext = () => useContext(BlurVignetteContext);
@@ -29,17 +29,17 @@ interface BlurVignetteProps {
 export const BlurVignette: React.FC<BlurVignetteProps> = ({
   classname,
   children,
-  radius = '24px',
-  inset = '20px',
-  transitionLength = '44px',
-  blur = '6px',
+  radius = "24px",
+  inset = "20px",
+  transitionLength = "44px",
+  blur = "6px",
 }) => {
   return (
     <BlurVignetteContext.Provider
       value={{ radius, inset, transitionLength, blur }}
     >
       <div
-        className={cn('relative overflow-hidden', classname)}
+        className={cn("relative overflow-hidden", classname)}
         style={{ borderRadius: radius }}
       >
         {children}
@@ -61,15 +61,15 @@ export const BlurVignetteArticle: React.FC<BlurVignetteArticleProps> = ({
   return (
     <div
       className={cn(
-        'blur-vignette bottom-0 left-0 w-full h-full z-[1]',
-        classname
+        "blur-vignette bottom-0 left-0 w-full h-full z-[1]",
+        classname,
       )}
       style={
         {
-          '--radius': radius,
-          '--inset': inset,
-          '--transition-length': transitionLength,
-          '--blur': blur,
+          "--radius": radius,
+          "--inset": inset,
+          "--transition-length": transitionLength,
+          "--blur": blur,
         } as React.CSSProperties
       }
     >

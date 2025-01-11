@@ -2,7 +2,9 @@
 
 import { fetchGitHubData } from "./fetchGithubData";
 
-export async function fetchContributionYears(username: string): Promise<number[]> {
+export async function fetchContributionYears(
+  username: string,
+): Promise<number[]> {
   const query = `
     query ($user: String!) {
       user(login: $user) {

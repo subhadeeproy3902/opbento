@@ -1,12 +1,15 @@
-"use server"
+"use server";
 
-export async function fetchGitHubData(query: string, variables: any): Promise<any> {
-  const response = await fetch('https://api.github.com/graphql', {
-    method: 'POST',
+export async function fetchGitHubData(
+  query: string,
+  variables: any,
+): Promise<any> {
+  const response = await fetch("https://api.github.com/graphql", {
+    method: "POST",
     headers: {
       Authorization: `Bearer ${process.env.GITHUB_TOKEN!}`,
-      Accept: 'application/vnd.github+json',
-      'Content-Type': 'application/json',
+      Accept: "application/vnd.github+json",
+      "Content-Type": "application/json",
     },
     body: JSON.stringify({ query, variables }),
   });

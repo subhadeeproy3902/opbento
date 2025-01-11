@@ -1,7 +1,10 @@
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 
-export default function Block ({ className, ...rest }:{
+export default function Block({
+  className,
+  ...rest
+}: {
   className?: string;
   [key: string]: any;
 }) {
@@ -27,9 +30,9 @@ export default function Block ({ className, ...rest }:{
       }}
       className={cn(
         "col-span-4 rounded-lg border bg-card p-6 relative",
-        className
+        className,
       )}
       {...rest}
     />
   );
-};
+}

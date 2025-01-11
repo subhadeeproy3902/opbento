@@ -1,11 +1,11 @@
 import { randomBytes } from "crypto";
 
 export const calculateTotalContributions = (
-  contributionDays: { date: string; contributionCount: number }[]
+  contributionDays: { date: string; contributionCount: number }[],
 ): { total: number; firstContributionDate: string | null } => {
   const total = contributionDays.reduce(
     (total, day) => total + day.contributionCount,
-    0
+    0,
   );
   const firstContributionDate =
     contributionDays.find((day) => day.contributionCount > 0)?.date || null;
@@ -13,7 +13,7 @@ export const calculateTotalContributions = (
 };
 
 export const calculateLongestStreak = (
-  contributionDays: { date: string; contributionCount: number }[]
+  contributionDays: { date: string; contributionCount: number }[],
 ): {
   longestStreak: number;
   startDate: string | null;
@@ -78,7 +78,7 @@ export const calculateLongestStreak = (
 };
 
 export const calculateCurrentStreak = (
-  contributionDays: { date: string; contributionCount: number }[]
+  contributionDays: { date: string; contributionCount: number }[],
 ): {
   currentStreak: number;
   startDate: string | null;

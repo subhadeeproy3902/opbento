@@ -1,9 +1,10 @@
 import {
-  Github, Twitter,
+  Github,
+  Twitter,
   CircleUser,
   Save,
   Loader2,
-  Image
+  Image,
 } from "lucide-react";
 import Block from "./ui/Block";
 import { Input } from "./ui/input";
