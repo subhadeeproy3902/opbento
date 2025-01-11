@@ -36,7 +36,7 @@ export default function RootLayout({
   );
 }
 
-export function Footer() {
+const Footer = () => {
   return (
     <footer className="mt-20 mb-4">
       <p className="text-center text-muted-foreground">
