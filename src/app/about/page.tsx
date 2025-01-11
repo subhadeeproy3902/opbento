@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Github, Linkedin, Earth } from "lucide-react";
 import Link from "next/link";
 
-const Creators = () => {
+export default function CreatorsPage() {
   return (
     <>
       <Link
@@ -24,7 +24,7 @@ const Creators = () => {
         <h2 className="text-4xl md:text-6xl text-center cursor-crosshair font-bold">
           <span className="text-primary">C</span>reators
         </h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 px-6 mt-10 md:gap-20">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-10 px-6 sm:px-0 mt-10 md:gap-8">
           <article className="overflow-hidden bg-card border hover:border-primary/25 group rounded-lg shadow transition-all duration-500 hover:shadow-lg hover:shadow-primary/10">
             <Image
               alt="anish"
@@ -41,7 +41,7 @@ const Creators = () => {
                 Loves football, Music production and making the darkest jokes.
                 He&apos;s him. Literally.
               </p>
-              <div className="flex justify-around pt-10 pb-2">
+              <div className="flex flex-wrap pt-10 pb-2 gap-4">
                 <Button
                   asChild
                   className="bg-lime-500 text-black hover:bg-lime-400"
@@ -94,7 +94,7 @@ const Creators = () => {
                 Highly frank ,fueled with enthusiasm and a connoisseur of
                 greatness. Loves anime and playing chess.
               </p>
-              <div className="flex justify-around pt-10 pb-2">
+              <div className="flex flex-wrap pt-10 pb-2 gap-4">
                 <Button
                   asChild
                   className="bg-lime-500 text-black hover:bg-lime-400"
@@ -150,13 +150,13 @@ const Creators = () => {
                 Likes to design and build software that makes people more badass
                 at what they do.|
               </p>
-              <div className="flex justify-around pt-10 pb-2">
+              <div className="flex flex-wrap pt-10 pb-2 gap-4">
                 <Button
                   asChild
                   className="bg-lime-500 text-black hover:bg-lime-400"
                 >
-                  <a target="__blank" href={"https://uiuxarghya.vercel.app/"}>
-                    Website{" "}
+                  <a target="_blank" href="https://dub.sh/arghya">
+                    Website
                     <span>
                       <Earth className="ml-2 size-5" />
                     </span>
@@ -166,8 +166,8 @@ const Creators = () => {
                   asChild
                   className="bg-zinc-800 text-white hover:bg-slate-700"
                 >
-                  <a target="__blank" href={"https://github.com/uiuxarghya"}>
-                    Github{" "}
+                  <a target="_blank" href="https://git.new/arghya">
+                    Github
                     <span>
                       <Github className="ml-2 size-5" />
                     </span>
@@ -177,11 +177,8 @@ const Creators = () => {
                   asChild
                   className="bg-blue-600 text-white hover:bg-blue-500"
                 >
-                  <a
-                    target="__blank"
-                    href={"https://www.linkedin.com/in/uiuxarghya/"}
-                  >
-                    Linkedin{" "}
+                  <a target="_blank" href="https://dub.sh/arghya-li">
+                    Linkedin
                     <span>
                       <Linkedin className="ml-2 size-5" />
                     </span>
@@ -194,6 +191,4 @@ const Creators = () => {
       </div>
     </>
   );
-};
-
-export default Creators;
+}
